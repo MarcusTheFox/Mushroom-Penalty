@@ -1,16 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float runSpeedMultiplier = 1.5f;
-
     private Character character;
-    private Rigidbody rb;
-    private AnimationController animationController;
+    
+    private IAttacker meleeAttacker;
+    private IAttacker magicAttacker;
+    private IMovable movement;
 
     private Vector2 moveInput;
     private bool runInput;
@@ -20,14 +18,8 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         character = GetComponent<Character>();
-        rb = GetComponent<Rigidbody>();
-        animationController = GetComponent<AnimationController>();
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody not found on Player!");
-            enabled = false;
-            return;
-        }
+        meleeAttacker = GetComponent<MeleeAttacker>();
+        magicAttacker = GetComponent<MagicAttacker>();
     }
 
     public void OnMove(InputValue value)
@@ -62,26 +54,16 @@ public class PlayerController : MonoBehaviour
         if (moveInput.magnitude > 0)
         {
             Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-            float currentSpeed = moveSpeed;
-            if (runInput)
+            movement.Move(moveDirection);
+
+            if (movement is PlayerMovement playerMovement)
             {
-                currentSpeed *= runSpeedMultiplier;
+                playerMovement.SetRunning(runInput);
             }
-
-            rb.linearVelocity = moveDirection * currentSpeed;
-
-            if (moveDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
-            }
-
-            animationController?.PlayMoveAnimation(true, runInput);
         }
         else
         {
-            rb.linearVelocity = Vector3.zero;
-            animationController?.PlayMoveAnimation(false, false);
+            movement.Stop();
         }
     }
 
@@ -89,14 +71,14 @@ public class PlayerController : MonoBehaviour
     {
         if (meleeAttackInput)
         {
-            MeleeAttack meleeAttack = new MeleeAttack(character, character.physicalDamage);
-            meleeAttack.Execute();
+            if(meleeAttacker != null)
+                meleeAttacker.PerformAttack();
             meleeAttackInput = false;
         }
         else if (magicAttackInput)
         {
-            MagicAttack magicAttack = new MagicAttack(character, character.magicalDamage);
-            magicAttack.Execute();
+            if(magicAttacker != null)
+                magicAttacker.PerformAttack();
             magicAttackInput = false;
         }
     }

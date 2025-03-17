@@ -3,8 +3,6 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour, IDamageable
 {
     public float maxHealth = 100f;
-    public float physicalDamage = 10f;
-    public float magicalDamage = 15f;
 
     protected HealthSystem healthSystem;
     protected AnimationController animationController;
