@@ -20,6 +20,12 @@ public class PlayerController : MonoBehaviour
         character = GetComponent<Character>();
         meleeAttacker = GetComponent<MeleeAttacker>();
         magicAttacker = GetComponent<MagicAttacker>();
+        movement = GetComponent<IMovable>();
+        if (movement == null)
+        {
+            Debug.LogError("No IMovable found on Player!");
+            enabled = false;
+        }
     }
 
     public void OnMove(InputValue value)

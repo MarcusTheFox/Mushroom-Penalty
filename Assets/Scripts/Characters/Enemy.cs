@@ -15,6 +15,10 @@ public class Enemy : Character
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         attacker = GetComponent<IAttacker>();
         movement = GetComponent<IMovable>();
+        if(movement == null)
+        {
+            Debug.LogWarning("No IMovement found on Enemy!");
+        }
         if(attacker == null)
         {
             Debug.LogError("No IAttacker found on Enemy!");
