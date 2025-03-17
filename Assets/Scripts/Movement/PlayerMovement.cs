@@ -26,8 +26,10 @@ public class PlayerMovement : MonoBehaviour, IMovable
         {
             currentSpeed *= runSpeedMultiplier;
         }
-
-        rb.velocity = direction * currentSpeed;
+        
+        float yVelocity = rb.velocity.y;
+        Vector3 horizontalVelocity = new Vector3(direction.x, 0, direction.z) * currentSpeed;
+        rb.velocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
 
         if (direction != Vector3.zero)
         {
@@ -45,7 +47,9 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     public void Stop()
     {
-        rb.velocity = Vector3.zero;
+        float yVelocity = rb.velocity.y;
+        rb.velocity = new Vector3(0, yVelocity, 0);
+        
         AnimationController anim = GetComponent<AnimationController>();
         if(anim)
         {
