@@ -48,9 +48,9 @@ public class PlayerMovement : MonoBehaviour, IMovable
         Vector3 moveDirection = cameraForward * direction.z + cameraRight * direction.x;
         moveDirection = moveDirection.normalized;
         
-        float yVelocity = rb.velocity.y;
+        float yVelocity = rb.linearVelocity.y;
         Vector3 horizontalVelocity = new Vector3(moveDirection.x, 0, moveDirection.z) * currentSpeed;
-        rb.velocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
+        rb.linearVelocity = new Vector3(horizontalVelocity.x, yVelocity, horizontalVelocity.z);
 
         if (moveDirection != Vector3.zero)
         {
@@ -68,8 +68,8 @@ public class PlayerMovement : MonoBehaviour, IMovable
 
     public void Stop()
     {
-        float yVelocity = rb.velocity.y;
-        rb.velocity = new Vector3(0, yVelocity, 0);
+        float yVelocity = rb.linearVelocity.y;
+        rb.linearVelocity = new Vector3(0, yVelocity, 0);
         
         AnimationController anim = GetComponent<AnimationController>();
         if(anim)
