@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class MagicAttackCooldownUI : MonoBehaviour
 {
-    public Image cooldownImageFiller;
+    [SerializeField] private Image cooldownImageFiller;
     private MagicAttacker magicAttacker;
     
     private void Start()

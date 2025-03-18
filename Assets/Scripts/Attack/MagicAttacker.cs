@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class MagicAttacker : MonoBehaviour, IAttacker
 {
-    public float damage = 15f;
-    public float attackRange = 1f;
-    private IDamageable owner;
+    [SerializeField] private float damage = 15f;
+    [SerializeField] private float attackRange = 1f;
+    [SerializeField] private float cooldown = 2f;
     
-    public float cooldown = 2f;
+    private IDamageable owner;
     private CooldownSystem cooldownSystem;
     public bool IsOnCooldown => cooldownSystem.IsOnCooldown;
     public float GetCooldownProgress() => cooldownSystem.GetCooldownProgress();

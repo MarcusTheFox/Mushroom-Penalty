@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour, IDamageable
 {
-    public float maxHealth = 100f;
+    [SerializeField] private float maxHealth = 100f;
 
     protected HealthSystem healthSystem;
     protected AnimationController animationController;

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class MeleeAttacker : MonoBehaviour, IAttacker
 {
-    public float damage = 10f;
-    public float attackRange = 1f;
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private float attackRange = 1f;
     private IDamageable owner;
 
     private void Awake()
