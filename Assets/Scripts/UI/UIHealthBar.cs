@@ -1,11 +1,14 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIHealthBar : MonoBehaviour
 {
     [SerializeField] private Slider healthBarSlider;
     [SerializeField] private Character character;
+    [SerializeField] private float barAnimationDuration = 0.3f;
     private HealthSystem healthSystem;
 
     private void Start()
@@ -47,6 +50,6 @@ public class UIHealthBar : MonoBehaviour
 
     private void UpdateHealthBar()
     {
-        healthBarSlider.value = character.GetCurrentHealth();
+        healthBarSlider.DOValue(character.GetCurrentHealth(), barAnimationDuration);
     }
 }

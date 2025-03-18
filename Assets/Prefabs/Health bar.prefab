@@ -255,6 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarSlider: {fileID: 1136848642670905194}
   character: {fileID: 0}
+  barAnimationDuration: 0.3
 --- !u!1 &9198185787851980942
 GameObject:
   m_ObjectHideFlags: 0
