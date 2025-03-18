@@ -732,8 +732,22 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2360831221812168650, guid: fe7c1a08160eb664c87a67bc594a1dd9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1836995106}
   m_SourcePrefab: {fileID: 100100000, guid: fe7c1a08160eb664c87a67bc594a1dd9, type: 3}
+--- !u!114 &948840867 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1708595018517515715, guid: fe7c1a08160eb664c87a67bc594a1dd9, type: 3}
+  m_PrefabInstance: {fileID: 692189689}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1467498235
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,6 +1051,7 @@ GameObject:
   - component: {fileID: 1634113043}
   - component: {fileID: 1634113050}
   - component: {fileID: 1634113051}
+  - component: {fileID: 1634113052}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1245,6 +1260,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   attackRange: 1
+--- !u!114 &1634113052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634113040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cebd1e553855a5140a03a57280fff713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
+  attackRange: 1
+  cooldown: 2
 --- !u!1 &1797484992
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,6 +1383,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1836995102 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2360831221812168650, guid: fe7c1a08160eb664c87a67bc594a1dd9, type: 3}
+  m_PrefabInstance: {fileID: 692189689}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1836995106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836995102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3b50bc169cce714e97f60a8c03a45b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownImageFiller: {fileID: 948840867}
 --- !u!1 &1838393861
 GameObject:
   m_ObjectHideFlags: 0

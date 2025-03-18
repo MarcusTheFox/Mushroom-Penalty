@@ -5,6 +5,11 @@ public class MagicAttacker : MonoBehaviour, IAttacker
     public float damage = 15f;
     public float attackRange = 1f;
     private IDamageable owner;
+    
+    public float cooldown = 2f;
+    private CooldownSystem cooldownSystem;
+    public bool IsOnCooldown => cooldownSystem.IsOnCooldown;
+    public float GetCooldownProgress() => cooldownSystem.GetCooldownProgress();
 
     private void Awake()
     {
@@ -15,10 +20,19 @@ public class MagicAttacker : MonoBehaviour, IAttacker
             enabled = false;
             return;
         }
+        
+        cooldownSystem = new CooldownSystem(cooldown);
+    }
+
+    private void Update()
+    {
+        cooldownSystem.Update(Time.deltaTime);
     }
 
     public void PerformAttack()
     {
+        if (cooldownSystem.IsOnCooldown) return;
+        
         if (owner is Character attackingCharacter)
         {
             attackingCharacter.PlayAttackAnimation();
@@ -36,5 +50,7 @@ public class MagicAttacker : MonoBehaviour, IAttacker
                 damageable.TakeDamage(finalDamage, DamageType.Magical);
             }
         }
+        
+        cooldownSystem.StartCooldown();
     }
 }
