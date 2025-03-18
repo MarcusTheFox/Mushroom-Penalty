@@ -1,39 +1,52 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIHealthBar : MonoBehaviour
 {
-    public RectTransform healthBarFill;
-    private IDamageable damageableTarget;
+    [SerializeField] private Slider healthBarSlider;
+    [SerializeField] private Character character;
+    private HealthSystem healthSystem;
 
     private void Start()
     {
-        damageableTarget = GetComponentInParent<IDamageable>();
-        if (damageableTarget == null)
+        if (character == null)
         {
-            Debug.LogError("No IDamageable found in parents of UIHealthBar!");
+            Debug.LogError("Character is not set in the Inspector for UIHealthBar!", this);
             enabled = false;
             return;
         }
-        UpdateHealthBar();
+
+        healthSystem = character.HealthSystem;
+        if (healthSystem == null)
+        {
+            Debug.LogError("HealthSystem not found on the assigned Damageable Target!", this);
+            enabled = false;
+            return;
+        }
+
+        healthSystem.OnHealthChanged += UpdateHealthBar;
+        InitializeHealthBar();
+    }
+    
+    private void OnDestroy()
+    {
+        if(healthSystem != null)
+        {
+            healthSystem.OnHealthChanged -= UpdateHealthBar;
+        }
     }
 
-    private void Update()
+    private void InitializeHealthBar()
     {
-        UpdateHealthBar();
+        healthBarSlider.minValue = 0;
+        healthBarSlider.maxValue = healthSystem.MaxHealth;
+        healthBarSlider.value = healthSystem.CurrentHealth;
+        healthBarSlider.wholeNumbers = false;
     }
 
     private void UpdateHealthBar()
     {
-        if (damageableTarget != null)
-        {
-            float healthPercentage = damageableTarget.GetCurrentHealth() / damageableTarget.GetMaxHealth();
-            healthBarFill.localScale = new Vector3(healthPercentage, 1, 1);
-
-            if (damageableTarget is MonoBehaviour targetBehaviour)
-            {
-                transform.LookAt(Camera.main.transform);
-            }
-
-        }
+        healthBarSlider.value = character.GetCurrentHealth();
     }
 }

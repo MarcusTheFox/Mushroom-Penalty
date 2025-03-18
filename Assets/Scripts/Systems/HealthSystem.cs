@@ -6,6 +6,8 @@ public class HealthSystem
     public float MaxHealth { get; private set; }
 
     public bool IsDead => CurrentHealth <= 0;
+    
+    public event System.Action OnHealthChanged;
 
     public HealthSystem(float maxHealth)
     {
@@ -17,5 +19,14 @@ public class HealthSystem
     {
         CurrentHealth -= damage;
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
+        
+        OnHealthChanged?.Invoke();
+    }
+    
+    public void Heal(float amount)
+    {
+        CurrentHealth += amount;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
+        OnHealthChanged?.Invoke();
     }
 }

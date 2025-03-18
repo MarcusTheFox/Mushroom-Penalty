@@ -6,6 +6,8 @@ public abstract class Character : MonoBehaviour, IDamageable
 
     protected HealthSystem healthSystem;
     protected AnimationController animationController;
+    
+    public HealthSystem HealthSystem => healthSystem;
 
     protected virtual void Awake()
     {

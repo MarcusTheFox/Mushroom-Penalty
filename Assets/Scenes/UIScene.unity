@@ -251,21 +251,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 915122878}
     m_Modifications:
+    - target: {fileID: 852668515121263806, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
+      propertyPath: healthBarFill
+      value: 
+      objectReference: {fileID: 710764771192185909}
     - target: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
+      propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5117035
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.43389893
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.51171875
       objectReference: {fileID: 0}
     - target: {fileID: 1121745410939018304, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
       propertyPath: m_Pivot.x
@@ -347,6 +359,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1370423639643856960, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
+      propertyPath: currentHealth
+      value: 102.7
+      objectReference: {fileID: 0}
     - target: {fileID: 7020174987642972100, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
       propertyPath: m_Name
       value: Health bar
@@ -356,6 +372,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
+--- !u!224 &710764771192185909 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1041822447360622285, guid: 6a1da0619c0035243822c0f4f0c6eadc, type: 3}
+  m_PrefabInstance: {fileID: 710764771192185908}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3969223471699855394
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -447,6 +468,10 @@ PrefabInstance:
     - target: {fileID: 7853027613250038353, guid: 3a6d98a248a1af747b62b9df3fca530b, type: 3}
       propertyPath: m_Name
       value: GameOverPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7853027613250038353, guid: 3a6d98a248a1af747b62b9df3fca530b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -638,9 +663,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6809829486011035305, guid: a1f239535f7364440801ac3e3b942d87, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7634765439550235808, guid: a1f239535f7364440801ac3e3b942d87, type: 3}
       propertyPath: m_Name
       value: Magic cooldown
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634765439550235808, guid: a1f239535f7364440801ac3e3b942d87, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -4,4 +4,5 @@ public interface IDamageable
     void PlayAttackAnimation();
     float GetCurrentHealth();
     float GetMaxHealth();
+    HealthSystem HealthSystem { get; }
 }
