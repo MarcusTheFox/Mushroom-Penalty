@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MeleeAttacker : MonoBehaviour, IAttacker
+public class MeleeAttacker : MonoBehaviour, IAttack
 {
     [SerializeField] private float damage = 10f;
     [SerializeField] private float attackRange = 1f;

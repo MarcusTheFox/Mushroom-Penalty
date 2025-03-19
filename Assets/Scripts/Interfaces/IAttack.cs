@@ -1,4 +1,4 @@
-public interface IAttacker
+public interface IAttack
 {
     void PerformAttack();
     bool IsOnCooldown { get; }

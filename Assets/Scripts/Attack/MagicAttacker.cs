@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MagicAttacker : MonoBehaviour, IAttacker
+public class MagicAttacker : MonoBehaviour, IAttack
 {
     [SerializeField] private float damage = 15f;
     [SerializeField] private float attackRange = 1f;

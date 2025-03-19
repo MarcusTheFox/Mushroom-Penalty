@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BaseAttack : MonoBehaviour, IAttacker
+public abstract class BaseAttack : MonoBehaviour, IAttack
 {
     [SerializeField] protected float damage = 10f;
     [SerializeField] protected float cooldown = 2f;
