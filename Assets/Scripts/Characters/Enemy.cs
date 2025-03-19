@@ -3,8 +3,8 @@ using UnityEngine;
 public class Enemy : Character
 {
     [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float attackCooldown = 1f;
-    private float lastAttackTime;
+    [SerializeField] private float minDistance = 1f;
+    
     private Transform playerTransform;
     private IAttacker attacker;
     private IMovable movement;
@@ -29,35 +29,40 @@ public class Enemy : Character
 
     private void Update()
     {
-        if (playerTransform)
-        {
-            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        if (!playerTransform) return;
+        
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
-            if (distanceToPlayer <= attackRange)
+        if (distanceToPlayer <= attackRange)
+        {
+            movement.Move(Vector3.zero);
+            transform.LookAt(playerTransform);
+            AttackPlayer();
+        }
+        else
+        {
+            Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
+            
+            if (distanceToPlayer > minDistance)
             {
-                if (Time.time - lastAttackTime >= attackCooldown)
-                {
-                    AttackPlayer();
-                }
+                movement.Move(directionToPlayer);
             }
             else
             {
-                Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
-                movement.Move(directionToPlayer);
-                transform.LookAt(playerTransform);
+                movement.Move(Vector3.zero);
             }
+            transform.LookAt(playerTransform);
         }
     }
 
     private void AttackPlayer()
     {
-        lastAttackTime = Time.time;
         attacker.PerformAttack();
     }
 
     protected override void Die()
     {
         animationController?.PlayDeathAnimation();
-        Destroy(gameObject, 2f);
+        Destroy(gameObject);
     }
 }

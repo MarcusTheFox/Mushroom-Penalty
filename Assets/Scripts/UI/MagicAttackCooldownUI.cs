@@ -4,21 +4,18 @@ using UnityEngine.UI;
 public class MagicAttackCooldownUI : MonoBehaviour
 {
     [SerializeField] private Image cooldownImageFiller;
-    private MagicAttacker magicAttacker;
+    [SerializeField] private MagicAttack magicAttack;
+    [SerializeField] private Character player;
     
     private void Start()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (magicAttack == null)
         {
-            magicAttacker = player.GetComponent<MagicAttacker>();
-        }
-        if (magicAttacker == null)
-        {
-            Debug.LogError("MagicAttacker not found!");
+            Debug.LogError("magicAttack not assigned to MagicAttackCooldownUI!");
             enabled = false;
             return;
         }
+        
         if (cooldownImageFiller == null)
         {
             Debug.LogError("cooldownImage not assigned to MagicAttackCooldownUI!");
@@ -30,7 +27,7 @@ public class MagicAttackCooldownUI : MonoBehaviour
 
     private void Update()
     {
-        if (magicAttacker != null)
+        if (magicAttack != null)
         {
             UpdateCooldownUI();
         }
@@ -38,10 +35,10 @@ public class MagicAttackCooldownUI : MonoBehaviour
 
     private void UpdateCooldownUI()
     {
-        if (magicAttacker.IsOnCooldown)
+        if (magicAttack.IsOnCooldown)
         {
             cooldownImageFiller.gameObject.SetActive(true);
-            cooldownImageFiller.fillAmount = magicAttacker.GetCooldownProgress();
+            cooldownImageFiller.fillAmount = magicAttack.GetCooldownProgress();
         }
         else
         {

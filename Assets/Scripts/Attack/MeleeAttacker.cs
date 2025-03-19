@@ -37,4 +37,7 @@ public class MeleeAttacker : MonoBehaviour, IAttacker
             }
         }
     }
+
+    public bool IsOnCooldown { get; }
+    public float GetCooldownProgress() => 0;
 }
