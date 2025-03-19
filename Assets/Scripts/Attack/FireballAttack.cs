@@ -25,12 +25,9 @@ public class FireballAttack : MagicAttack
 
     public override void PerformAttack()
     {
-        if (cooldownSystem.IsOnCooldown) return;
+        if (IsOnCooldown) return;
         
-        if (owner is Character attackingCharacter)
-        {
-            attackingCharacter.PlayAttackAnimation();
-        }
+        PlayAttackAnimation();
 
         GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
         Fireball fireballComponent = fireball.GetComponent<Fireball>();

@@ -23,6 +23,14 @@ public abstract class BaseAttack : MonoBehaviour, IAttack
     }
 
     public abstract void PerformAttack();
+    
+    protected virtual void PlayAttackAnimation()
+    {
+        if (owner is Character attackingCharacter)
+        {
+            attackingCharacter.PlayAttackAnimation();
+        }
+    }
 
     public bool IsOnCooldown => cooldownSystem.IsOnCooldown;
     public float GetCooldownProgress() => cooldownSystem.GetCooldownProgress();

@@ -15,6 +15,8 @@ public class MeleeAttack : BaseAttack
     {
         if (IsOnCooldown) return;
         
+        PlayAttackAnimation();
+        
         Collider[] hitEnemies = FindEnemies();
 
         foreach (Collider enemyCollider in hitEnemies)
