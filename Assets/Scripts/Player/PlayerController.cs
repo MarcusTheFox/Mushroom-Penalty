@@ -4,12 +4,10 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    private Character character;
+    private MeleeAttack meleeAttack;
+    private MagicAttack magicAttack;
     
-    private IAttacker meleeAttacker;
-    private IAttacker magicAttacker;
     private IMovable movement;
-
     private Vector2 moveInput;
     private bool runInput;
     private bool meleeAttackInput;
@@ -17,9 +15,13 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        character = GetComponent<Character>();
-        meleeAttacker = GetComponent<MeleeAttacker>();
-        magicAttacker = GetComponent<MagicAttacker>();
+        meleeAttack = GetComponent<MeleeAttack>();
+        magicAttack = GetComponent<MagicAttack>();
+        if(magicAttack == null)
+        {
+            Debug.LogWarning("MagicAttack not found on player");
+        }
+        
         movement = GetComponent<IMovable>();
         if (movement == null)
         {
@@ -77,14 +79,14 @@ public class PlayerController : MonoBehaviour
     {
         if (meleeAttackInput)
         {
-            if(meleeAttacker != null)
-                meleeAttacker.PerformAttack();
+            if(meleeAttack != null)
+                meleeAttack.PerformAttack();
             meleeAttackInput = false;
         }
         else if (magicAttackInput)
         {
-            if(magicAttacker != null)
-                magicAttacker.PerformAttack();
+            if(magicAttack != null)
+                magicAttack.PerformAttack();
             magicAttackInput = false;
         }
     }
