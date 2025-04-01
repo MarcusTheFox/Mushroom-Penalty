@@ -2,8 +2,10 @@ using UnityEngine;
 
 public abstract class BaseAttack : MonoBehaviour, IAttack
 {
+    [Min(0)]
     [SerializeField] protected float damage = 10f;
-    [SerializeField] protected float cooldown = 2f;
+    [Min(0)]
+    [SerializeField] protected float cooldown;
     protected CooldownSystem cooldownSystem;
     protected IDamageable owner;
 
@@ -22,7 +24,14 @@ public abstract class BaseAttack : MonoBehaviour, IAttack
         cooldownSystem.Update(Time.deltaTime);
     }
 
-    public abstract void PerformAttack();
+    public virtual void PerformAttack()
+    {
+        if (IsOnCooldown) return;
+        
+        cooldownSystem.StartCooldown();
+        
+        PlayAttackAnimation();
+    }
     
     protected virtual void PlayAttackAnimation()
     {

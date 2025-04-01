@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FireballAttack : MagicAttack
+public sealed class FireballAttack : MagicAttack
 {
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private Transform firePoint;
@@ -23,12 +23,8 @@ public class FireballAttack : MagicAttack
         }
     }
 
-    public override void PerformAttack()
+    public override void MagicAttackEvent()
     {
-        if (IsOnCooldown) return;
-        
-        PlayAttackAnimation();
-
         GameObject fireball = Instantiate(fireballPrefab, firePoint.position, firePoint.rotation);
         Fireball fireballComponent = fireball.GetComponent<Fireball>();
 
@@ -40,7 +36,11 @@ public class FireballAttack : MagicAttack
         {
             Debug.LogError("Fireball Prefab does not have Fireball Component!", fireballPrefab);
         }
-
-        cooldownSystem.StartCooldown();
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(firePoint.position, firePoint.forward * 10);
     }
 }

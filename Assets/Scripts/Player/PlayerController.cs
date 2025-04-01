@@ -4,29 +4,47 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
+    private PlayerInput playerInput;
+    private IMovable movement;
     private MeleeAttack meleeAttack;
     private MagicAttack magicAttack;
     
-    private IMovable movement;
     private Vector2 moveInput;
     private bool runInput;
     private bool meleeAttackInput;
     private bool magicAttackInput;
+    private bool canMove = true;
 
     private void Awake()
     {
-        meleeAttack = GetComponent<MeleeAttack>();
-        magicAttack = GetComponent<MagicAttack>();
-        if(magicAttack == null)
+        playerInput = GetComponent<PlayerInput>();
+        movement = GetComponent<IMovable>();
+        
+        if (playerInput == null)
         {
-            Debug.LogWarning("MagicAttack not found on player");
+            Debug.LogError("PlayerInput not found on Player", this);
+            enabled = false;
+            return;
         }
         
-        movement = GetComponent<IMovable>();
         if (movement == null)
         {
-            Debug.LogError("No IMovable found on Player!");
+            Debug.LogError("No IMovable found on Player!", this);
             enabled = false;
+            return;
+        }
+        
+        meleeAttack = GetComponent<MeleeAttack>();
+        magicAttack = GetComponent<MagicAttack>();
+
+        if (meleeAttack == null)
+        {
+            Debug.LogWarning("MeleeAttack not fount on Player", this);
+        }
+        
+        if (magicAttack == null)
+        {
+            Debug.LogWarning("MagicAttack not found on Player", this);
         }
     }
 
@@ -59,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (moveInput.magnitude > 0)
+        if (moveInput.magnitude > 0 && canMove)
         {
             Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
             movement.Move(moveDirection);
@@ -89,5 +107,20 @@ public class PlayerController : MonoBehaviour
                 magicAttack.PerformAttack();
             magicAttackInput = false;
         }
+    }
+
+    public void EnableMovement()
+    {
+        canMove = true;
+    }
+
+    public void DisableMovement()
+    {
+        canMove = false;
+    }
+
+    public void DisableInput()
+    {
+        playerInput.enabled = false;
     }
 }

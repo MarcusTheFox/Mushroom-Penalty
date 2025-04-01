@@ -428,9 +428,21 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 82167fdd3db678c4c9da1e47539b2675, type: 2}
+    - target: {fileID: 2160408941756047953, guid: 7c39ee9e82f55a744b01c1a0eacf2cea, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2160408941756047953, guid: 7c39ee9e82f55a744b01c1a0eacf2cea, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5348114338648166477, guid: 7c39ee9e82f55a744b01c1a0eacf2cea, type: 3}
       propertyPath: m_Name
       value: Cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 6476739599471182341, guid: 7c39ee9e82f55a744b01c1a0eacf2cea, type: 3}
+      propertyPath: visualizeAttack
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

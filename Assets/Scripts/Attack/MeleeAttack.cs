@@ -1,22 +1,21 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MeleeAttack : BaseAttack
 {
-    [SerializeField] private float attackRadius = 2f;
+    [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackAngle = 90f;
     [SerializeField] private LayerMask enemyLayers;
 
     [Tooltip("Visualize the attack range in the editor")]
     [SerializeField] private bool visualizeAttack = true;
 
-    public override void PerformAttack()
+    public float AttackRange => attackRange;
+    
+    public virtual void MeleeAttackEvent()
     {
-        if (IsOnCooldown) return;
-        
-        PlayAttackAnimation();
-        
         Collider[] hitEnemies = FindEnemies();
 
         foreach (Collider enemyCollider in hitEnemies)
@@ -27,13 +26,11 @@ public class MeleeAttack : BaseAttack
                 damageable.TakeDamage(damage, DamageType.Physical);
             }
         }
-        
-        cooldownSystem.StartCooldown();
     }
     
     private Collider[] FindEnemies()
     {
-        Collider[] allColliders = Physics.OverlapSphere(transform.position, attackRadius, enemyLayers);
+        Collider[] allColliders = Physics.OverlapSphere(transform.position, attackRange, enemyLayers);
         List<Collider> enemiesInRange = new List<Collider>();
 
         foreach (Collider col in allColliders)
@@ -52,7 +49,7 @@ public class MeleeAttack : BaseAttack
         Vector3 directionToTarget = targetPosition - transform.position;
         float distanceToTargetSqr = directionToTarget.sqrMagnitude;
 
-        if (distanceToTargetSqr > attackRadius * attackRadius)
+        if (distanceToTargetSqr > attackRange * attackRange)
         {
             return false;
         }
@@ -62,12 +59,10 @@ public class MeleeAttack : BaseAttack
         return dotProduct >= cosHalfAngle;
     }
     
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         if (!visualizeAttack) return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
 
         Quaternion leftRayRotation = Quaternion.AngleAxis(-attackAngle / 2, Vector3.up);
         Quaternion rightRayRotation = Quaternion.AngleAxis(attackAngle / 2, Vector3.up);
@@ -76,10 +71,13 @@ public class MeleeAttack : BaseAttack
         Vector3 rightRayDirection = rightRayRotation * transform.forward;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, leftRayDirection * attackRadius);
-        Gizmos.DrawRay(transform.position, rightRayDirection * attackRadius);
+        Gizmos.DrawRay(transform.position, leftRayDirection * attackRange);
+        Gizmos.DrawRay(transform.position, rightRayDirection * attackRange);
+        
+        Handles.DrawWireDisc(transform.position, Vector3.up, attackRange);
 
         Handles.color = new Color(1, 1, 0, 0.2f);
-        Handles.DrawSolidArc(transform.position, Vector3.up, leftRayDirection, attackAngle, attackRadius);
+        Handles.DrawSolidArc(transform.position, Vector3.up, leftRayDirection, attackAngle, attackRange);
     }
+#endif
 }
