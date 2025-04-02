@@ -16,7 +16,9 @@ public class MeleeAttack : BaseAttack
 
     public override void PerformAttack()
     {
-        base.PerformAttack();
+        if (IsOnCooldown) return;
+        
+        cooldownSystem.StartCooldown();
         
         animationController.PlayMeleeAttackAnimation();
     }
