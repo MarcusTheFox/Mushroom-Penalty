@@ -26,12 +26,7 @@ public abstract class BaseAttack : MonoBehaviour, IAttack
         cooldownSystem.Update(Time.deltaTime);
     }
 
-    public virtual void PerformAttack()
-    {
-        if (IsOnCooldown) return;
-        
-        cooldownSystem.StartCooldown();
-    }
+    public abstract void PerformAttack();
 
     public bool IsOnCooldown => cooldownSystem.IsOnCooldown;
     public float GetCooldownProgress() => cooldownSystem.GetCooldownProgress();
