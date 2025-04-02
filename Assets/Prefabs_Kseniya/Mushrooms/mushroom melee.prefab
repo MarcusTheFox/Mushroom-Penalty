@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom melee
       objectReference: {fileID: 0}
+    - target: {fileID: 5233112405309087440, guid: 842e3395e0d88644886c546dded63b71, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7926839288223873370, guid: 842e3395e0d88644886c546dded63b71, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -164,10 +168,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  viewDistance: 10
   attackRange: 3
-  stopMoveDistance: 1.51
-  viewDistance: 4.64
+  stopMoveDistance: 2
+  fleeDistance: 0
   visualizeRanges: 1
+  alwaysVisualizeRanges: 0
 --- !u!114 &7744067364209556158
 MonoBehaviour:
   m_ObjectHideFlags: 0

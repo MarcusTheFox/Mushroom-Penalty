@@ -1,20 +1,35 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
 public class Enemy : Character
 {
-    [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float stopMoveDistance = 1f;
-    [SerializeField] private float viewDistance = 3f;
+    [Header("AI Ranges")]
+    [Min(0)]
+    [SerializeField] private float viewDistance = 5f;
+    [Min(0)]
+    [SerializeField] private float attackRange = 3f;
+    [Min(0)]
+    [SerializeField] private float stopMoveDistance = 2f;
+    [Min(0)]
+    [SerializeField] private float fleeDistance = 1f;
+
+    [Header("Visualization")]
     [SerializeField] private bool visualizeRanges;
+    [SerializeField] private bool alwaysVisualizeRanges;
+    
+    public float ViewDistance => viewDistance;
+    public float AttackRange => attackRange;
+    public float StopMoveDistance => stopMoveDistance;
+    public float FleeDistance => fleeDistance;
     
     private Transform playerTransform;
     private IAttack attack;
     private IMovable movement;
+    private EnemyStateMachine stateMachine;
 
     private bool canAttack = true;
     private bool canMove = true;
-    private Transform moveTarget;
 
     protected override void Awake()
     {
@@ -40,39 +55,42 @@ public class Enemy : Character
             enabled = false;
             return;
         }
+
+        stateMachine = new EnemyStateMachine(this);
+    }
+
+    private void Start()
+    {
+        stateMachine.Initialize(stateMachine.IdleState);
     }
 
     private void Update()
     {
         if (!playerTransform) return;
         
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-
-        if (distanceToPlayer < viewDistance)
-        {
-            if (distanceToPlayer < attackRange)
-            {
-                StopMoving();
-                AttackPlayer();
-            }
-            else
-            {
-                MoveToPlayer();
-            }
-        }
-        else
-        {
-            StopMoving();
-        }
+        stateMachine.Update();
     }
 
-    private void LookToPlayer()
+    public float GetDistanceToPlayer()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position);
+    }
+
+    public void LookToPlayer()
     {
         Vector3 lookTarget = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
         transform.LookAt(lookTarget);
     }
+    
+    public void LookAwayFromPlayer()
+    {
+        if (!playerTransform) return;
+        Vector3 lookDirection = transform.position - playerTransform.position;
+        lookDirection.y = transform.position.y;
+        transform.LookAt(lookDirection);
+    }
 
-    private void MoveToPlayer()
+    public void MoveToPlayer()
     {
         if (!canMove) return;
         
@@ -81,13 +99,23 @@ public class Enemy : Character
         Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
         movement.Move(directionToPlayer);
     }
+    
+    public void FleeFromPlayer()
+    {
+        if (!canMove) return;
 
-    private void StopMoving()
+        LookAwayFromPlayer();
+
+        Vector3 directionAwayFromPlayer = (transform.position - playerTransform.position).normalized;
+        movement.Move(directionAwayFromPlayer);
+    }
+
+    public void StopMoving()
     {
         movement.Stop();
     }
 
-    private void AttackPlayer()
+    public void AttackPlayer()
     {
         LookToPlayer();
         
@@ -128,75 +156,78 @@ public class Enemy : Character
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (!visualizeRanges) return; // Check the toggle
+        if (!visualizeRanges) return;
+        if (alwaysVisualizeRanges)
+            DrawGizmos();
+    }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (!visualizeRanges) return;
+        if (!alwaysVisualizeRanges)
+            DrawGizmos();
+    }
+    
+    private void DrawGizmos()
+    {
         Vector3 position = transform.position;
-        // Use Vector3.up to draw the disc flat on the XZ plane (ground) regardless of enemy's tilt
         Vector3 normal = Vector3.up;
 
-        // Define semi-transparent colors for better visibility
-        // Adjust the alpha (last value) to control transparency (0=invisible, 1=solid)
-        Color attackColor = new Color(1f, 0f, 0f, 0.15f);  // Red, semi-transparent
-        Color minDistanceColor = new Color(1f, 1f, 0f, 0.15f); // Yellow, semi-transparent
-        Color maxDistanceColor = new Color(0f, 1f, 0f, 0.1f);  // Green, slightly more transparent
+        Color attackColor = new Color(1f, 0f, 0f, 0.15f);
+        Color stopColor = new Color(1f, 1f, 0f, 0.15f);
+        Color viewColor = new Color(0f, 1f, 0f, 0.1f);
+        Color fleeColor = new Color(0f, 0f, 1f, 0.1f);
 
-        // Store original handle color
         Color originalColor = Handles.color;
 
-        // --- Draw Filled Discs ---
-        // It's often best to draw larger discs first so smaller ones appear on top,
-        // although with transparency, the order matters less visually.
+        Handles.color = viewColor;
+        Handles.DrawSolidDisc(position, normal, ViewDistance);
 
-        // Draw Max Distance (Green)
-        Handles.color = maxDistanceColor;
-        Handles.DrawSolidDisc(position, normal, viewDistance);
-
-        // Draw Attack Range (Red)
         Handles.color = attackColor;
-        Handles.DrawSolidDisc(position, normal, attackRange);
+        Handles.DrawSolidDisc(position, normal, AttackRange);
 
-        // Draw Min Distance (Yellow)
-        Handles.color = minDistanceColor;
-        Handles.DrawSolidDisc(position, normal, stopMoveDistance);
+        Handles.color = stopColor;
+        Handles.DrawSolidDisc(position, normal, StopMoveDistance);
+        
+        Handles.color = fleeColor;
+        Handles.DrawSolidDisc(position, normal, FleeDistance);
+        
+        Handles.color = Color.red * 0.8f;
+        Handles.DrawWireDisc(position, normal, AttackRange);
 
+        Handles.color = Color.yellow * 0.8f;
+        Handles.DrawWireDisc(position, normal, StopMoveDistance);
 
-        // --- Optional: Draw Outlines for better definition ---
-        // You might want to add thin outlines on top of the filled discs
+        Handles.color = Color.green * 0.8f;
+        Handles.DrawWireDisc(position, normal, ViewDistance);
 
-         Handles.color = Color.red * 0.8f; // Darker red outline
-         Handles.DrawWireDisc(position, normal, attackRange);
+        Handles.color = Color.blue * 0.8f;
+        Handles.DrawWireDisc(position, normal, FleeDistance);
 
-         Handles.color = Color.yellow * 0.8f; // Darker yellow outline
-         Handles.DrawWireDisc(position, normal, stopMoveDistance);
-
-         Handles.color = Color.green * 0.8f; // Darker green outline
-         Handles.DrawWireDisc(position, normal, viewDistance);
-
-         try
-         {
-             float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-             if (distanceToPlayer < viewDistance)
-                 Handles.color = Color.green * 2f;
-             if (distanceToPlayer < attackRange)
-                 Handles.color = Color.red * 2f;
-             Handles.DrawLine(transform.position, playerTransform.position);
-         }
-         catch
-         {
-             // ignored
-         }
-
-
-         // --- Optional: Add Labels ---
+        try
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            if (distanceToPlayer < ViewDistance)
+                Handles.color = Color.green * 2f;
+            if (distanceToPlayer < AttackRange)
+                Handles.color = Color.red * 2f;
+            Handles.DrawLine(transform.position, playerTransform.position);
+        }
+        catch
+        {
+            // ignored
+        }
+         
         GUIStyle labelStyle = new GUIStyle();
-        labelStyle.normal.textColor = Color.white; // Use white for better contrast on colored discs
+        labelStyle.normal.textColor = Color.white;
         labelStyle.alignment = TextAnchor.MiddleCenter;
         labelStyle.fontStyle = FontStyle.Bold;
 
         float labelHeightOffset = 0.1f;
-        Handles.Label(position + transform.right * attackRange + normal * labelHeightOffset, "Attack range", labelStyle);
-        Handles.Label(position - transform.right * stopMoveDistance + normal * labelHeightOffset, "Stop moving", labelStyle);
-        Handles.Label(position + transform.forward * viewDistance + normal * labelHeightOffset, "Max view", labelStyle);
+        Handles.Label(position + transform.right * AttackRange + normal * labelHeightOffset, "Attack", labelStyle);
+        Handles.Label(position - transform.right * StopMoveDistance + normal * labelHeightOffset, "Stop", labelStyle);
+        Handles.Label(position + transform.forward * ViewDistance + normal * labelHeightOffset, "View", labelStyle);
+        Handles.Label(position - transform.forward * FleeDistance + normal * labelHeightOffset, "Flee", labelStyle);
         
         Handles.color = originalColor;
     }
