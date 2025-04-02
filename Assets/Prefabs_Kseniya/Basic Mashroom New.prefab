@@ -53,6 +53,10 @@ PrefabInstance:
       value: Basic Mashroom New
       objectReference: {fileID: 0}
     - target: {fileID: 7926839288223873370, guid: 5367284025f5c7a49bf3da6e3af46945, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2124705421725058983, guid: 842e3395e0d88644886c546dded63b71, type: 3}
+    - target: {fileID: 7926839288223873370, guid: 5367284025f5c7a49bf3da6e3af46945, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 300c086239563de42a7017a01549104b, type: 2}
@@ -63,6 +67,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5367284025f5c7a49bf3da6e3af46945, type: 3}
       insertIndex: -1
       addedObject: {fileID: -3338099900862347704}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5367284025f5c7a49bf3da6e3af46945, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1721343460120556619}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5367284025f5c7a49bf3da6e3af46945, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4231923181081838428}
   m_SourcePrefab: {fileID: 100100000, guid: 5367284025f5c7a49bf3da6e3af46945, type: 3}
 --- !u!1 &721775665873899164 stripped
 GameObject:
@@ -91,3 +101,53 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1721343460120556619
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721775665873899164}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.5
+  m_Height: 6
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.25, z: 0}
+--- !u!54 &4231923181081838428
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721775665873899164}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0

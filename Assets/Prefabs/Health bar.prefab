@@ -253,8 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1926f8decd2ad642ab84388fcaff32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarSlider: {fileID: 1136848642670905194}
   character: {fileID: 0}
+  healthBarSlider: {fileID: 1136848642670905194}
   barAnimationDuration: 0.3
 --- !u!1 &9198185787851980942
 GameObject:
@@ -292,7 +292,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.5117035, y: -0.43389893}
   m_SizeDelta: {x: 0.63349915, y: 0.067899704}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &5461088639895467112
 CanvasRenderer:
   m_ObjectHideFlags: 0
