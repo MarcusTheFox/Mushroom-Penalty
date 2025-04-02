@@ -5,7 +5,8 @@ public class AnimationController : MonoBehaviour
 {
     [SerializeField] private string moveParamName = "Move";
     [SerializeField] private string runParamName = "Run";
-    [SerializeField] private string attackParamName = "Attack";
+    [SerializeField] private string meleeAttackParamName = "MeleeAttack";
+    [SerializeField] private string magicAttackParamName = "MagicAttack";
     [SerializeField] private string damageParamName = "Damage";
     [SerializeField] private string deathParamName = "Death";
     private Animator animator;
@@ -25,9 +26,14 @@ public class AnimationController : MonoBehaviour
         animator.SetBool(runParamName, isRunning);
     }
 
-    public void PlayAttackAnimation()
+    public void PlayMeleeAttackAnimation()
     {
-        animator.SetTrigger(attackParamName);
+        animator.SetTrigger(meleeAttackParamName);
+    }
+
+    public void PlayMagicAttackAnimation()
+    {
+        animator.SetTrigger(magicAttackParamName);
     }
 
     public void PlayDamageAnimation()

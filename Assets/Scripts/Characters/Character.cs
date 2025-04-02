@@ -30,11 +30,6 @@ public abstract class Character : MonoBehaviour, IDamageable
         }
     }
     
-    public void PlayAttackAnimation()
-    {
-        animationController?.PlayAttackAnimation();
-    }
-    
     public float GetCurrentHealth()
     {
         return healthSystem.CurrentHealth;

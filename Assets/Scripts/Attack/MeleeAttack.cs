@@ -13,7 +13,14 @@ public class MeleeAttack : BaseAttack
     [SerializeField] private bool visualizeAttack = true;
 
     public float AttackRange => attackRange;
-    
+
+    public override void PerformAttack()
+    {
+        base.PerformAttack();
+        
+        animationController.PlayMeleeAttackAnimation();
+    }
+
     public virtual void MeleeAttackEvent()
     {
         Collider[] hitEnemies = FindEnemies();

@@ -8,11 +8,13 @@ public abstract class BaseAttack : MonoBehaviour, IAttack
     [SerializeField] protected float cooldown;
     protected CooldownSystem cooldownSystem;
     protected IDamageable owner;
+    protected AnimationController animationController;
 
     protected virtual void Awake()
     {
         cooldownSystem = new CooldownSystem(cooldown);
         owner = GetComponentInParent<IDamageable>();
+        animationController = GetComponentInChildren<AnimationController>();
         if (owner == null)
         {
             Debug.LogWarning("No IDamageable found in parents of the Attacker Component!", this);
@@ -29,16 +31,6 @@ public abstract class BaseAttack : MonoBehaviour, IAttack
         if (IsOnCooldown) return;
         
         cooldownSystem.StartCooldown();
-        
-        PlayAttackAnimation();
-    }
-    
-    protected virtual void PlayAttackAnimation()
-    {
-        if (owner is Character attackingCharacter)
-        {
-            attackingCharacter.PlayAttackAnimation();
-        }
     }
 
     public bool IsOnCooldown => cooldownSystem.IsOnCooldown;
