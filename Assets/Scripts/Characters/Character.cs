@@ -15,7 +15,7 @@ public abstract class Character : MonoBehaviour, IDamageable
         animationController = GetComponent<AnimationController>();
         if (animationController == null)
         {
-            Debug.LogError("AnimationController not found on " + gameObject.name);
+            Debug.LogError("AnimationController not found on " + gameObject.name, this);
         }
     }
 
@@ -28,11 +28,6 @@ public abstract class Character : MonoBehaviour, IDamageable
         {
             Die();
         }
-    }
-    
-    public void PlayAttackAnimation()
-    {
-        animationController?.PlayAttackAnimation();
     }
     
     public float GetCurrentHealth()

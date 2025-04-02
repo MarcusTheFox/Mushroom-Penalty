@@ -2,15 +2,19 @@ using UnityEngine;
 
 public abstract class BaseAttack : MonoBehaviour, IAttack
 {
+    [Min(0)]
     [SerializeField] protected float damage = 10f;
-    [SerializeField] protected float cooldown = 2f;
+    [Min(0)]
+    [SerializeField] protected float cooldown;
     protected CooldownSystem cooldownSystem;
     protected IDamageable owner;
+    protected AnimationController animationController;
 
     protected virtual void Awake()
     {
         cooldownSystem = new CooldownSystem(cooldown);
         owner = GetComponentInParent<IDamageable>();
+        animationController = GetComponentInChildren<AnimationController>();
         if (owner == null)
         {
             Debug.LogWarning("No IDamageable found in parents of the Attacker Component!", this);
@@ -23,14 +27,6 @@ public abstract class BaseAttack : MonoBehaviour, IAttack
     }
 
     public abstract void PerformAttack();
-    
-    protected virtual void PlayAttackAnimation()
-    {
-        if (owner is Character attackingCharacter)
-        {
-            attackingCharacter.PlayAttackAnimation();
-        }
-    }
 
     public bool IsOnCooldown => cooldownSystem.IsOnCooldown;
     public float GetCooldownProgress() => cooldownSystem.GetCooldownProgress();

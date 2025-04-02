@@ -5,14 +5,21 @@ public class EnemyMovement : MonoBehaviour, IMovable
 {
     [SerializeField] private float moveSpeed = 3f;
     private Rigidbody rb;
+    private AnimationController animationController;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         if (rb == null)
         {
-            Debug.LogError("Rigidbody not found on EnemyMovement!");
+            Debug.LogError("Rigidbody not found on EnemyMovement!", this);
             enabled = false;
+        }
+        
+        animationController = GetComponent<AnimationController>();
+        if (animationController == null)
+        {
+            Debug.LogError("Animation controller not fount on Enemy", this);
         }
     }
 
@@ -34,10 +41,9 @@ public class EnemyMovement : MonoBehaviour, IMovable
         float yVelocity = rb.linearVelocity.y;
         rb.linearVelocity = new Vector3(0, yVelocity, 0);
         
-        AnimationController anim = GetComponent<AnimationController>();
-        if(anim != null)
+        if(animationController != null)
         {
-            anim.PlayMoveAnimation(false, false);
+            animationController.PlayMoveAnimation(false, false);
         }
     }
 }
