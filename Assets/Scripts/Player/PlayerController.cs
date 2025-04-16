@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
@@ -15,8 +17,16 @@ public class PlayerController : MonoBehaviour
     private bool magicAttackInput;
     private bool canMove = true;
 
+    [SerializeField] private PlayerCharacter playerCharacter;
+    private PlayerSaveInteractor interactor;
+    private List<Enemy> enemies = new List<Enemy>();
+
     private void Awake()
     {
+        var repository = new SaveRepository();
+        interactor = new PlayerSaveInteractor(repository);
+        enemies = new List<Enemy>(FindObjectsOfType<Enemy>());
+
         playerInput = GetComponent<PlayerInput>();
         movement = GetComponent<IMovable>();
         
@@ -68,6 +78,54 @@ public class PlayerController : MonoBehaviour
         magicAttackInput = value.isPressed;
     }
 
+    public void OnSave(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            Vector3 playerPos = playerCharacter.transform.position;
+            float playerHp = playerCharacter.GetCurrentHealth();
+
+            interactor.SaveGame(playerPos, playerHp, enemies);
+
+            Debug.Log("Game saved!");
+        }
+    }
+
+    public void OnLoad(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            var data = interactor.LoadGame();
+            if (data == null)
+            {
+                Debug.LogWarning("No save found!");
+                return;
+            }
+
+            // Восстановление игрока
+            playerCharacter.transform.position = new Vector3(data.playerPosition[0], data.playerPosition[1], data.playerPosition[2]);
+            float deltaPlayerHp = data.playerHp - playerCharacter.GetCurrentHealth();
+            if (deltaPlayerHp > 0)
+                playerCharacter.HealthSystem.Heal(deltaPlayerHp);
+            else if (deltaPlayerHp < 0)
+                playerCharacter.HealthSystem.TakeDamage(-deltaPlayerHp);
+
+            // Восстановление мобов
+            int count = Mathf.Min(enemies.Count, data.enemies.Count);
+            for (int i = 0; i < count; i++)
+            {
+                enemies[i].transform.position = new Vector3(data.enemies[i].position[0], data.enemies[i].position[1], data.enemies[i].position[2]);
+
+                float deltaHp = data.enemies[i].hp - enemies[i].HealthSystem.CurrentHealth;
+                if (deltaHp > 0)
+                    enemies[i].HealthSystem.Heal(deltaHp);
+                else if (deltaHp < 0)
+                    enemies[i].HealthSystem.TakeDamage(-deltaHp);
+            }
+
+            Debug.Log("Game loaded!");
+        }
+    }
 
     private void Update()
     {
