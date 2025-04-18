@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private bool magicAttackInput;
     private bool canMove = true;
 
+    public GameObject EscMenu;
+    private bool IsGamePaused;
+
     [SerializeField] private PlayerCharacter playerCharacter;
     private PlayerSaveInteractor interactor;
     private List<Enemy> enemies = new List<Enemy>();
@@ -58,6 +61,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnMenu(InputValue value)
+    {
+        if (IsGamePaused)
+        {
+            OnMenuExit();
+        }
+        else
+        {
+            OnMenuEnter();
+        }
+    }
+
+    public void OnMenuEnter()
+    {
+        EscMenu.SetActive(true);
+        Time.timeScale = 0.0f;
+        IsGamePaused=true;
+        Debug.Log("Escape entered!");
+    }
+    public void OnMenuExit()
+    {
+        EscMenu.SetActive(false);
+        Time.timeScale =1.0f;
+        IsGamePaused=false;
+        Debug.Log("Continue pressed!");
+    }
+
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -82,50 +112,62 @@ public class PlayerController : MonoBehaviour
     {
         if (value.isPressed)
         {
-            Vector3 playerPos = playerCharacter.transform.position;
-            float playerHp = playerCharacter.GetCurrentHealth();
-
-            interactor.SaveGame(playerPos, playerHp, enemies);
-
-            Debug.Log("Game saved!");
+            OnGameSave();
         }
+    }
+
+    public void OnGameSave()
+    {
+        Vector3 playerPos = playerCharacter.transform.position;
+        float playerHp = playerCharacter.GetCurrentHealth();
+
+        interactor.SaveGame(playerPos, playerHp, enemies);
+
+        Debug.Log("Game saved!");
     }
 
     public void OnLoad(InputValue value)
     {
         if (value.isPressed)
         {
-            var data = interactor.LoadGame();
-            if (data == null)
-            {
-                Debug.LogWarning("No save found!");
-                return;
-            }
-
-            // Восстановление игрока
-            playerCharacter.transform.position = new Vector3(data.playerPosition[0], data.playerPosition[1], data.playerPosition[2]);
-            float deltaPlayerHp = data.playerHp - playerCharacter.GetCurrentHealth();
-            if (deltaPlayerHp > 0)
-                playerCharacter.HealthSystem.Heal(deltaPlayerHp);
-            else if (deltaPlayerHp < 0)
-                playerCharacter.HealthSystem.TakeDamage(-deltaPlayerHp);
-
-            // Восстановление мобов
-            int count = Mathf.Min(enemies.Count, data.enemies.Count);
-            for (int i = 0; i < count; i++)
-            {
-                enemies[i].transform.position = new Vector3(data.enemies[i].position[0], data.enemies[i].position[1], data.enemies[i].position[2]);
-
-                float deltaHp = data.enemies[i].hp - enemies[i].HealthSystem.CurrentHealth;
-                if (deltaHp > 0)
-                    enemies[i].HealthSystem.Heal(deltaHp);
-                else if (deltaHp < 0)
-                    enemies[i].HealthSystem.TakeDamage(-deltaHp);
-            }
-
-            Debug.Log("Game loaded!");
+            OnGameLoad();
         }
     }
+
+    public void OnGameLoad()
+    {
+        var data = interactor.LoadGame();
+        if (data == null)
+        {
+            Debug.LogWarning("No save found!");
+            return;
+        }
+
+        // Восстановление игрока
+        playerCharacter.transform.position = new Vector3(data.playerPosition[0], data.playerPosition[1], data.playerPosition[2]);
+        float deltaPlayerHp = data.playerHp - playerCharacter.GetCurrentHealth();
+        if (deltaPlayerHp > 0)
+            playerCharacter.HealthSystem.Heal(deltaPlayerHp);
+        else if (deltaPlayerHp < 0)
+            playerCharacter.HealthSystem.TakeDamage(-deltaPlayerHp);
+
+        // Восстановление мобов
+        int count = Mathf.Min(enemies.Count, data.enemies.Count);
+        for (int i = 0; i < count; i++)
+        {
+            enemies[i].transform.position = new Vector3(data.enemies[i].position[0], data.enemies[i].position[1], data.enemies[i].position[2]);
+
+            float deltaHp = data.enemies[i].hp - enemies[i].HealthSystem.CurrentHealth;
+            if (deltaHp > 0)
+                enemies[i].HealthSystem.Heal(deltaHp);
+            else if (deltaHp < 0)
+                enemies[i].HealthSystem.TakeDamage(-deltaHp);
+        }
+
+        Debug.Log("Game loaded!");
+    }
+
+
 
     private void Update()
     {

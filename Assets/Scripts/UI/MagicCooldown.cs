@@ -11,14 +11,14 @@ public class MagicCooldown : MonoBehaviour
     {
         if (magicAttack == null)
         {
-            Debug.LogError("magicAttack not assigned to MagicAttackCooldownUI!");
+            Debug.LogError("magicAttack not assigned to MagicAttackCooldownUI!", this);
             enabled = false;
             return;
         }
 
         if (cooldownSlider == null)
         {
-            Debug.LogError("cooldownSlider not assigned to MagicAttackCooldownUI!");
+            Debug.LogError("cooldownSlider not assigned to MagicAttackCooldownUI!", this);
             enabled = false;
             return;
         }
