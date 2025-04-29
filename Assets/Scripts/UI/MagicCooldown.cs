@@ -1,28 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MagicAttackCooldownUI : MonoBehaviour
+public class MagicCooldown : MonoBehaviour
 {
-    [SerializeField] private Image cooldownImageFiller;
+    [SerializeField] private Slider cooldownSlider;
     [SerializeField] private MagicAttack magicAttack;
     [SerializeField] private Character player;
-    
+
     private void Start()
     {
         if (magicAttack == null)
         {
-            Debug.LogError("magicAttack not assigned to MagicAttackCooldownUI!");
+            Debug.LogError("magicAttack not assigned to MagicAttackCooldownUI!", this);
             enabled = false;
             return;
         }
-        
-        if (cooldownImageFiller == null)
+
+        if (cooldownSlider == null)
         {
-            Debug.LogError("cooldownImage not assigned to MagicAttackCooldownUI!");
+            Debug.LogError("cooldownSlider not assigned to MagicAttackCooldownUI!", this);
             enabled = false;
             return;
         }
-        cooldownImageFiller.fillAmount = 0;
+
+        cooldownSlider.minValue = 0;
+        cooldownSlider.maxValue = 1;
+        cooldownSlider.wholeNumbers = false;
+        cooldownSlider.value = 1;
     }
 
     private void Update()
@@ -37,14 +41,11 @@ public class MagicAttackCooldownUI : MonoBehaviour
     {
         if (magicAttack.IsOnCooldown)
         {
-            cooldownImageFiller.gameObject.SetActive(true);
-            cooldownImageFiller.fillAmount = magicAttack.GetCooldownProgress();
+            cooldownSlider.value = 1 - magicAttack.GetCooldownProgress();
         }
         else
         {
-            cooldownImageFiller.gameObject.SetActive(false);
+            cooldownSlider.value = 1;
         }
     }
 }
-
-

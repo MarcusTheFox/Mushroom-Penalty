@@ -21,6 +21,8 @@ public class Bootstrap : MonoBehaviour
 
     private void LoadInitialLevel()
     {
-        SceneManager.LoadScene("GameProcessScene");
+        SceneManager.LoadScene("Menu");
     }
+
+
 }
