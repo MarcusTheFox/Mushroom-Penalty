@@ -16,6 +16,7 @@ public class MeleeAttack : BaseAttack
 
     public override void PerformAttack()
     {
+        Debug.Log("Melee attack");
         if (IsOnCooldown) return;
         
         cooldownSystem.StartCooldown();

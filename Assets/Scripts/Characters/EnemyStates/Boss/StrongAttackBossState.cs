@@ -14,6 +14,7 @@ public class StrongAttackBossState : IState
     public void Enter()
     {
         Debug.Log("Entering StrongBossAttack State", _boss);
+        _boss.StopMoving();
     }
 
     public void Update()
@@ -34,7 +35,6 @@ public class StrongAttackBossState : IState
 
         if (_stateMachine.DamageNumberCounter >= 3)
         {
-            _stateMachine.ResetDamageNumberCounter();
             _stateMachine.ChangeState(_stateMachine.ShieldBossState);
             return;
         }

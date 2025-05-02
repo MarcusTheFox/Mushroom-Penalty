@@ -19,6 +19,7 @@ public class ShieldBossState : IState
         Debug.Log("Entering ShieldAttack State", _boss);
         _healthSystem.Defense = true;
         timer = Time.time;
+        _boss.PlayChargeAnimation();
     }
 
     public void Update()
@@ -27,6 +28,7 @@ public class ShieldBossState : IState
 
         if (Time.time - timer >= Random.Range(5f, 10f))
         {
+            _stateMachine.ResetDamageNumberCounter();
             _stateMachine.ChangeState(_stateMachine.KickAttackBossState);
         }
     }

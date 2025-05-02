@@ -3,13 +3,14 @@ using UnityEngine;
 public class Boss : Enemy
 {
     private IStrongAttack strongAttack;
-    [SerializeField] private KickAttack kickAttack; ///не забыть сделать нормальный интерфейс или ваще переделать интерфейс так, чтоб он подходил для всех атак
+    [SerializeField] private KickAttack kickAttack; ///пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 
 
     public override void SetStateMachine()
     {
         stateMachine = new BossStateMachine(this);
         stateMachine.Initialize(((BossStateMachine)stateMachine).IdleBossState);
+        strongAttack = GetComponent<IStrongAttack>();
     }
 
     public override void AttackPlayer()
@@ -48,5 +49,17 @@ public class Boss : Enemy
 
             canAttack = false;
         }
+    }
+
+    public void PlayChargeAnimation()
+    {
+        animationController.PlayChargeAnimation();
+    }
+    
+    public void StrongAttackEndEvent()
+    {
+        canAttack = true;
+        ((BossStateMachine)stateMachine).ResetAttackNumberCounter();
+        EnableMovement();
     }
 }

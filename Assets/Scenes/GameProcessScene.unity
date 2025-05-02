@@ -5943,7 +5943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7083929821361476452, guid: 3bd131381be776e4ba0e804c8acdabc5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.821333
+      value: -48.9
       objectReference: {fileID: 0}
     - target: {fileID: 7083929821361476452, guid: 3bd131381be776e4ba0e804c8acdabc5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5951,7 +5951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7083929821361476452, guid: 3bd131381be776e4ba0e804c8acdabc5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.405931
+      value: -16.3
       objectReference: {fileID: 0}
     - target: {fileID: 7083929821361476452, guid: 3bd131381be776e4ba0e804c8acdabc5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16309,13 +16309,53 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7226441453170990426, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -4283978067983667376, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -3756473180518285571, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: -3642248809546156846, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 851d24bac3691d845a8dddfe89b24534, type: 2}
+    - target: {fileID: -339612283099881988, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
       propertyPath: m_Name
       value: mushroom_boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1374546157013487231, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1530506154454544823, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2109426085219919462, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2449669071688056734, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142417314296754829, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16536,7 +16576,7 @@ Animator:
   m_GameObject: {fileID: 808307243}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f2e7b69dc853e0b448bcf540ae0b713e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -16984,9 +17024,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3417426491661703167, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7203568115392864247, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7379106011611828825, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
       propertyPath: m_Name
       value: EnemyUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7379106011611828825, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021301322043766973, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

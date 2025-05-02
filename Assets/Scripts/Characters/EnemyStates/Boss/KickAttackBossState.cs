@@ -14,7 +14,8 @@ public class KickAttackBossState : IState
     public void Enter()
     {
         Debug.Log("Entering KickBossAttack State", _boss);
-        
+        _boss.KickAttackPlayer();
+        _stateMachine.ChangeState(_stateMachine.AgressiveBossState);
     }
 
     public void Update()

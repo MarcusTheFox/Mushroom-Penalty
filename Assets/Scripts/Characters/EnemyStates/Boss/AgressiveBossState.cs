@@ -38,7 +38,6 @@ public class AgressiveBossState : IState
 
         if(_stateMachine.DamageNumberCounter >= 3)
         {
-            _stateMachine.ResetDamageNumberCounter();
             _stateMachine.ChangeState(_stateMachine.ShieldBossState);
             return;
         }

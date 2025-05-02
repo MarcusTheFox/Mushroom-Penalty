@@ -28,18 +28,18 @@ public class AttackBossState : IState
 
         if (_stateMachine.AttackNumberCounter >= 3)
         {
-            _stateMachine.ResetAttackNumberCounter();
             _stateMachine.ChangeState(_stateMachine.StrongAttackBossState);
             return;
         }
 
         if (_stateMachine.DamageNumberCounter >= 3)
         {
-            _stateMachine.ResetDamageNumberCounter();
             _stateMachine.ChangeState(_stateMachine.ShieldBossState);
             return;
         }
-
+        
+        Debug.Log("Attack number: " + _stateMachine.AttackNumberCounter, _boss);
+        Debug.Log("Damage number: " + _stateMachine.DamageNumberCounter, _boss);
         _boss.AttackPlayer();
     }
 

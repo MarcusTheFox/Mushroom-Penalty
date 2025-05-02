@@ -44,17 +44,22 @@ public class AnimationController : MonoBehaviour
     {
         animator.SetTrigger(deathParamName);
     }
+    
+    public void PlayChargeAnimation()
+    {
+        animator.SetTrigger("Charge");
+    }
     public void PlayStrongAttackAnimation()
     {
-        // Здесь вызовите нужный триггер или анимацию для сильной атаки
-        // Например:
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
         animator.SetTrigger("StrongAttack");
     }
 
     public void PlayKickAttackAnimation()
     {
-        // Здесь вызовите нужный триггер или анимацию для сильной атаки
-        // Например:
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:
         animator.SetTrigger("KickAttack");
     }
 }
