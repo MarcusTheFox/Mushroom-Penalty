@@ -44,4 +44,22 @@ public class AnimationController : MonoBehaviour
     {
         animator.SetTrigger(deathParamName);
     }
+    
+    public void PlayChargeAnimation()
+    {
+        animator.SetTrigger("Charge");
+    }
+    public void PlayStrongAttackAnimation()
+    {
+        // ����� �������� ������ ������� ��� �������� ��� ������� �����
+        // ��������:
+        animator.SetTrigger("StrongAttack");
+    }
+
+    public void PlayKickAttackAnimation()
+    {
+        // ����� �������� ������ ������� ��� �������� ��� ������� �����
+        // ��������:
+        animator.SetTrigger("KickAttack");
+    }
 }

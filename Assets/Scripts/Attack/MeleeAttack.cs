@@ -5,9 +5,9 @@ using UnityEngine.Serialization;
 
 public class MeleeAttack : BaseAttack
 {
-    [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float attackAngle = 90f;
-    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] protected float attackRange = 2f;
+    [SerializeField] protected float attackAngle = 90f;
+    [SerializeField] protected LayerMask enemyLayers;
 
     [Tooltip("Visualize the attack range in the editor")]
     [SerializeField] private bool visualizeAttack = true;
@@ -16,6 +16,7 @@ public class MeleeAttack : BaseAttack
 
     public override void PerformAttack()
     {
+        Debug.Log("Melee attack");
         if (IsOnCooldown) return;
         
         cooldownSystem.StartCooldown();
