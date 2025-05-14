@@ -44,4 +44,17 @@ public class AnimationController : MonoBehaviour
     {
         animator.SetTrigger(deathParamName);
     }
+    public void PlayStrongAttackAnimation()
+    {
+        // Здесь вызовите нужный триггер или анимацию для сильной атаки
+        // Например:
+        animator.SetTrigger("StrongAttack");
+    }
+
+    public void PlayKickAttackAnimation()
+    {
+        // Здесь вызовите нужный триггер или анимацию для сильной атаки
+        // Например:
+        animator.SetTrigger("KickAttack");
+    }
 }
