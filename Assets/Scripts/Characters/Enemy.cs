@@ -40,30 +40,54 @@ public class Enemy : Character
     protected override void Awake()
     {
         base.Awake();
-        GameObject playerObjectWithTag = GameObject.FindGameObjectWithTag("Player");
-        if (!playerObjectWithTag)
-        {
-            Debug.LogError("No player object with the tag 'Player'", this);
-            enabled = false;
-            return;
-        }
-        
-        playerTransform = playerObjectWithTag.transform;
+        animationController = GetComponent<AnimationController>();
+    }
+
+
+    //protected override void Awake()
+    //{
+    //    base.Awake();
+    //    GameObject playerObjectWithTag = GameObject.FindGameObjectWithTag("Player");
+    //    if (!playerObjectWithTag)
+    //    {
+    //        Debug.LogError("No player object with the tag 'Player'", this);
+    //        enabled = false;
+    //        return;
+    //    }
+
+    //    playerTransform = playerObjectWithTag.transform;
+    //    attack = GetComponent<IAttack>();
+    //    movement = GetComponent<IMovable>();
+    //    if (movement == null)
+    //    {
+    //        Debug.LogWarning("No IMovement found on Enemy!");
+    //    }
+    //    if (attack == null)
+    //    {
+    //        Debug.LogError("No IAttack found on Enemy!");
+    //        enabled = false;
+    //        return;
+    //    }
+
+    //    SetStateMachine();
+    //}
+
+    public void Initialize(Transform player)
+    {
+        playerTransform = player;
         attack = GetComponent<IAttack>();
         movement = GetComponent<IMovable>();
-        if (movement == null)
-        {
-            Debug.LogWarning("No IMovement found on Enemy!");
-        }
+
         if (attack == null)
         {
-            Debug.LogError("No IAttack found on Enemy!");
+            Debug.LogError("Enemy missing IAttack component");
             enabled = false;
             return;
         }
 
         SetStateMachine();
     }
+
 
     private void Update()
     {
