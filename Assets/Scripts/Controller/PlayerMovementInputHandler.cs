@@ -1,0 +1,49 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerMovementInputHandler
+{
+    private IMovement movement;
+    private Transform transform;
+    private float speed;
+    private float runSpeed;
+    private float rotationSpeed;
+    private bool isRunning;
+    private Vector3 inputMoveDirection;
+
+    public PlayerMovementInputHandler(IMovement movement, Transform transform, 
+        float speed, float runSpeed, float rotationSpeed = 0)
+    {
+        this.movement = movement;
+        this.transform = transform;
+        this.speed = speed;
+        this.runSpeed = runSpeed;
+        this.rotationSpeed = rotationSpeed;
+    }
+
+    public void OnMove(InputValue value)
+    {
+        Vector2 inputVector = value.Get<Vector2>();
+        inputMoveDirection = new Vector3(inputVector.x, 0, inputVector.y).normalized;
+    }
+
+    public void OnRun(InputValue value)
+    {
+        isRunning = value.isPressed;
+    }
+
+    public void OnUpdate()
+    {
+        Vector3 moveDirection = movement.Move(inputMoveDirection);
+        float moveSpeed = isRunning ? runSpeed : speed;
+        
+        if (moveDirection == Vector3.zero) return;
+        
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+        transform.rotation = rotationSpeed == 0
+            ? targetRotation
+            : Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+    }
+}
