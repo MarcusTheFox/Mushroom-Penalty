@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAnimationInputHandler
+public class PlayerAnimationController
 {
     private Animator animator;
 
-    public PlayerAnimationInputHandler(Animator animator)
+    public PlayerAnimationController(Animator animator)
     {
         this.animator = animator;
     }

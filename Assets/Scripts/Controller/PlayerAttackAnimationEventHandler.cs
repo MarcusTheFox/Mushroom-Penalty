@@ -17,21 +17,25 @@ public class PlayerAttackAnimationEventHandler
 
     public void ApplyMeleeAttack()
     {
+        meleeAttack.Apply();
         onApplyAttack?.Invoke(meleeAttack);
     }
 
     public void ApplyMagicAttack()
     {
+        magicAttack.Apply();
         onApplyAttack?.Invoke(magicAttack);
     }
 
     public void StopMeleeAttack()
     {
+        meleeAttack.Stop();
         onStopAttack?.Invoke(meleeAttack);
     }
 
     public void StopMagicAttack()
     {
+        magicAttack.Stop();
         onStopAttack?.Invoke(magicAttack);
     }
 }

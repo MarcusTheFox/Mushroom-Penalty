@@ -7,7 +7,7 @@ public class PlayerAttackInputHandler
     private IAttack meleeAttack;
     private IAttack magicAttack;
     
-    public event Action<IAttack> onStartAttack;
+    public event Action<IAttack> OnStartAttack;
 
     public PlayerAttackInputHandler(IAttack meleeAttack, IAttack magicAttack)
     {
@@ -17,11 +17,13 @@ public class PlayerAttackInputHandler
 
     public void OnMeleeAttack(InputValue inputValue)
     {
-        onStartAttack?.Invoke(meleeAttack);
+        meleeAttack.Start();
+        OnStartAttack?.Invoke(meleeAttack);
     }
 
     public void OnMagicAttack(InputValue inputValue)
     {
-        onStartAttack?.Invoke(magicAttack);
+        magicAttack.Start();
+        OnStartAttack?.Invoke(magicAttack);
     }
 }

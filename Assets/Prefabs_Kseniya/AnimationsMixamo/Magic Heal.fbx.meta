@@ -60,21 +60,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.33515042
-        functionName: MagicAttackEvent
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0
-        functionName: DisableMovement
+        functionName: ApplyMagicAttackEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.9995746
-        functionName: EnableMovement
+        functionName: StopMagicAttackEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
