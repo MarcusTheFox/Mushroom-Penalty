@@ -13,6 +13,7 @@ public class MagicAttack: IAttack
     
     private bool cooldownFinished;
     private bool attackEnded;
+    private bool isReady;
     
     public MagicAttack(float damage, ICooldown cooldown)
     {
@@ -27,14 +28,16 @@ public class MagicAttack: IAttack
     {
         if (cooldown.IsInvalidated || cooldown.IsActive) return;
         
+        isReady = true;
         Debug.Log("Magic Attack Ready");
         OnReady?.Invoke();
     }
 
     public void Start()
     {
-        if (cooldown.IsInvalidated || cooldown.IsActive) return;
+        if (!isReady || cooldown.IsActive || cooldown.IsInvalidated) return;
         
+        isReady = false;
         cooldown.Start();
         attackEnded = false;
         cooldownFinished = false;

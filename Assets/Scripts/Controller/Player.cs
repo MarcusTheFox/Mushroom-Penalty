@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player
 {
     public PlayerInputController PIC;
     public PlayerAnimationEventListener PAEL;
     public UnityEventListener UEL;
-    public UI UI;
+    public PlayerUI UI;
     public Transform Transform;
     public Animator Animator;
     
@@ -21,8 +20,7 @@ public class Player
     private IHealth health;
     private IDamageable damageable;
     private IMovement movement;
-
-    private Rigidbody rigidbody;
+    
     private Transform cameraTransform;
     
     public void Initialize()
@@ -36,16 +34,28 @@ public class Player
         damageable = new DamageableComponent(health);
         movement = new PlayerMovement(cameraTransform);
         
+        movementInputHandler = new PlayerMovementInputHandler(movement, Transform, 5, 10, 10);
+        attackInputHandler = new PlayerAttackInputHandler(meleeAttack, magicAttack);
+        animationController = new PlayerAnimationController(Animator);
+        attackAnimationEventHandler = new PlayerAttackAnimationEventHandler(meleeAttack, magicAttack);
+        
+        UI.Initialize(health, magicCooldown);
+        
         AddMovementInputHandler();
         AddAttackInputHandler();
         AddAnimationInputHandler();
         AddAttackAnimationEventHandler();
         
+        UEL.OnUpdateEvent.AddListener(magicCooldown.Update);
         UEL.OnDestroyEvent.AddListener(OnDestroy);
     }
 
     private void OnDestroy()
     {
+        UEL.OnDestroyEvent.RemoveListener(OnDestroy);
+        UEL.OnUpdateEvent.RemoveListener(magicCooldown.Update);
+        
+        UI.Cleanup();
         magicCooldown.ClearAndInvalidate();
         
         RemoveMovementInputHandler();
@@ -56,8 +66,6 @@ public class Player
 
     private void AddMovementInputHandler()
     {
-        movementInputHandler = new PlayerMovementInputHandler(movement, Transform, 5, 10, 10);
-        
         PIC.Move += movementInputHandler.OnMove;
         PIC.Run += movementInputHandler.OnRun;
         UEL.OnUpdateEvent.AddListener(movementInputHandler.OnUpdate);
@@ -68,14 +76,10 @@ public class Player
         PIC.Move -= movementInputHandler.OnMove;
         PIC.Run -= movementInputHandler.OnRun;
         UEL.OnUpdateEvent.RemoveListener(movementInputHandler.OnUpdate);
-        
-        movementInputHandler = null;
     }
 
     private void AddAttackInputHandler()
     {
-        attackInputHandler = new PlayerAttackInputHandler(meleeAttack, magicAttack);
-
         PIC.MeleeAttack += attackInputHandler.OnMeleeAttack;
         PIC.MagicAttack += attackInputHandler.OnMagicAttack;
     }
@@ -84,14 +88,10 @@ public class Player
     {
         PIC.MeleeAttack -= attackInputHandler.OnMeleeAttack;
         PIC.MagicAttack -= attackInputHandler.OnMagicAttack;
-        
-        attackInputHandler = null;
     }
 
     private void AddAnimationInputHandler()
     {
-        animationController = new PlayerAnimationController(Animator);
-
         PIC.Move += animationController.OnMove;
         PIC.Run += animationController.OnRun;
         PIC.MeleeAttack += animationController.OnMeleeAttack;
@@ -106,14 +106,10 @@ public class Player
         PIC.MeleeAttack -= animationController.OnMeleeAttack;
         PIC.MagicAttack -= animationController.OnMagicAttack;
         damageable.OnDeath -= animationController.OnDie;
-        
-        animationController = null;
     }
 
     private void AddAttackAnimationEventHandler()
     {
-        attackAnimationEventHandler = new PlayerAttackAnimationEventHandler(meleeAttack, magicAttack);
-
         PAEL.OnApplyMeleeAttack += attackAnimationEventHandler.ApplyMeleeAttack;
         PAEL.OnApplyMagicAttack += attackAnimationEventHandler.ApplyMagicAttack;
         PAEL.OnStopMeleeAttack += attackAnimationEventHandler.StopMeleeAttack;
@@ -126,7 +122,5 @@ public class Player
         PAEL.OnApplyMagicAttack -= attackAnimationEventHandler.ApplyMagicAttack;
         PAEL.OnStopMeleeAttack -= attackAnimationEventHandler.StopMeleeAttack;
         PAEL.OnStopMagicAttack -= attackAnimationEventHandler.StopMagicAttack;
-        
-        attackAnimationEventHandler = null;
     }
 }

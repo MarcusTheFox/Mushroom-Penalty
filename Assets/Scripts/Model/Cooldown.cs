@@ -31,7 +31,7 @@ public class Cooldown: ICooldown
     {
         get
         {
-            if (startTime < 0 || IsInvalidated) return 0f;
+            if (IsInvalidated) return 0f;
             if (!IsActive) return 1f;
             
             return Mathf.Clamp01((Time.time - startTime) / Duration);
@@ -39,6 +39,7 @@ public class Cooldown: ICooldown
     }
 
     public event Action OnStart;
+    public event Action OnUpdate;
     public event Action OnFinish;
     public event Action OnInvalidate;
 
@@ -68,6 +69,8 @@ public class Cooldown: ICooldown
         {
             Stop();
         }
+        
+        OnUpdate?.Invoke();
     }
 
     public void Stop()
@@ -96,6 +99,7 @@ public class Cooldown: ICooldown
     private void ClearAllEventHandlers()
     {
         OnStart = null;
+        OnUpdate = null;
         OnFinish = null;
         OnInvalidate = null;
     }

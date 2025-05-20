@@ -1,16 +1,43 @@
+using System;
+using DG.Tweening;
+using Model;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviour, ICleanupable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Text healthText;
+    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider manaSlider;
+    
+    private IHealth health;
+    private ICooldown cooldown;
+    
+    private float healthBarChangeSpeed = 0.5f;
+
+    public void Initialize(IHealth healthComponent, ICooldown magicCooldown)
     {
-        
+        health = healthComponent;
+        cooldown = magicCooldown;
+
+        health.OnChange += UpdateHealth;
+        cooldown.OnUpdate += UpdateMana;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Cleanup()
     {
-        
+        health.OnChange -= UpdateHealth;
+        cooldown.OnUpdate -= UpdateMana;
+    }
+    
+    private void UpdateHealth(float value)
+    {
+        healthText.text = $"HP: {health.Health:0} | {health.MaxHealth:0}";
+        healthSlider.DOValue(Mathf.Clamp01(health.Health / health.MaxHealth), healthBarChangeSpeed);
+    }
+
+    private void UpdateMana()
+    {
+        manaSlider.value = cooldown.ProgressNormalized;
     }
 }

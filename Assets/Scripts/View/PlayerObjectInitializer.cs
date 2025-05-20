@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerObjectInitializer : ObjectInitializer
 {
     [SerializeField] private PlayerInputController PIC;
+    private PlayerUI UI;
     private PlayerAnimationEventListener PAEL;
     
     protected override void Initialize()
@@ -20,7 +21,7 @@ public class PlayerObjectInitializer : ObjectInitializer
         player.PIC = PIC;
         player.PAEL = PAEL;
         player.UEL = UEL;
-        player.UI = UI;
+        player.UI = GetComponent<PlayerUI>();
         player.Transform = transform;
         player.Animator = animator;
         

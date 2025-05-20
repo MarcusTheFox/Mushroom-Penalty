@@ -11,6 +11,7 @@ public interface ICooldown
     float ProgressNormalized { get; }
     
     public event Action OnStart;
+    public event Action OnUpdate;
     public event Action OnFinish;
     public event Action OnInvalidate;
     
