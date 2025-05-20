@@ -18,7 +18,7 @@ public class Player
     
     public void Initialize()
     {
-        coreSetup = new PlayerCoreComponentsSetup(PIC);
+        coreSetup = new PlayerCoreComponentsSetup(PIC, 100);
         coreSetup.Initialize();
 
         movementSetup = new PlayerMovementSetup(PIC, UEL, playerTransform, 5f, 10f, 10f);

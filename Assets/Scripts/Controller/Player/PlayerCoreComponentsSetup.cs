@@ -10,14 +10,14 @@ namespace Controller
 
         private PlayerInputController PIC;
 
-        public PlayerCoreComponentsSetup(PlayerInputController PIC)
+        public PlayerCoreComponentsSetup(PlayerInputController PIC, float health)
         {
             this.PIC = PIC;
+            Health = new HealthComponent(health);
         }
         
         public void Initialize()
         {
-            Health = new HealthComponent(100);
             Damageable = new DamageableComponent(Health);
             
             Damageable.OnDeath += OnDeath;
