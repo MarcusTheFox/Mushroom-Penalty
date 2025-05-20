@@ -20,6 +20,8 @@ public class MagicAttack: IAttack
         Damage = damage;
         this.cooldown = cooldown;
         
+        isReady = true;
+        
         cooldown.OnFinish += OnCooldownFinish;
         cooldown.OnInvalidate += OnCooldownInvalidate;
     }

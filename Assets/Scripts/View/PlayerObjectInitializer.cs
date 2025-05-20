@@ -22,7 +22,7 @@ public class PlayerObjectInitializer : ObjectInitializer
         player.PAEL = PAEL;
         player.UEL = UEL;
         player.UI = GetComponent<PlayerUI>();
-        player.Transform = transform;
+        player.playerTransform = transform;
         player.Animator = animator;
         
         player.Initialize();
