@@ -1,10 +1,11 @@
 using Controller;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class Player
 {
     public PlayerInputController PIC;
-    public PlayerAnimationEventListener PAEL;
+    public AnimationEventListener AEL;
     public UnityEventListener UEL;
     public PlayerUI UI;
     public Transform playerTransform;
@@ -17,19 +18,21 @@ public class Player
     
     public void Initialize()
     {
-        coreSetup = new PlayerCoreComponentsSetup();
+        coreSetup = new PlayerCoreComponentsSetup(PIC);
         coreSetup.Initialize();
 
         movementSetup = new PlayerMovementSetup(PIC, UEL, playerTransform, 5f, 10f, 10f);
         movementSetup.Initialize();
         
-        attackSetup = new PlayerAttackSetup(PIC, PAEL, UEL);
+        attackSetup = new PlayerAttackSetup(PIC, AEL, UEL);
         attackSetup.Initialize();
 
         animationSetup = new PlayerAnimationSetup(Animator, PIC, coreSetup.Damageable);
         animationSetup.Initialize();
         
         UI.Initialize(coreSetup.Health, attackSetup.MagicCooldown);
+
+        AEL.OnDead += DestroyPlayer;
         
         UEL.OnDestroyEvent.AddListener(OnDestroy);
     }
@@ -38,9 +41,16 @@ public class Player
     {
         UEL.OnDestroyEvent.RemoveListener(OnDestroy);
         
+        coreSetup.Cleanup();
         movementSetup.Cleanup();
         attackSetup.Cleanup();
         animationSetup.Cleanup();
         UI.Cleanup();
+    }
+
+    private void DestroyPlayer()
+    {
+        AEL.OnDead -= DestroyPlayer;
+        Object.Destroy(playerTransform.gameObject);
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerAnimationEventListener : MonoBehaviour
+public class AnimationEventListener : MonoBehaviour
 {
     public event Action OnApplyMeleeAttack;
     public event Action OnApplyMagicAttack;
@@ -29,7 +29,7 @@ public class PlayerAnimationEventListener : MonoBehaviour
         OnStopMagicAttack?.Invoke();
     }
 
-    public void PlayerDead()
+    public void Dead()
     {
         OnDead?.Invoke();
     }

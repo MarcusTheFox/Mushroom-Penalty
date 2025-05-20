@@ -10,16 +10,16 @@ namespace Controller
         public IAttack MagicAttack { get; private set; }
 
         private PlayerInputController PIC;
-        private PlayerAnimationEventListener PAEL;
+        private AnimationEventListener AEL;
         private UnityEventListener UEL;
         
         private PlayerAttackInputHandler attackInputHandler;
         private PlayerAttackAnimationEventHandler attackAnimationEventHandler;
 
-        public PlayerAttackSetup(PlayerInputController PIC, PlayerAnimationEventListener PAEL, UnityEventListener UEL)
+        public PlayerAttackSetup(PlayerInputController PIC, AnimationEventListener AEL, UnityEventListener UEL)
         {
             this.PIC = PIC;
-            this.PAEL = PAEL;
+            this.AEL = AEL;
             this.UEL = UEL;
         }
 
@@ -63,22 +63,22 @@ namespace Controller
 
         private void AddAttackAnimationEventHandler()
         {
-            PAEL.OnApplyMeleeAttack += attackAnimationEventHandler.ApplyMeleeAttack;
-            PAEL.OnApplyMagicAttack += attackAnimationEventHandler.ApplyMagicAttack;
-            PAEL.OnStopMeleeAttack += attackAnimationEventHandler.StopMeleeAttack;
-            PAEL.OnStopMagicAttack += attackAnimationEventHandler.StopMagicAttack;
-            PAEL.OnStopMeleeAttack += EnableMovementInput;
-            PAEL.OnStopMagicAttack += EnableMovementInput;
+            AEL.OnApplyMeleeAttack += attackAnimationEventHandler.ApplyMeleeAttack;
+            AEL.OnApplyMagicAttack += attackAnimationEventHandler.ApplyMagicAttack;
+            AEL.OnStopMeleeAttack += attackAnimationEventHandler.StopMeleeAttack;
+            AEL.OnStopMagicAttack += attackAnimationEventHandler.StopMagicAttack;
+            AEL.OnStopMeleeAttack += EnableMovementInput;
+            AEL.OnStopMagicAttack += EnableMovementInput;
         }
 
         private void RemoveAttackAnimationEventHandler()
         {
-            PAEL.OnApplyMeleeAttack -= attackAnimationEventHandler.ApplyMeleeAttack;
-            PAEL.OnApplyMagicAttack -= attackAnimationEventHandler.ApplyMagicAttack;
-            PAEL.OnStopMeleeAttack -= attackAnimationEventHandler.StopMeleeAttack;
-            PAEL.OnStopMagicAttack -= attackAnimationEventHandler.StopMagicAttack;
-            PAEL.OnStopMeleeAttack -= EnableMovementInput;
-            PAEL.OnStopMagicAttack -= EnableMovementInput;
+            AEL.OnApplyMeleeAttack -= attackAnimationEventHandler.ApplyMeleeAttack;
+            AEL.OnApplyMagicAttack -= attackAnimationEventHandler.ApplyMagicAttack;
+            AEL.OnStopMeleeAttack -= attackAnimationEventHandler.StopMeleeAttack;
+            AEL.OnStopMagicAttack -= attackAnimationEventHandler.StopMagicAttack;
+            AEL.OnStopMeleeAttack -= EnableMovementInput;
+            AEL.OnStopMagicAttack -= EnableMovementInput;
         }
 
         private void AddAttackEventHandler()

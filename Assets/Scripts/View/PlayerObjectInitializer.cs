@@ -4,12 +4,12 @@ public class PlayerObjectInitializer : ObjectInitializer
 {
     [SerializeField] private PlayerInputController PIC;
     private PlayerUI UI;
-    private PlayerAnimationEventListener PAEL;
+    private AnimationEventListener AEL;
     
     protected override void Initialize()
     {
         base.Initialize();
-        PAEL = GetComponent<PlayerAnimationEventListener>();
+        AEL = GetComponent<AnimationEventListener>();
         
         CreatePlayer();
     }
@@ -19,7 +19,7 @@ public class PlayerObjectInitializer : ObjectInitializer
         Player player = new Player();
         
         player.PIC = PIC;
-        player.PAEL = PAEL;
+        player.AEL = AEL;
         player.UEL = UEL;
         player.UI = GetComponent<PlayerUI>();
         player.playerTransform = transform;
