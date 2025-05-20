@@ -1,16 +1,29 @@
-using UnityEngine;
+using Controller;
+using View;
 
-public class EnemyMeleeObjectInitializer : MonoBehaviour
+public class EnemyMeleeObjectInitializer : ObjectInitializer
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private EnemyUI UI;
+    private AnimationEventListener AEL;
+    
+    protected override void Initialize()
     {
+        base.Initialize();
+        AEL = GetComponent<AnimationEventListener>();
         
+        CreateEnemy();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void CreateEnemy()
     {
+        EnemyMelee enemyMelee = new EnemyMelee();
         
+        enemyMelee.AEL = AEL;
+        enemyMelee.UEL = UEL;
+        enemyMelee.UI = GetComponent<EnemyUI>();
+        enemyMelee.enemyTransform = transform;
+        enemyMelee.Animator = animator;
+        
+        enemyMelee.Initialize();
     }
 }

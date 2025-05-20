@@ -1,16 +1,33 @@
+using DG.Tweening;
+using Model;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class EnemyUI : MonoBehaviour
+namespace View
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class EnemyUI : MonoBehaviour, ICleanupable
     {
-        
-    }
+        [SerializeField] private Slider healthSlider;
+    
+        private IHealth health;
+    
+        private float healthBarChangeSpeed = 0.5f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void Initialize(IHealth healthComponent)
+        {
+            health = healthComponent;
+
+            health.OnChange += UpdateHealth;
+        }
+
+        public void Cleanup()
+        {
+            health.OnChange -= UpdateHealth;
+        }
+    
+        private void UpdateHealth(float value)
+        {
+            healthSlider.DOValue(Mathf.Clamp01(health.Health / health.MaxHealth), healthBarChangeSpeed);
+        }
     }
 }
