@@ -1,4 +1,5 @@
 ﻿using Model;
+using UnityEngine;
 
 namespace Controller
 {
@@ -24,7 +25,7 @@ namespace Controller
 
         public void Initialize()
         {
-            MagicCooldown = new Cooldown(5);
+            MagicCooldown = new Cooldown(10);
             MeleeAttack = new MeleeAttack(30);
             MagicAttack = new MagicAttack(50, MagicCooldown);
             
@@ -35,6 +36,7 @@ namespace Controller
             
             AddAttackInputHandler();
             AddAttackAnimationEventHandler();
+            AddAttackEventHandler();
         }
 
         public void Cleanup()
@@ -44,6 +46,7 @@ namespace Controller
             
             RemoveAttackInputHandler();
             RemoveAttackAnimationEventHandler();
+            RemoveAttackEventHandler();
         }
 
         private void AddAttackInputHandler()
@@ -64,6 +67,8 @@ namespace Controller
             PAEL.OnApplyMagicAttack += attackAnimationEventHandler.ApplyMagicAttack;
             PAEL.OnStopMeleeAttack += attackAnimationEventHandler.StopMeleeAttack;
             PAEL.OnStopMagicAttack += attackAnimationEventHandler.StopMagicAttack;
+            PAEL.OnStopMeleeAttack += EnableMovementInput;
+            PAEL.OnStopMagicAttack += EnableMovementInput;
         }
 
         private void RemoveAttackAnimationEventHandler()
@@ -72,6 +77,44 @@ namespace Controller
             PAEL.OnApplyMagicAttack -= attackAnimationEventHandler.ApplyMagicAttack;
             PAEL.OnStopMeleeAttack -= attackAnimationEventHandler.StopMeleeAttack;
             PAEL.OnStopMagicAttack -= attackAnimationEventHandler.StopMagicAttack;
+            PAEL.OnStopMeleeAttack -= EnableMovementInput;
+            PAEL.OnStopMagicAttack -= EnableMovementInput;
         }
+
+        private void AddAttackEventHandler()
+        {
+            attackInputHandler.OnStartAttack += DisableMovementInput;
+            attackInputHandler.OnStartAttack += DisableMeleeAttackInput;
+            attackInputHandler.OnStartAttack += DisableMagicAttackInput;
+
+            MeleeAttack.OnStop += EnableMagicAttackInput;
+            MagicAttack.OnStop += EnableMeleeAttackInput;
+            MeleeAttack.OnReady += EnableMeleeAttackInput;
+            MagicAttack.OnReady += EnableMagicAttackInput;
+        }
+
+        private void RemoveAttackEventHandler()
+        {
+            attackInputHandler.OnStartAttack -= DisableMovementInput;
+            attackInputHandler.OnStartAttack -= DisableMeleeAttackInput;
+            attackInputHandler.OnStartAttack -= DisableMagicAttackInput;
+
+            MeleeAttack.OnStop -= EnableMagicAttackInput;
+            MagicAttack.OnStop -= EnableMeleeAttackInput;
+            MeleeAttack.OnReady -= EnableMeleeAttackInput;
+            MagicAttack.OnReady -= EnableMagicAttackInput;
+        }
+
+        private void EnableMovementInput() => PIC.SetMovementInputEnabled(true);
+        private void EnableMeleeAttackInput() => PIC.SetMeleeAttackInputEnabled(true);
+        private void EnableMagicAttackInput()
+        {
+            if (MagicCooldown.IsActive) return;
+            PIC.SetMagicAttackInputEnabled(true);
+        }
+
+        private void DisableMovementInput() => PIC.SetMovementInputEnabled(false);
+        private void DisableMeleeAttackInput() => PIC.SetMeleeAttackInputEnabled(false);
+        private void DisableMagicAttackInput() => PIC.SetMagicAttackInputEnabled(false);
     }
 }

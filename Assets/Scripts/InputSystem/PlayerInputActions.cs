@@ -48,21 +48,21 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""MeleeAttack"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""022a2a54-b880-4be4-a22d-5726397339e0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""MagicAttack"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""34dbbf0e-9d8e-4e24-b0b1-6ed8fcc18fa0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Look"",

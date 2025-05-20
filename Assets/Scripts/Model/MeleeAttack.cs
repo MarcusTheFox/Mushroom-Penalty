@@ -16,25 +16,21 @@ public class MeleeAttack: IAttack
     
     public void Ready()
     {
-        Debug.Log("Melee Attack Ready");
         OnReady?.Invoke();
     }
 
     public void Start()
     {
-        Debug.Log("Melee Attack Started");
         OnStart?.Invoke();
     }
 
     public void Apply()
     {
-        Debug.Log("Melee Attack Applied");
         OnApply?.Invoke();
     }
 
     public void Stop()
     {
-        Debug.Log("Melee Attack Stopped");
         OnStop?.Invoke();
         Ready();
     }

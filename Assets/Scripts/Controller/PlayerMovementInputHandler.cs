@@ -21,15 +21,14 @@ public class PlayerMovementInputHandler
         this.rotationSpeed = rotationSpeed;
     }
 
-    public void OnMove(InputValue value)
+    public void OnMove(Vector2 value)
     {
-        Vector2 inputVector = value.Get<Vector2>();
-        inputMoveDirection = new Vector3(inputVector.x, 0, inputVector.y).normalized;
+        inputMoveDirection = new Vector3(value.x, 0, value.y).normalized;
     }
 
-    public void OnRun(InputValue value)
+    public void OnRun(bool value)
     {
-        isRunning = value.isPressed;
+        isRunning = value;
     }
 
     public void OnUpdate()

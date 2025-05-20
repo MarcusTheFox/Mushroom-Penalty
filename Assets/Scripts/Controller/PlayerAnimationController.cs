@@ -10,24 +10,24 @@ public class PlayerAnimationController
         this.animator = animator;
     }
 
-    public void OnMove(InputValue inputValue)
+    public void OnMove(Vector2 value)
     {
-        animator.SetBool("Walk", inputValue.Get<Vector2>() != Vector2.zero);
+        animator.SetBool("Walk", value != Vector2.zero);
     }
 
-    public void OnRun(InputValue inputValue)
+    public void OnRun(bool value)
     {
-        animator.SetBool("Run", inputValue.isPressed);
+        animator.SetBool("Run", value);
     }
 
-    public void OnMeleeAttack(InputValue inputValue)
+    public void OnMeleeAttack(bool value)
     {
-        if (inputValue.isPressed) animator.SetTrigger("PhysicalAttack");
+        if (value) animator.SetTrigger("PhysicalAttack");
     }
 
-    public void OnMagicAttack(InputValue inputValue)
+    public void OnMagicAttack(bool value)
     {
-        if (inputValue.isPressed) animator.SetTrigger("MagicAttack");
+        if (value) animator.SetTrigger("MagicAttack");
     }
 
     public void OnDie()

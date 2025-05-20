@@ -31,7 +31,6 @@ public class MagicAttack: IAttack
         if (cooldown.IsInvalidated || cooldown.IsActive) return;
         
         isReady = true;
-        Debug.Log("Magic Attack Ready");
         OnReady?.Invoke();
     }
 
@@ -44,7 +43,6 @@ public class MagicAttack: IAttack
         attackEnded = false;
         cooldownFinished = false;
         
-        Debug.Log("Magic Attack Started");
         OnStart?.Invoke();
     }
 
@@ -52,7 +50,6 @@ public class MagicAttack: IAttack
     {
         if (cooldown.IsInvalidated) return;
         
-        Debug.Log("Magic Attack Applied");
         OnApply?.Invoke();
     }
 
@@ -62,7 +59,6 @@ public class MagicAttack: IAttack
         
         attackEnded = true;
         
-        Debug.Log("Magic Attack Stopped");
         OnStop?.Invoke();
 
         if (attackEnded && cooldownFinished)
