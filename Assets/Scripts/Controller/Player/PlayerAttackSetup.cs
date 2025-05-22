@@ -1,4 +1,5 @@
 ﻿using Model;
+using UnityEditor;
 using UnityEngine;
 
 namespace Controller
@@ -9,25 +10,35 @@ namespace Controller
         public IAttack MeleeAttack { get; private set; }
         public IAttack MagicAttack { get; private set; }
 
-        private PlayerInputController PIC;
-        private AnimationEventListener AEL;
-        private UnityEventListener UEL;
-        
+        private readonly PlayerInputController PIC;
+        private readonly AnimationEventListener AEL;
+        private readonly UnityEventListener UEL;
+        private readonly Transform playerTransform;
+        private readonly GameObject fireballPrefab;
+        private readonly LayerMask targetLayer;
+        private readonly Transform fireballSpawnPoint;
+
         private PlayerAttackInputHandler attackInputHandler;
         private PlayerAttackAnimationEventHandler attackAnimationEventHandler;
 
-        public PlayerAttackSetup(PlayerInputController PIC, AnimationEventListener AEL, UnityEventListener UEL)
+        public PlayerAttackSetup(PlayerInputController PIC, AnimationEventListener AEL, UnityEventListener UEL,
+            Transform playerTransform, GameObject fireballPrefab, LayerMask targetLayer, Transform fireballSpawnPoint)
         {
             this.PIC = PIC;
             this.AEL = AEL;
             this.UEL = UEL;
+            this.playerTransform = playerTransform;
+            this.fireballPrefab = fireballPrefab;
+            this.targetLayer = targetLayer;
+            this.fireballSpawnPoint = fireballSpawnPoint;
         }
 
         public void Initialize()
         {
             MagicCooldown = new Cooldown(10);
-            MeleeAttack = new MeleeAttack(30);
-            MagicAttack = new MagicAttack(50, MagicCooldown);
+            MeleeAttack = new MeleeAttack(30, playerTransform, targetLayer, 10f, 90f);
+            MagicAttack = new MagicAttack(50, MagicCooldown, targetLayer, fireballPrefab, fireballSpawnPoint,
+                playerTransform);
             
             attackInputHandler = new PlayerAttackInputHandler(MeleeAttack, MagicAttack);
             attackAnimationEventHandler = new PlayerAttackAnimationEventHandler(MeleeAttack, MagicAttack);

@@ -4,12 +4,10 @@ using UnityEngine;
 public class ObjectInitializer : MonoBehaviour
 {
     protected UnityEventListener UEL { get; private set; }
-    protected Animator animator;
 
-    private void Start()
+    private void Awake()
     {
         UEL = GetComponent<UnityEventListener>();
-        animator = GetComponent<Animator>();
         
         Initialize();
     }

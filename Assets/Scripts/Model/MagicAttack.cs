@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using View;
+using Object = UnityEngine.Object;
 
 public class MagicAttack: IAttack
 {
@@ -10,16 +12,25 @@ public class MagicAttack: IAttack
     public event Action OnStop;
     
     private ICooldown cooldown;
-    
+    private readonly LayerMask targetLayer;
+    private readonly GameObject fireballPrefab;
+    private readonly Transform fireballSpawnPoint;
+    private readonly Transform playerTransform;
+
     private bool cooldownFinished;
     private bool attackEnded;
     private bool isReady;
     
-    public MagicAttack(float damage, ICooldown cooldown)
+    public MagicAttack(float damage, ICooldown cooldown, LayerMask targetLayer, GameObject fireballPrefab,
+        Transform fireballSpawnPoint, Transform playerTransform)
     {
         Damage = damage;
         this.cooldown = cooldown;
-        
+        this.targetLayer = targetLayer;
+        this.fireballPrefab = fireballPrefab;
+        this.fireballSpawnPoint = fireballSpawnPoint;
+        this.playerTransform = playerTransform;
+
         isReady = true;
         
         cooldown.OnFinish += OnCooldownFinish;
@@ -49,6 +60,16 @@ public class MagicAttack: IAttack
     public void Apply()
     {
         if (cooldown.IsInvalidated) return;
+        
+        GameObject fireball =
+            Object.Instantiate(fireballPrefab, fireballSpawnPoint.position, fireballSpawnPoint.rotation);
+        
+        FireballObjectInitializer fireballComponent = fireball.GetComponent<FireballObjectInitializer>();
+
+        if (fireballComponent != null)
+        {
+            fireballComponent.AddSettings(playerTransform.gameObject, fireballSpawnPoint.forward, 10f);
+        }
         
         OnApply?.Invoke();
     }

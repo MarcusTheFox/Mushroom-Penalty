@@ -4845,7 +4845,8 @@ GameObject:
   - component: {fileID: 7538620029947321939}
   - component: {fileID: 7792685175205493336}
   - component: {fileID: -5134383795063672255}
-  - component: {fileID: -3260651060454745029}
+  - component: {fileID: 6955340327329212815}
+  - component: {fileID: 1956558653819454732}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -4917,7 +4918,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-3260651060454745029
+--- !u!114 &6955340327329212815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4926,11 +4927,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 2194758414914501346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b11303efaf160a4e83071e0943899a3, type: 3}
+  m_Script: {fileID: 11500000, guid: b3497e66aff54009a23a54c1622db7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  lifetime: 5
+--- !u!114 &1956558653819454732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2194758414914501346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23d385a8ff7e054488816a4342b80988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnAwakeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFixedUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLateUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDestroyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDisableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTriggerEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTriggerStayEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTriggerExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrawGizmosEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrawGizmosSelectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4116439285528698210
 GameObject:
   m_ObjectHideFlags: 0

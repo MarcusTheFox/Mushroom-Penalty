@@ -1,20 +1,30 @@
 ﻿using Model;
+using View;
 
 namespace Controller
 {
-    public class EnemyCoreComponentsSetup
+    public class EnemyCoreComponentsSetup : ICleanupable
     {
+        private readonly InteractableObjectEvents IOE;
         public IHealth Health { get; private set; }
         public IDamageable Damageable { get; private set; }
 
-        public EnemyCoreComponentsSetup(float health)
+        public EnemyCoreComponentsSetup(InteractableObjectEvents IOE, float health)
         {
+            this.IOE = IOE;
             Health = new HealthComponent(health);
         }
         
         public void Initialize()
         {
             Damageable = new DamageableComponent(Health);
+
+            IOE.OnDamageAttempt += Damageable.TakeDamage;
+        }
+
+        public void Cleanup()
+        {
+            IOE.OnDamageAttempt -= Damageable.TakeDamage;
         }
     }
 }

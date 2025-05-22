@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using View;
+﻿using Controller;
+using UnityEngine;
 
-namespace Controller
+namespace View
 {
-    public class EnemyMelee
+    public class EnemyMagic
     {
         public AnimationEventListener AEL;
         public UnityEventListener UEL;

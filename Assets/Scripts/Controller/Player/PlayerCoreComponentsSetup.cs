@@ -1,5 +1,6 @@
 ﻿using Model;
 using UnityEngine;
+using View;
 
 namespace Controller
 {
@@ -9,22 +10,26 @@ namespace Controller
         public IDamageable Damageable { get; private set; }
 
         private PlayerInputController PIC;
+        private readonly InteractableObjectEvents IOE;
 
-        public PlayerCoreComponentsSetup(PlayerInputController PIC, float health)
+        public PlayerCoreComponentsSetup(PlayerInputController PIC, InteractableObjectEvents IOE, float health)
         {
             this.PIC = PIC;
+            this.IOE = IOE;
             Health = new HealthComponent(health);
         }
         
         public void Initialize()
         {
             Damageable = new DamageableComponent(Health);
-            
+
+            IOE.OnDamageAttempt += Damageable.TakeDamage;
             Damageable.OnDeath += OnDeath;
         }
 
         public void Cleanup()
         {
+            IOE.OnDamageAttempt -= Damageable.TakeDamage;
             Damageable.OnDeath -= OnDeath;
         }
 

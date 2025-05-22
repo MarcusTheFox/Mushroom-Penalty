@@ -1,5 +1,6 @@
 using Controller;
 using UnityEngine;
+using View;
 using Object = UnityEngine.Object;
 
 public class Player
@@ -10,21 +11,26 @@ public class Player
     public PlayerUI UI;
     public Transform playerTransform;
     public Animator Animator;
+    
+    public LayerMask targetLayer;
+    public GameObject fireballPrefab;
 
     private PlayerCoreComponentsSetup coreSetup;
     private PlayerMovementSetup movementSetup;
     private PlayerAttackSetup attackSetup;
     private PlayerAnimationSetup animationSetup;
-    
+    public InteractableObjectEvents IOE;
+    public Transform fireballSpawnPoint;
+
     public void Initialize()
     {
-        coreSetup = new PlayerCoreComponentsSetup(PIC, 100);
+        coreSetup = new PlayerCoreComponentsSetup(PIC, IOE, 100);
         coreSetup.Initialize();
 
         movementSetup = new PlayerMovementSetup(PIC, UEL, playerTransform, 5f, 10f, 10f);
         movementSetup.Initialize();
         
-        attackSetup = new PlayerAttackSetup(PIC, AEL, UEL);
+        attackSetup = new PlayerAttackSetup(PIC, AEL, UEL, playerTransform, fireballPrefab, targetLayer, fireballSpawnPoint);
         attackSetup.Initialize();
 
         animationSetup = new PlayerAnimationSetup(Animator, PIC, coreSetup.Damageable);
