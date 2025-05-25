@@ -1,0 +1,48 @@
+using Core.UnityHooks;
+using Player.CoreLogic;
+using Player.Input;
+using Player.UI;
+using UnityEngine;
+
+namespace Player.Initializers
+{
+    public class PlayerObjectInitializer : ObjectInitializer
+    {
+        [SerializeField] private GameObject fireballPrefab;
+        [SerializeField] private LayerMask targetLayer;
+        [SerializeField] private Transform fireballSpawnPoint;
+        [SerializeField] private PlayerInputController PIC;
+        private AnimationEventListener AEL;
+        private Animator animator;
+        private InteractableObjectEvents IOE;
+        private PlayerUI UI;
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            AEL = GetComponent<AnimationEventListener>();
+            IOE = GetComponent<InteractableObjectEvents>();
+            animator = GetComponent<Animator>();
+            UI = GetComponent<PlayerUI>();
+
+            CreatePlayer();
+        }
+
+        private void CreatePlayer()
+        {
+            var player = new PlayerCore(
+                PIC,
+                AEL,
+                UEL,
+                IOE,
+                UI,
+                transform,
+                animator,
+                fireballPrefab,
+                targetLayer,
+                fireballSpawnPoint);
+
+            player.Initialize();
+        }
+    }
+}

@@ -16473,12 +16473,6 @@ MonoBehaviour:
   OnTriggerExitEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDrawGizmosEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDrawGizmosSelectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &808307257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19213,12 +19207,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnTriggerExitEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDrawGizmosEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDrawGizmosSelectedEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &956382503
@@ -26868,12 +26856,6 @@ MonoBehaviour:
   OnTriggerExitEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDrawGizmosEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDrawGizmosSelectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1369314919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28163,12 +28145,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnTriggerExitEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDrawGizmosEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDrawGizmosSelectedEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1465017503
@@ -34152,7 +34128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9196196310907017722, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_MaxValue
