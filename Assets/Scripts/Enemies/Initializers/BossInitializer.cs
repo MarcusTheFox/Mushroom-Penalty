@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Enemies.Initializers
 {
-    public class BossObjectInitializer : MonoBehaviour
+    public class BossInitializer : MonoBehaviour
     {
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()

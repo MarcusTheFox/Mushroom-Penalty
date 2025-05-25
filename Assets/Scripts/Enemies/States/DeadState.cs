@@ -1,6 +1,8 @@
-﻿namespace Enemies.States
+﻿using AI;
+
+namespace Enemies.States
 {
-    public class DeadState
+    public class DeadState : BaseState
     {
         
     }

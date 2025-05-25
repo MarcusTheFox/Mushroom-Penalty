@@ -5,30 +5,17 @@ using UnityEngine;
 
 namespace Enemies.CoreLogic
 {
-    public class EnemyMagic
+    public class EnemyMagic : Enemy
     {
-        private AnimationEventListener AEL;
-        private UnityEventListener UEL;
-        private EnemyUI UI;
-        private InteractableObjectEvents IOE;
-        private Transform enemyTransform;
-        private Animator animator;
-        
         private EnemyCoreComponentsSetup coreSetup;
 
-        public EnemyMagic(AnimationEventListener AEL,
-            UnityEventListener UEL,
+        public EnemyMagic(UnityEventListener UEL,
+            AnimationEventListener AEL,
             InteractableObjectEvents IOE,
             EnemyUI UI,
             Transform enemyTransform,
-            Animator animator)
+            Animator animator) : base(UEL, AEL, IOE, UI, enemyTransform, animator)
         {
-            this.AEL = AEL;
-            this.UEL = UEL;
-            this.IOE = IOE;
-            this.UI = UI;
-            this.enemyTransform = enemyTransform;
-            this.animator = animator;
         }
 
         public void Initialize()

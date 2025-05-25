@@ -132,24 +132,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7259579559771170563}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 956641287151951180}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4584948307096771129}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5627229088808000505}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 838363076595903577}
   m_SourcePrefab: {fileID: 100100000, guid: 842e3395e0d88644886c546dded63b71, type: 3}
---- !u!137 &407839448437715324 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 7926839288223873370, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-  m_PrefabInstance: {fileID: 7757773085607249958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7451289512308241783 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
@@ -227,81 +210,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &956641287151951180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451289512308241783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fde0be5ba8c986d43af4fe87e6d88743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  viewDistance: 20
-  attackRange: 9
-  stopMoveDistance: 6
-  fleeDistance: 0
-  visualizeRanges: 1
-  alwaysVisualizeRanges: 0
---- !u!114 &4584948307096771129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451289512308241783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c83f4291f1089e043949965a03ed392f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
---- !u!114 &5627229088808000505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451289512308241783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb70d7b421a4baf4e9add2dd5557402a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 10
-  cooldown: 0
-  attackRange: 9
-  attackAngle: 90
-  enemyLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  visualizeAttack: 1
-  mobRenderer: {fileID: 407839448437715324}
-  glowColors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  glowDuration: 0.5
---- !u!114 &838363076595903577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451289512308241783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 443cdb2b6b250414bb54e4345d8845a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveParamName: Move
-  runParamName: Run
-  meleeAttackParamName: MeleeAttack
-  magicAttackParamName: MagicAttack
-  damageParamName: Damage
-  deathParamName: Death
 --- !u!4 &7792244376377864141 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 842e3395e0d88644886c546dded63b71, type: 3}
@@ -315,10 +223,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7792244376377864141}
     m_Modifications:
-    - target: {fileID: 1106209026357706553, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
-      propertyPath: character
-      value: 
-      objectReference: {fileID: 956641287151951180}
+    - target: {fileID: 1265172083121008837, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1309414769007108532, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

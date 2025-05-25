@@ -19221,6 +19221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 505245a85b7933d429f19bd4ee8cb210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 0}
 --- !u!114 &956382504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26868,6 +26869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7241b91295c38d4bafdeed072d15219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: 0bdedf385975cab40a398138ab649537, type: 2}
 --- !u!114 &1369314920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34117,6 +34119,10 @@ PrefabInstance:
     - target: {fileID: 7792244376377864141, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046024629455008044, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_AnchorMax.x

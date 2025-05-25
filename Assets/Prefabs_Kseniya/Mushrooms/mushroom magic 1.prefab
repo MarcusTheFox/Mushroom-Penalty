@@ -130,18 +130,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7119958609312399373}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2126696801168988186}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 689777293156131164}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2696036528236499343}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 842e3395e0d88644886c546dded63b71, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3614820847185465904}
   m_SourcePrefab: {fileID: 100100000, guid: 842e3395e0d88644886c546dded63b71, type: 3}
 --- !u!4 &1342673623077130599 stripped
 Transform:
@@ -225,78 +213,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &2126696801168988186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867289771894426589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fde0be5ba8c986d43af4fe87e6d88743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  viewDistance: 30
-  attackRange: 20
-  stopMoveDistance: 15
-  fleeDistance: 10
-  visualizeRanges: 1
-  alwaysVisualizeRanges: 0
---- !u!114 &689777293156131164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867289771894426589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c83f4291f1089e043949965a03ed392f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
---- !u!114 &2696036528236499343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867289771894426589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 443cdb2b6b250414bb54e4345d8845a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveParamName: Move
-  runParamName: Run
-  meleeAttackParamName: MeleeAttack
-  magicAttackParamName: MagicAttack
-  damageParamName: Damage
-  deathParamName: Death
---- !u!114 &3614820847185465904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867289771894426589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2813a6ebd5fc37c43bc94383455b0dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0
-  cooldown: 0
-  fireballPrefabs:
-  - {fileID: 4207149361294240665, guid: 5fcde6412bab80c489b8e0da1a7d5563, type: 3}
-  - {fileID: 4207149361294240665, guid: ab3d22b3b60f3f545880e6412b89a660, type: 3}
-  fireballDamages:
-  - 10
-  - 15
-  firePoint: {fileID: 5486248610408724642}
-  fireballSpeed: 10
 --- !u!1001 &5374514008242015387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -305,10 +221,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1342673623077130599}
     m_Modifications:
-    - target: {fileID: 1106209026357706553, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
-      propertyPath: character
-      value: 
-      objectReference: {fileID: 2126696801168988186}
+    - target: {fileID: 1265172083121008837, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1309414769007108532, guid: 21940df91f0c615488a0d21c1ea0905a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

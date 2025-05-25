@@ -43,9 +43,27 @@ namespace AI.StateMachine
             }
         }
 
+        public void AddTransition<TFromState, TToState>(Func<TContext, bool> condition,
+            Action<TContext> onTransitionAction = null)
+            where TFromState : IState<TContext>
+            where TToState : IState<TContext>
+        {
+            Type fromStateType = typeof(TFromState);
+            Type toStateType = typeof(TToState);
+            AddTransition(new Transition<TContext>(fromStateType, toStateType, condition, onTransitionAction));
+        }
+
         public void AddAnyTransition(ITransition<TContext> transition)
         {
             anyTransitions.Add(transition);
+        }
+
+        public void AddAnyTransition<TToState>(Func<TContext, bool> condition,
+            Action<TContext> onTransitionAction = null)
+            where TToState : IState<TContext>
+        {
+            Type toStateType = typeof(TToState);
+            AddAnyTransition(new Transition<TContext>(null, toStateType, condition, onTransitionAction));
         }
 
         public void Update(float deltaTime)

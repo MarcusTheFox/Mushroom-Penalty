@@ -1,6 +1,8 @@
-﻿namespace Enemies.States.AttackStates
+﻿using AI;
+
+namespace Enemies.States.AttackStates
 {
-    public class MeleeAttackState
+    public class MeleeAttackState : BaseState
     {
         
     }
