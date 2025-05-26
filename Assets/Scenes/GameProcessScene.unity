@@ -28069,6 +28069,7 @@ MonoBehaviour:
     m_Bits: 128
   fireballSpawnPoint: {fileID: 1536778488}
   PIC: {fileID: 1691464855}
+  playerData: {fileID: 11400000, guid: f9eed940574b4b548a9eabd8b59d37cd, type: 2}
 --- !u!114 &1465017500
 MonoBehaviour:
   m_ObjectHideFlags: 0

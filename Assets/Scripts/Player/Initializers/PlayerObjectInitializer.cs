@@ -12,6 +12,7 @@ namespace Player.Initializers
         [SerializeField] private LayerMask targetLayer;
         [SerializeField] private Transform fireballSpawnPoint;
         [SerializeField] private PlayerInputController PIC;
+        [SerializeField] private PlayerDataSO playerData;
         private AnimationEventListener AEL;
         private Animator animator;
         private InteractableObjectEvents IOE;
@@ -38,9 +39,8 @@ namespace Player.Initializers
                 UI,
                 transform,
                 animator,
-                fireballPrefab,
-                targetLayer,
-                fireballSpawnPoint);
+                fireballSpawnPoint,
+                playerData);
 
             player.Initialize();
         }

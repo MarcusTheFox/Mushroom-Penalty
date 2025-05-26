@@ -9,27 +9,25 @@ namespace Player.CoreLogic.Components
 {
     public class PlayerMovementSetup : ICleanupable
     {
+        private readonly PlayerInputController PIC;
+        private readonly UnityEventListener UEL;
+        private readonly Transform playerTransform;
+        private readonly float speed;
+        private readonly float runSpeed;
+        private readonly float rotationSpeed;
+        
         private IMovement movement;
-        
-        private PlayerInputController PIC;
-        private UnityEventListener UEL;
-        
         private PlayerMovementInputHandler movementInputHandler;
-        
-        private Transform playerTransform;
-        private float speed;
-        private float runSpeed;
-        private float rotationSpeed;
 
         public PlayerMovementSetup(PlayerInputController PIC, UnityEventListener UEL, Transform playerTransform,
-            float speed, float runSpeed, float rotationSpeed)
+            PlayerDataSO playerData)
         {
             this.PIC = PIC;
             this.UEL = UEL;
             this.playerTransform = playerTransform;
-            this.speed = speed;
-            this.runSpeed = runSpeed;
-            this.rotationSpeed = rotationSpeed;
+            speed = playerData.speed;
+            runSpeed = playerData.runSpeed;
+            rotationSpeed = playerData.rotationSpeed;
         }
 
         public void Initialize()

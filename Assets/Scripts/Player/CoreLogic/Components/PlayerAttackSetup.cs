@@ -21,28 +21,29 @@ namespace Player.CoreLogic.Components
         private readonly GameObject fireballPrefab;
         private readonly LayerMask targetLayer;
         private readonly Transform fireballSpawnPoint;
+        private readonly PlayerDataSO data;
 
         private PlayerAttackInputHandler attackInputHandler;
         private PlayerAttackAnimationEventHandler attackAnimationEventHandler;
 
         public PlayerAttackSetup(PlayerInputController PIC, AnimationEventListener AEL, UnityEventListener UEL,
-            Transform playerTransform, GameObject fireballPrefab, LayerMask targetLayer, Transform fireballSpawnPoint)
+            Transform playerTransform, Transform fireballSpawnPoint, PlayerDataSO data)
         {
             this.PIC = PIC;
             this.AEL = AEL;
             this.UEL = UEL;
             this.playerTransform = playerTransform;
-            this.fireballPrefab = fireballPrefab;
-            this.targetLayer = targetLayer;
             this.fireballSpawnPoint = fireballSpawnPoint;
+            this.data = data;
         }
 
         public void Initialize()
         {
-            MagicCooldown = new Cooldown(10);
-            MeleeAttack = new MeleeAttack(30, playerTransform, targetLayer, 10f, 90f);
-            MagicAttack = new MagicAttack(50, MagicCooldown, targetLayer, fireballPrefab, fireballSpawnPoint,
-                playerTransform);
+            MagicCooldown = new Cooldown(data.magicCooldown);
+            MeleeAttack = new MeleeAttack(data.meleeDamage, playerTransform, data.targetLayer, data.meleeRange,
+                data.meleeAngle);
+            MagicAttack = new MagicAttack(data.magicDamage, MagicCooldown, data.targetLayer, data.magicProjectilePrefab,
+                fireballSpawnPoint, playerTransform);
             
             attackInputHandler = new PlayerAttackInputHandler(MeleeAttack, MagicAttack);
             attackAnimationEventHandler = new PlayerAttackAnimationEventHandler(MeleeAttack, MagicAttack);

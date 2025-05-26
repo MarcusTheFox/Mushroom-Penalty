@@ -9,17 +9,15 @@ namespace Player.CoreLogic
 {
     public class PlayerCore
     {
-        private PlayerInputController PIC;
-        private AnimationEventListener AEL;
-        private UnityEventListener UEL;
-        private PlayerUI UI;
-        private InteractableObjectEvents IOE;
-        private Transform playerTransform;
-        private Animator Animator;
-
-        private LayerMask targetLayer;
-        private GameObject fireballPrefab;
-        private Transform fireballSpawnPoint;
+        private readonly PlayerInputController PIC;
+        private readonly AnimationEventListener AEL;
+        private readonly UnityEventListener UEL;
+        private readonly PlayerUI UI;
+        private readonly InteractableObjectEvents IOE;
+        private readonly Transform playerTransform;
+        private readonly Animator Animator;
+        private readonly Transform fireballSpawnPoint;
+        private readonly PlayerDataSO playerData;
 
         private PlayerCoreComponentsSetup coreSetup;
         private PlayerMovementSetup movementSetup;
@@ -33,9 +31,8 @@ namespace Player.CoreLogic
             PlayerUI UI,
             Transform playerTransform,
             Animator animator,
-            GameObject fireballPrefab,
-            LayerMask targetLayer,
-            Transform fireballSpawnPoint)
+            Transform fireballSpawnPoint,
+            PlayerDataSO playerData)
         {
             this.PIC = PIC;
             this.AEL = AEL;
@@ -44,20 +41,19 @@ namespace Player.CoreLogic
             this.UI = UI;
             this.playerTransform = playerTransform;
             Animator = animator;
-            this.fireballPrefab = fireballPrefab;
-            this.targetLayer = targetLayer;
             this.fireballSpawnPoint = fireballSpawnPoint;
+            this.playerData = playerData;
         }
 
         public void Initialize()
         {
-            coreSetup = new PlayerCoreComponentsSetup(PIC, IOE, 100);
+            coreSetup = new PlayerCoreComponentsSetup(PIC, IOE, playerData.health);
             coreSetup.Initialize();
 
-            movementSetup = new PlayerMovementSetup(PIC, UEL, playerTransform, 5f, 10f, 10f);
+            movementSetup = new PlayerMovementSetup(PIC, UEL, playerTransform, playerData);
             movementSetup.Initialize();
         
-            attackSetup = new PlayerAttackSetup(PIC, AEL, UEL, playerTransform, fireballPrefab, targetLayer, fireballSpawnPoint);
+            attackSetup = new PlayerAttackSetup(PIC, AEL, UEL, playerTransform, fireballSpawnPoint, playerData);
             attackSetup.Initialize();
 
             animationSetup = new PlayerAnimationSetup(Animator, PIC, coreSetup.Damageable);
