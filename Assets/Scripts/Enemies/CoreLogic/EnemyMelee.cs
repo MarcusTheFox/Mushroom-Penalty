@@ -1,8 +1,5 @@
-﻿using AI.StateMachine;
-using Core.UnityHooks;
+﻿using Core.UnityHooks;
 using Enemies.Components;
-using Enemies.Data;
-using Enemies.Handlers;
 using Enemies.States;
 using Enemies.States.AttackStates;
 using Enemies.UI;
@@ -12,17 +9,7 @@ namespace Enemies.CoreLogic
 {
     public class EnemyMelee : Enemy
     {
-        public Transform Target { get; private set; }
-        
-        private EnemyCoreComponentsSetup coreSetup;
-        private IStateMachine<EnemyMelee> stateMachine;
-        
         private EnemyMeleeAttackSetup attackSetup;
-        private EnemyMovementSetup movementSetup;
-        
-        private EnemyAnimationController animationController;
-
-        private EnemyDataSO enemyData;
 
         private IdleState idleState;
         private ChaseState chaseState;
@@ -35,42 +22,19 @@ namespace Enemies.CoreLogic
             EnemyUI UI,
             Transform enemyTransform,
             Animator animator,
-            Transform target) : base(UEL, AEL, IOE, UI, enemyTransform, animator)
+            Transform target) : base(UEL, AEL, IOE, UI, enemyTransform, animator, target)
         {
-            Target = target;
         }
 
-        public void Initialize(EnemyDataSO data)
+        protected override void InitializeComponents()
         {
-            enemyData = data;
-            animationController = new EnemyAnimationController(animator);
-            
-            coreSetup = new EnemyCoreComponentsSetup(IOE, enemyData.health);
-            coreSetup.Initialize();
-
-            movementSetup = new EnemyMovementSetup(EnemyTransform, enemyData.chaseSpeed, enemyData.fleeSpeed);
-            movementSetup.Initialize();
+            base.InitializeComponents();
             
             attackSetup = new EnemyMeleeAttackSetup(AEL, 20f, EnemyTransform, enemyData.targetLayer, enemyData.attackChaseRadius, 90f);
             attackSetup.Initialize();
-        
-            UI.Initialize(coreSetup.Health);
-            
-            InitializeStateMachine();
-            
-            AEL.OnDead += DestroyEnemy;
-        
-            UEL.OnUpdateEvent.AddListener(UpdateStateMachine);
-            UEL.OnDestroyEvent.AddListener(OnDestroy);
         }
 
-        private void InitializeStateMachine()
-        {
-            stateMachine = new StateMachine<EnemyMelee>(this);
-            ConfigureStateMachine();
-        }
-
-        private void ConfigureStateMachine()
+        protected override void ConfigureStateMachine()
         {
             idleState = new IdleState();
             chaseState = new ChaseState(movementSetup.EnemyMovementTowards, animationController);
@@ -82,48 +46,32 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(meleeAttackState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(ctx => ctx.Target && 
-                DistanceToTarget(ctx.Target) < enemyData.idleChaseRadius);
+            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && 
+                DistanceToTarget() < enemyData.idleChaseRadius);
             
-            stateMachine.AddTransition<ChaseState, IdleState>(ctx => ctx.Target && 
-                DistanceToTarget(ctx.Target) > enemyData.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && 
+                DistanceToTarget() > enemyData.chaseIdleRadius);
             
-            stateMachine.AddTransition<ChaseState, MeleeAttackState>(ctx => ctx.Target && 
-                DistanceToTarget(ctx.Target) < enemyData.chaseAttackRadius);
+            stateMachine.AddTransition<ChaseState, MeleeAttackState>(_ => Target && 
+                DistanceToTarget() < enemyData.chaseAttackRadius);
             
-            stateMachine.AddTransition<MeleeAttackState, ChaseState>(ctx => ctx.Target && 
-                DistanceToTarget(ctx.Target) > enemyData.attackChaseRadius);
+            stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => Target && 
+                DistanceToTarget() > enemyData.attackChaseRadius);
             
-            stateMachine.AddAnyTransition<IdleState>(ctx => !ctx.Target);
+            stateMachine.AddAnyTransition<IdleState>(_ => !Target);
             
             stateMachine.Initialize(idleState);
         }
 
-        private void UpdateStateMachine()
+        private float DistanceToTarget()
         {
-            stateMachine?.Update(Time.deltaTime);
+            return Vector3.Distance(Target.position, EnemyTransform.position);
         }
 
-        private float DistanceToTarget(Transform target)
+        protected override void OnDestroy()
         {
-            return Vector3.Distance(target.position, EnemyTransform.position);
-        }
-
-        private void OnDestroy()
-        {
-            UEL.OnDestroyEvent.RemoveListener(OnDestroy);
-            UEL.OnUpdateEvent.RemoveListener(UpdateStateMachine);
-            
+            base.OnDestroy();
             meleeAttackState.Cleanup();
-            
-            coreSetup.Cleanup();
-            
-            UI.Cleanup();
-        }
-
-        private void DestroyEnemy()
-        {
-            AEL.OnDead -= DestroyEnemy;
         }
     }
 }

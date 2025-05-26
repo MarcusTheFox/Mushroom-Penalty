@@ -6,7 +6,7 @@ using Enemies.Handlers;
 
 namespace Enemies.States.AttackStates
 {
-    public class MeleeAttackState : BaseState, ICleanupable
+    public class MeleeAttackState : BaseState<Enemy>, ICleanupable
     {
         private readonly IAttack attack;
         private readonly EnemyAnimationController animationController;
@@ -26,7 +26,7 @@ namespace Enemies.States.AttackStates
             attack.OnReady -= SetAttackIsReady;
         }
 
-        public override void OnUpdate(EnemyMelee context, float deltaTime)
+        public override void OnUpdate(Enemy context, float deltaTime)
         {
             base.OnUpdate(context, deltaTime);
             if (attackReady)

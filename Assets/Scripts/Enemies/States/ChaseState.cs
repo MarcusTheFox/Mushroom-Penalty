@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Enemies.States
 {
-    public class ChaseState : BaseState
+    public class ChaseState : BaseState<Enemy>
     {
         private readonly IMovement movement;
         private readonly EnemyAnimationController animationController;
@@ -19,7 +19,7 @@ namespace Enemies.States
             this.animationController = animationController;
         }
         
-        public override void OnUpdate(EnemyMelee context, float deltaTime)
+        public override void OnUpdate(Enemy context, float deltaTime)
         {
             base.OnUpdate(context, deltaTime);
             Vector3 move = movement.Move(context.Target.position);
@@ -30,7 +30,7 @@ namespace Enemies.States
             animationController.OnMove(new Vector2(move.x, move.z));
         }
 
-        public override void OnExit(EnemyMelee context)
+        public override void OnExit(Enemy context)
         {
             base.OnExit(context);
             animationController.OnMove(Vector2.zero);

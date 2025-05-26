@@ -21,6 +21,8 @@ namespace Enemies.Initializers
             IOE = GetComponent<InteractableObjectEvents>();
             animator = GetComponent<Animator>();
             UI = GetComponent<EnemyUI>();
+
+            AEL.OnDead += DestroyEnemy;
             
             player = GameObject.FindGameObjectWithTag("Player");
         
@@ -28,5 +30,11 @@ namespace Enemies.Initializers
         }
 
         protected abstract void CreateEnemy();
+
+        private void DestroyEnemy()
+        {
+            AEL.OnDead -= DestroyEnemy;
+            Destroy(gameObject);
+        }
     }
 }

@@ -8,8 +8,7 @@ namespace Enemies.Initializers
     {
         protected override void CreateEnemy()
         {
-            EnemyMelee enemyMelee =
-                new EnemyMelee(UEL, AEL, IOE, UI, transform, animator, player.transform);
+            EnemyMelee enemyMelee = new EnemyMelee(UEL, AEL, IOE, UI, transform, animator, player.transform);
             
             enemyMelee.Initialize(enemyData);
         }

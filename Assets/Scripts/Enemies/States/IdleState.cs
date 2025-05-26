@@ -1,8 +1,9 @@
 ﻿using AI;
+using Enemies.CoreLogic;
 
 namespace Enemies.States
 {
-    public class IdleState : BaseState
+    public class IdleState : BaseState<Enemy>
     {
         
     }

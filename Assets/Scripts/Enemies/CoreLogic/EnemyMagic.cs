@@ -7,41 +7,29 @@ namespace Enemies.CoreLogic
 {
     public class EnemyMagic : Enemy
     {
-        private EnemyCoreComponentsSetup coreSetup;
 
         public EnemyMagic(UnityEventListener UEL,
             AnimationEventListener AEL,
             InteractableObjectEvents IOE,
             EnemyUI UI,
             Transform enemyTransform,
-            Animator animator) : base(UEL, AEL, IOE, UI, enemyTransform, animator)
+            Animator animator,
+            Transform target) : base(UEL, AEL, IOE, UI, enemyTransform, animator, target)
         {
         }
 
-        public void Initialize()
+        protected override void InitializeComponents()
         {
-            coreSetup = new EnemyCoreComponentsSetup(IOE, 100);
-            coreSetup.Initialize();
-        
-            UI.Initialize(coreSetup.Health);
-            
-            AEL.OnDead += DestroyEnemy;
-        
-            UEL.OnDestroyEvent.AddListener(OnDestroy);
+            base.InitializeComponents();
         }
 
-        private void OnDestroy()
+        protected override void ConfigureStateMachine()
         {
-            UEL.OnDestroyEvent.RemoveListener(OnDestroy);
-            
-            coreSetup.Cleanup();
-            
-            UI.Cleanup();
         }
 
-        private void DestroyEnemy()
+        protected override void OnDestroy()
         {
-            AEL.OnDead -= DestroyEnemy;
+            base.OnDestroy();
         }
     }
 }

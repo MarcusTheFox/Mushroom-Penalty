@@ -44,7 +44,7 @@ namespace Combat.Implementations
         public void Apply()
         {
             Collider[] hitEnemies = FindEnemies();
-            Debug.Log(hitEnemies.Length);
+            
             foreach (Collider collider in hitEnemies)
             {
                 InteractableObjectEvents targetIOE = collider.GetComponent<InteractableObjectEvents>();
@@ -63,7 +63,7 @@ namespace Combat.Implementations
         {
             Collider[] allColliders = Physics.OverlapSphere(fromTransform.position, attackRange, targetLayer);
             List<Collider> targetsInRange = new List<Collider>();
-            Debug.Log($"{allColliders.Length} enemies found");
+            
             foreach (Collider col in allColliders)
             {
                 if (IsInAttackCone(col.transform.position))

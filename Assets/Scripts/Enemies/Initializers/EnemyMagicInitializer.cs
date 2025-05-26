@@ -6,9 +6,9 @@ namespace Enemies.Initializers
     {
         protected override void CreateEnemy()
         {
-            EnemyMagic enemyMelee = new EnemyMagic(UEL, AEL, IOE, UI, transform, animator);
+            EnemyMagic enemyMelee = new EnemyMagic(UEL, AEL, IOE, UI, transform, animator, player.transform);
 
-            enemyMelee.Initialize();
+            enemyMelee.Initialize(enemyData);
         }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using Combat.Interfaces;
-using UnityEngine;
 
 namespace Combat.Implementations
 {
