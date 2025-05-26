@@ -16325,10 +16325,16 @@ PrefabInstance:
       addedObject: {fileID: 808307250}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 808307249}
+      addedObject: {fileID: 808307248}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 808307248}
+      addedObject: {fileID: 808307255}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808307254}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 808307256}
   m_SourcePrefab: {fileID: 100100000, guid: 7bf19bb24f611f24ea9944af2aec99d1, type: 3}
 --- !u!1 &808307243 stripped
 GameObject:
@@ -16362,19 +16368,6 @@ MonoBehaviour:
   strongAttackParamName: StrongAttack
   dieParamName: Die
   aggroParamName: Aggro
---- !u!114 &808307249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 808307243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c83f4291f1089e043949965a03ed392f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
 --- !u!114 &808307250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16389,13 +16382,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 200
   animationController: {fileID: 808307248}
-  bossRenderer: {fileID: 0}
-  elementalParticles: {fileID: 0}
-  elementSettings: []
   aggroRange: 10
-  player: {fileID: 1677214033}
   normalAttackCount: 0
   strongAttackThreshold: 4
+  damage: 10
+  player: {fileID: 1677214033}
 --- !u!54 &808307251
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -16468,6 +16459,52 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &808307254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808307243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6c72e1583c98fb4eb7a819e8c75aba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
+  cooldown: 0
+  target: {fileID: 1677214033}
+  damageType: 2
+  strongAttackVFX: {fileID: 0}
+--- !u!114 &808307255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808307243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e933abaa1d951c468e7969497219f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  cooldown: 0
+  target: {fileID: 1677214033}
+  damageType: 0
+--- !u!114 &808307256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808307243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c83f4291f1089e043949965a03ed392f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
 --- !u!1001 &812487547
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,14 +3,8 @@ using System.Collections.Generic;
 
 public class Boss : Character
 {
-    [Header("VFX")]
-    public Renderer bossRenderer;
-    public ParticleSystem elementalParticles;
-    public ElementSettings[] elementSettings;
-
     [Header("Combat")]
     public float aggroRange = 10f;
-    public Transform player;
 
     public ElementType CurrentElement { get; private set; }
 
@@ -19,9 +13,48 @@ public class Boss : Character
     [HideInInspector] public int normalAttackCount = 0;
     public int strongAttackThreshold = 4;
 
+    protected IMovable movement;
+
+    [SerializeField] protected float damage = 10f;
+
+    private BossAttack bossAttack;
+    private BossStrongAttack bossStrongAttack;
+
+    public Transform player;
+    private PlayerCharacter playerScript;
+
+    private bool hasAggroTriggered = false;
+    private bool canMove = true;
+    public bool CanMove => canMove;
+
     protected override void Awake()
     {
         base.Awake();
+
+        movement = GetComponent<IMovable>();
+
+        bossAttack = GetComponent<BossAttack>();
+        bossStrongAttack = GetComponent<BossStrongAttack>();
+
+        if (bossAttack == null || bossStrongAttack == null)
+        {
+            Debug.LogError("BossAttack или BossStrongAttack не найдены на объекте босса!");
+        }
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+            playerScript = playerObj.GetComponent<PlayerCharacter>();
+            if (playerScript == null)
+            {
+                Debug.LogError("Компонент PlayerCharacter не найден у объекта с тегом Player!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Игрок с тегом 'Player' не найден!");
+        }
 
         StateMachine = new BossStateMachine();
         StateMachine.AddState(StateType.Idle, new BossIdleState(this, StateMachine));
@@ -34,66 +67,26 @@ public class Boss : Character
 
     private void Update()
     {
+        Debug.Log($"IsPlayerDead = {IsPlayerDead()}");
+
+        if (IsPlayerDead())
+        {
+            StateMachine.ChangeState(StateType.Idle);
+            return;
+        }
+
         StateMachine.CurrentState?.Update();
     }
-
-    public void PerformNormalAttack()
-    {
-        SetRandomElement();
-        ApplyElementColor();
-        normalAttackCount++;
-    }
-
-    public void PerformStrongAttack()
-    {
-        SetRandomElement();
-        PlayElementParticles();
-    }
-
-    private void SetRandomElement()
-    {
-        CurrentElement = (ElementType)Random.Range(0, System.Enum.GetValues(typeof(ElementType)).Length);
-    }
-
-    private void ApplyElementColor()
-    {
-        Color color = GetColorForElement(CurrentElement);
-        if (bossRenderer != null)
-        {
-            bossRenderer.material.color = color;
-        }
-    }
-
-    private void PlayElementParticles()
-    {
-        if (elementalParticles != null)
-        {
-            var main = elementalParticles.main;
-            main.startColor = GetColorForElement(CurrentElement);
-            elementalParticles.Play();
-        }
-    }
-
-    private Color GetColorForElement(ElementType element)
-    {
-        foreach (var setting in elementSettings)
-        {
-            if (setting.element == element)
-                return setting.color;
-        }
-        return Color.white;
-    }
-
-    private bool hasAggroTriggered = false;
 
     public override void TakeDamage(float damage, DamageType type)
     {
         base.TakeDamage(damage, type);
         Debug.Log("Босс получил урон");
 
+        if (IsPlayerDead()) return;
+
         if (!hasAggroTriggered)
         {
-            Debug.Log("Включаем агрессию");
             hasAggroTriggered = true;
 
             float distance = Vector3.Distance(transform.position, player.position);
@@ -101,7 +94,7 @@ public class Boss : Character
 
             if (distance <= aggroRange)
             {
-                Debug.Log("Игрок близко — переходим в ATTTACK");
+                Debug.Log("Игрок близко — переходим в ATTACK");
                 StateMachine.ChangeState(StateType.Attack);
             }
             else
@@ -112,36 +105,47 @@ public class Boss : Character
         }
     }
 
-
-    private bool canMove = true;
-
-    public bool CanMove => canMove;
-
-    // Метод блокировки движения
-    public void StopMoving()
+    public void PerformNormalAttack()
     {
-        canMove = false;
-        // Если у тебя есть система перемещения, например NavMeshAgent, Rigidbody и т.п., останови движение здесь:
-        // например:
-        // navMeshAgent.isStopped = true;
+        if (IsPlayerDead()) return;
+
+        SetRandomElement();
+        ApplyElementColor();
+        bossAttack?.PerformAttack();
+        normalAttackCount++;
     }
 
-    // Метод разрешения движения
-    public void StartMoving()
+    public void PerformStrongAttack()
     {
-        canMove = true;
-        // navMeshAgent.isStopped = false;
+        if (IsPlayerDead()) return;
+
+        SetRandomElement();
+        PlayElementParticles();
+        bossStrongAttack?.PerformAttack();
     }
 
     public void OnAttackHit()
     {
+        if (IsPlayerDead()) return;
+
         StopMoving();
-        Debug.Log(normalAttackCount);
         PerformNormalAttack();
+
+        float distance = Vector3.Distance(transform.position, player.position);
+        if (distance >= aggroRange)
+        {
+            StateMachine.ChangeState(StateType.Aggro);
+        }
     }
 
     public void OnAttackEnd()
     {
+        if (IsPlayerDead())
+        {
+            StateMachine.ChangeState(StateType.Idle);
+            return;
+        }
+
         StartMoving();
 
         if (normalAttackCount >= strongAttackThreshold)
@@ -153,6 +157,8 @@ public class Boss : Character
 
     public void OnStrongAttackHit()
     {
+        if (IsPlayerDead()) return;
+
         StopMoving();
         PerformStrongAttack();
         normalAttackCount = 0;
@@ -160,21 +166,41 @@ public class Boss : Character
 
     public void OnStrongAttackEnd()
     {
+        if (IsPlayerDead())
+        {
+            StateMachine.ChangeState(StateType.Idle);
+            return;
+        }
 
         float distance = Vector3.Distance(transform.position, player.position);
 
         if (distance <= aggroRange)
         {
             StopMoving();
-            Debug.Log("Игрок близко — переходим в ATTTACK");
             StateMachine.ChangeState(StateType.Attack);
         }
         else
         {
             StartMoving();
-            Debug.Log("Игрок далеко — переходим в AGGRO");
             StateMachine.ChangeState(StateType.Aggro);
         }
+    }
+
+    public void MoveToPlayer()
+    {
+        if (!canMove || player == null || IsPlayerDead()) return;
+
+        LookToPlayer();
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        movement?.Move(directionToPlayer);
+    }
+
+    public void LookToPlayer()
+    {
+        if (player == null || IsPlayerDead()) return;
+
+        Vector3 lookTarget = new Vector3(player.position.x, transform.position.y, player.position.z);
+        transform.LookAt(lookTarget);
     }
 
     protected override void Die()
@@ -185,5 +211,29 @@ public class Boss : Character
     public void DeadEvent()
     {
         Destroy(gameObject);
+    }
+
+    public void StopMoving() => canMove = false;
+    public void StartMoving() => canMove = true;
+
+    private bool IsPlayerDead()
+    {
+        return playerScript == null || playerScript.HealthSystem == null || playerScript.HealthSystem.IsDead;
+    }
+
+    // Заготовки для твоих методов: SetRandomElement, ApplyElementColor, PlayElementParticles
+    private void SetRandomElement()
+    {
+        // Логика выбора случайного элемента
+    }
+
+    private void ApplyElementColor()
+    {
+        // Логика применения цвета к боссу (bossRenderer)
+    }
+
+    private void PlayElementParticles()
+    {
+        // Логика запуска эффекта частиц (elementalParticles)
     }
 }

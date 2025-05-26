@@ -15,21 +15,19 @@ public class BossAggroState : IState
     {
         Debug.Log("Ѕосс в состо€нии агрессии");
         boss.animationController.PlayBossAggroAnimation(true); // если есть
+        boss.StartMoving();
     }
 
     public void Update()
     {
+        boss.MoveToPlayer();
+
         if (boss.player != null)
         {
             float distance = Vector3.Distance(boss.transform.position, boss.player.position);
             if (distance <= boss.aggroRange)
             {
                 machine.ChangeState(StateType.Attack);
-            }
-            else
-            {
-                // «десь можно добавить логику движени€ к игроку, если хочешь
-                // например: boss.MoveTowardsPlayer();
             }
         }
     }
@@ -38,6 +36,7 @@ public class BossAggroState : IState
     {
         Debug.Log("Ѕосс покидает состо€ние агрессии");
         boss.animationController.PlayBossAggroAnimation(false);
+        boss.StopMoving();
     }
 }
 
