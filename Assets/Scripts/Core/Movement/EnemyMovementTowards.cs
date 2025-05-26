@@ -16,7 +16,7 @@ namespace Core.Movement
 
         public Vector3 Move(Vector3 targetPoint)
         {
-            if (speed <= 0) return enemyTransform.position;
+            if (speed <= 0) return Vector3.zero;
             
             LookAt(targetPoint);
             
@@ -24,7 +24,7 @@ namespace Core.Movement
             Vector3 movement = direction * speed * Time.deltaTime;
             enemyTransform.position += movement;
             
-            return enemyTransform.position;
+            return direction;
         }
 
         private void LookAt(Vector3 targetPoint)

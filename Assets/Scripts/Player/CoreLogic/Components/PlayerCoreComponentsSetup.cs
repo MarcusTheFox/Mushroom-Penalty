@@ -37,6 +37,7 @@ namespace Player.CoreLogic.Components
 
         private void OnDeath()
         {
+            IOE.OnDamageAttempt -= Damageable.TakeDamage;
             PIC.SetMovementInputEnabled(false);
             PIC.SetMeleeAttackInputEnabled(false);
             PIC.SetMagicAttackInputEnabled(false);

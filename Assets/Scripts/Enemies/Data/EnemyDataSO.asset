@@ -19,3 +19,6 @@ MonoBehaviour:
   chaseIdleRadius: 30
   chaseAttackRadius: 6
   attackChaseRadius: 10
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64

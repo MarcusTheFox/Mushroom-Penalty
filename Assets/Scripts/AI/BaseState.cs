@@ -1,4 +1,5 @@
 ﻿using AI.StateMachine;
+using Core.Interfaces;
 using Enemies.CoreLogic;
 using UnityEngine;
 

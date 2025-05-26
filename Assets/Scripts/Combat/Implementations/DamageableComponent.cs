@@ -18,7 +18,6 @@ namespace Combat.Implementations
         public void TakeDamage(float damage)
         {
             HealthComponent.Decrease(damage);
-            Debug.Log(HealthComponent.Health);
             OnTakeDamage?.Invoke(damage);
 
             if (HealthComponent.Health <= 0f)

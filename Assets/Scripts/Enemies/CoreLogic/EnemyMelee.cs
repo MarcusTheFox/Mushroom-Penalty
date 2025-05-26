@@ -1,9 +1,8 @@
 ﻿using AI.StateMachine;
-using Core.Interfaces;
-using Core.Movement;
 using Core.UnityHooks;
 using Enemies.Components;
 using Enemies.Data;
+using Enemies.Handlers;
 using Enemies.States;
 using Enemies.States.AttackStates;
 using Enemies.UI;
@@ -18,28 +17,42 @@ namespace Enemies.CoreLogic
         private EnemyCoreComponentsSetup coreSetup;
         private IStateMachine<EnemyMelee> stateMachine;
         
+        private EnemyMeleeAttackSetup attackSetup;
         private EnemyMovementSetup movementSetup;
+        
+        private EnemyAnimationController animationController;
 
         private EnemyDataSO enemyData;
+
+        private IdleState idleState;
+        private ChaseState chaseState;
+        private MeleeAttackState meleeAttackState;
+        private DeadState deadState;
 
         public EnemyMelee(UnityEventListener UEL,
             AnimationEventListener AEL,
             InteractableObjectEvents IOE,
             EnemyUI UI,
             Transform enemyTransform,
-            Animator animator, Transform target) : base(UEL, AEL, IOE, UI, enemyTransform, animator)
+            Animator animator,
+            Transform target) : base(UEL, AEL, IOE, UI, enemyTransform, animator)
         {
-            this.Target = target;
+            Target = target;
         }
 
         public void Initialize(EnemyDataSO data)
         {
             enemyData = data;
+            animationController = new EnemyAnimationController(animator);
+            
             coreSetup = new EnemyCoreComponentsSetup(IOE, enemyData.health);
             coreSetup.Initialize();
 
             movementSetup = new EnemyMovementSetup(EnemyTransform, enemyData.chaseSpeed, enemyData.fleeSpeed);
             movementSetup.Initialize();
+            
+            attackSetup = new EnemyMeleeAttackSetup(AEL, 20f, EnemyTransform, enemyData.targetLayer, enemyData.attackChaseRadius, 90f);
+            attackSetup.Initialize();
         
             UI.Initialize(coreSetup.Health);
             
@@ -59,10 +72,10 @@ namespace Enemies.CoreLogic
 
         private void ConfigureStateMachine()
         {
-            IdleState idleState = new IdleState();
-            ChaseState chaseState = new ChaseState(movementSetup.EnemyMovementTowards);
-            MeleeAttackState meleeAttackState = new MeleeAttackState();
-            DeadState deadState = new DeadState();
+            idleState = new IdleState();
+            chaseState = new ChaseState(movementSetup.EnemyMovementTowards, animationController);
+            meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController);
+            deadState = new DeadState();
             
             stateMachine.AddState(idleState);
             stateMachine.AddState(chaseState);
@@ -81,6 +94,8 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<MeleeAttackState, ChaseState>(ctx => ctx.Target && 
                 DistanceToTarget(ctx.Target) > enemyData.attackChaseRadius);
             
+            stateMachine.AddAnyTransition<IdleState>(ctx => !ctx.Target);
+            
             stateMachine.Initialize(idleState);
         }
 
@@ -98,6 +113,8 @@ namespace Enemies.CoreLogic
         {
             UEL.OnDestroyEvent.RemoveListener(OnDestroy);
             UEL.OnUpdateEvent.RemoveListener(UpdateStateMachine);
+            
+            meleeAttackState.Cleanup();
             
             coreSetup.Cleanup();
             

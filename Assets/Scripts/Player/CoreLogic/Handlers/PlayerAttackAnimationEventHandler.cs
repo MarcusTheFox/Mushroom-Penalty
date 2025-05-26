@@ -5,8 +5,8 @@ namespace Player.CoreLogic.Handlers
 {
     public class PlayerAttackAnimationEventHandler
     {
-        private IAttack meleeAttack;
-        private IAttack magicAttack;
+        private readonly IAttack meleeAttack;
+        private readonly IAttack magicAttack;
     
         public event Action<IAttack> onApplyAttack;
         public event Action<IAttack> onStopAttack;

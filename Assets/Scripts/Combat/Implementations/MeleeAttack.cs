@@ -8,7 +8,7 @@ namespace Combat.Implementations
 {
     public class MeleeAttack: IAttack
     {
-        private readonly Transform playerTransform;
+        private readonly Transform fromTransform;
         private readonly LayerMask targetLayer;
         private readonly float attackRange;
         private readonly float attackAngle;
@@ -19,12 +19,12 @@ namespace Combat.Implementations
         public event Action OnStop;
 
         public MeleeAttack(float damage,
-            Transform playerTransform,
+            Transform fromTransform,
             LayerMask targetLayer,
             float attackRange,
             float attackAngle)
         {
-            this.playerTransform = playerTransform;
+            this.fromTransform = fromTransform;
             this.targetLayer = targetLayer;
             this.attackRange = attackRange;
             this.attackAngle = attackAngle;
@@ -44,6 +44,7 @@ namespace Combat.Implementations
         public void Apply()
         {
             Collider[] hitEnemies = FindEnemies();
+            Debug.Log(hitEnemies.Length);
             foreach (Collider collider in hitEnemies)
             {
                 InteractableObjectEvents targetIOE = collider.GetComponent<InteractableObjectEvents>();
@@ -60,23 +61,23 @@ namespace Combat.Implementations
     
         private Collider[] FindEnemies()
         {
-            Collider[] allColliders = Physics.OverlapSphere(playerTransform.position, attackRange, targetLayer);
-            List<Collider> enemiesInRange = new List<Collider>();
-
+            Collider[] allColliders = Physics.OverlapSphere(fromTransform.position, attackRange, targetLayer);
+            List<Collider> targetsInRange = new List<Collider>();
+            Debug.Log($"{allColliders.Length} enemies found");
             foreach (Collider col in allColliders)
             {
                 if (IsInAttackCone(col.transform.position))
                 {
-                    enemiesInRange.Add(col);
+                    targetsInRange.Add(col);
                 }
             }
 
-            return enemiesInRange.ToArray();
+            return targetsInRange.ToArray();
         }
     
         private bool IsInAttackCone(Vector3 targetPosition)
         {
-            Vector3 directionToTarget = targetPosition - playerTransform.position;
+            Vector3 directionToTarget = targetPosition - fromTransform.position;
             float distanceToTargetSqr = directionToTarget.sqrMagnitude;
 
             if (distanceToTargetSqr > attackRange * attackRange)
@@ -84,7 +85,7 @@ namespace Combat.Implementations
                 return false;
             }
 
-            float dotProduct = Vector3.Dot(playerTransform.forward, directionToTarget.normalized);
+            float dotProduct = Vector3.Dot(fromTransform.forward, directionToTarget.normalized);
             float cosHalfAngle = Mathf.Cos(Mathf.Deg2Rad * attackAngle / 2);
             return dotProduct >= cosHalfAngle;
         }

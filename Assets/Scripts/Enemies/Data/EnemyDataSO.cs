@@ -14,5 +14,7 @@ namespace Enemies.Data
         public float chaseIdleRadius = 15f;
         public float chaseAttackRadius = 2f;
         public float attackChaseRadius = 7f;
+        [Space]
+        public LayerMask targetLayer;
     }
 }
