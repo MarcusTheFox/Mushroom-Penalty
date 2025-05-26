@@ -9,6 +9,11 @@ public class AnimationController : MonoBehaviour
     [SerializeField] private string magicAttackParamName = "MagicAttack";
     [SerializeField] private string damageParamName = "Damage";
     [SerializeField] private string deathParamName = "Death";
+    [SerializeField] private string attackParamName = "Attack";
+    [SerializeField] private string strongAttackParamName = "StrongAttack";
+    [SerializeField] private string dieParamName = "Die";
+    [SerializeField] private string aggroParamName = "Aggro";
+
     private Animator animator;
 
     private void Awake()
@@ -40,26 +45,29 @@ public class AnimationController : MonoBehaviour
     {
         animator.SetTrigger(damageParamName);
     }
+
     public void PlayDeathAnimation()
     {
         animator.SetTrigger(deathParamName);
     }
-    
-    public void PlayChargeAnimation()
+
+    public void PlayBossAttackAnimation(bool IsAttack)
     {
-        animator.SetTrigger("Charge");
-    }
-    public void PlayStrongAttackAnimation()
-    {
-        // ����� �������� ������ ������� ��� �������� ��� ������� �����
-        // ��������:
-        animator.SetTrigger("StrongAttack");
+        animator.SetBool(attackParamName, IsAttack); 
     }
 
-    public void PlayKickAttackAnimation()
+    public void PlayBossStrongAttackAnimation()
     {
-        // ����� �������� ������ ������� ��� �������� ��� ������� �����
-        // ��������:
-        animator.SetTrigger("KickAttack");
+        animator.SetTrigger(strongAttackParamName); 
+    }
+
+    public void PlayBossAggroAnimation(bool isAggro)
+    {
+        animator.SetBool(aggroParamName, isAggro); 
+    }
+
+    public void PlayBossDieAnimation()
+    {
+        animator.SetTrigger(dieParamName); 
     }
 }
