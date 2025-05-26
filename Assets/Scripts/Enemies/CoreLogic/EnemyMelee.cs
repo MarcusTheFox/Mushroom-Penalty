@@ -39,7 +39,7 @@ namespace Enemies.CoreLogic
             idleState = new IdleState();
             chaseState = new ChaseState(movementSetup.EnemyMovementTowards, animationController);
             meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController);
-            deadState = new DeadState();
+            deadState = new DeadState(animationController);
             
             stateMachine.AddState(idleState);
             stateMachine.AddState(chaseState);
@@ -58,7 +58,8 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => Target && 
                 DistanceToTarget() > enemyData.attackChaseRadius);
             
-            stateMachine.AddAnyTransition<IdleState>(_ => !Target);
+            stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
         }

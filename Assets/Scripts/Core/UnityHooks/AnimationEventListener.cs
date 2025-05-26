@@ -31,7 +31,7 @@ namespace Core.UnityHooks
             OnStopMagicAttack?.Invoke();
         }
 
-        public void Dead()
+        public void DeadEvent()
         {
             OnDead?.Invoke();
         }
