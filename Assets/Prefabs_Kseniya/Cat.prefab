@@ -659,7 +659,6 @@ GameObject:
   - component: {fileID: 2672640348648643731}
   - component: {fileID: 6476739599471182341}
   - component: {fileID: 5497852214506703743}
-  - component: {fileID: 2606267981091659743}
   m_Layer: 6
   m_Name: Cat
   m_TagString: Player
@@ -814,6 +813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  animationController: {fileID: 0}
 --- !u!114 &4015512114030416980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -889,23 +889,11 @@ MonoBehaviour:
   magicAttackParamName: MagicAttack
   damageParamName: Damage
   deathParamName: NoHP
---- !u!114 &2606267981091659743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5348114338648166477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95c9d56f2af8fee4295147d96babbd88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 0}
-  spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  spawnInterval: 3
+  attackParamName: Attack
+  strongAttackParamName: StrongAttack
+  dieParamName: Die
+  aggroParamName: Aggro
+  fleeParamName: Flee
 --- !u!1 &5437264920670589085
 GameObject:
   m_ObjectHideFlags: 0

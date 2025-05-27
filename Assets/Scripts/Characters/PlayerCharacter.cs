@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,18 +7,15 @@ public class PlayerCharacter : Character
     {
         GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
+
         animationController.PlayDeathAnimation();
+
+        Invoke(nameof(PlayerDead), 3f); 
     }
 
     private void PlayerDead()
     {
         Destroy(gameObject);
-        StartCoroutine(Restart());
-    }
-
-    private IEnumerator Restart()
-    {
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("GameOverScene"); 
     }
 }
