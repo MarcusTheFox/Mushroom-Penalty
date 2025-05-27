@@ -6,63 +6,61 @@ public class Enemy : Character
 {
     [Header("AI Ranges")]
     [Min(0)]
-    [SerializeField] private float viewDistance = 5f;
+    [SerializeField] protected float viewDistance = 5f;
     [Min(0)]
-    [SerializeField] private float attackRange = 3f;
+    [SerializeField] protected float attackRange = 3f;
     [Min(0)]
-    [SerializeField] private float stopMoveDistance = 2f;
+    [SerializeField] protected float stopMoveDistance = 2f;
     [Min(0)]
-    [SerializeField] private float fleeDistance = 1f;
+    [SerializeField] protected float fleeDistance = 1f;
 
     [Header("Visualization")]
-    [SerializeField] private bool visualizeRanges;
-    [SerializeField] private bool alwaysVisualizeRanges;
+    [SerializeField] protected bool visualizeRanges;
+    [SerializeField] protected bool alwaysVisualizeRanges;
     
     public float ViewDistance => viewDistance;
     public float AttackRange => attackRange;
     public float StopMoveDistance => stopMoveDistance;
     public float FleeDistance => fleeDistance;
     
-    private Transform playerTransform;
-    private IAttack attack;
-    private IMovable movement;
-    private EnemyStateMachine stateMachine;
+    protected Transform playerTransform;
+    protected IAttack attack;
+    protected IMovable movement;
+    protected IStateMachine stateMachine;
 
-    private bool canAttack = true;
-    private bool canMove = true;
+    protected bool canAttack = true;
+    protected bool canMove = true;
+
+    public event Action OnDead;
+
+    public virtual void SetStateMachine()
+    {
+        stateMachine = new EnemyStateMachine(this);
+        stateMachine.Initialize(((EnemyStateMachine)stateMachine).IdleState);
+    }
 
     protected override void Awake()
     {
         base.Awake();
-        GameObject playerObjectWithTag = GameObject.FindGameObjectWithTag("Player");
-        if (!playerObjectWithTag)
-        {
-            Debug.LogError("No player object with the tag 'Player'", this);
-            enabled = false;
-            return;
-        }
-        
-        playerTransform = playerObjectWithTag.transform;
+        animationController = GetComponent<AnimationController>();
+    }
+
+    public void Initialize(Transform player)
+    {
+        playerTransform = player;
         attack = GetComponent<IAttack>();
         movement = GetComponent<IMovable>();
-        if (movement == null)
-        {
-            Debug.LogWarning("No IMovement found on Enemy!");
-        }
+
         if (attack == null)
         {
-            Debug.LogError("No IAttack found on Enemy!");
+            Debug.LogError("Enemy missing IAttack component");
             enabled = false;
             return;
         }
 
-        stateMachine = new EnemyStateMachine(this);
+        SetStateMachine();
     }
 
-    private void Start()
-    {
-        stateMachine.Initialize(stateMachine.IdleState);
-    }
 
     private void Update()
     {
@@ -115,7 +113,7 @@ public class Enemy : Character
         movement.Stop();
     }
 
-    public void AttackPlayer()
+    public virtual void AttackPlayer()
     {
         LookToPlayer();
         
@@ -146,6 +144,8 @@ public class Enemy : Character
     protected override void Die()
     {
         animationController?.PlayDeathAnimation();
+
+        OnDead?.Invoke();
     }
 
     public void DeadEvent()

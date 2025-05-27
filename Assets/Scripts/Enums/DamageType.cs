@@ -1,5 +1,9 @@
 public enum DamageType
 {
     Physical, 
-    Magical
+    Magical,
+    Fire,
+    Ice,
+    Earth,
+    Ether
 }

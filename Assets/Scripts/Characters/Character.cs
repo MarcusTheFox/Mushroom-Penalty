@@ -5,7 +5,7 @@ public abstract class Character : MonoBehaviour, IDamageable
     [SerializeField] private float maxHealth = 100f;
 
     protected HealthSystem healthSystem;
-    protected AnimationController animationController;
+    public AnimationController animationController;
     
     public HealthSystem HealthSystem => healthSystem;
 

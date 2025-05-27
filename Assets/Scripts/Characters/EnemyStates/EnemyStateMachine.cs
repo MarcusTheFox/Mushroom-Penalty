@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyStateMachine
+public class EnemyStateMachine : IStateMachine
 {
     private readonly Enemy _enemy;
 
