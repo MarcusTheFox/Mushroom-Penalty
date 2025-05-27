@@ -13,6 +13,7 @@ public class AnimationController : MonoBehaviour
     [SerializeField] private string strongAttackParamName = "StrongAttack";
     [SerializeField] private string dieParamName = "Die";
     [SerializeField] private string aggroParamName = "Aggro";
+    [SerializeField] private string fleeParamName = "Flee";
 
     private Animator animator;
 
@@ -23,6 +24,11 @@ public class AnimationController : MonoBehaviour
         {
             Debug.LogError("Animator not found on " + gameObject.name);
         }
+    }
+
+    public void PlayFleeAnimation(bool isFlee)
+    {
+        animator.SetBool(fleeParamName, isFlee);
     }
 
     public void PlayMoveAnimation(bool isMoving, bool isRunning)

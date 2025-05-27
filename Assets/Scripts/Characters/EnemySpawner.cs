@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -23,9 +24,16 @@ public class EnemySpawner : MonoBehaviour
     [Header("Visualization")]
     [SerializeField] private Color gizmoColor = new Color(1f, 1f, 0f, 0.25f);
 
+    [Header("UI Settings")]
+    [SerializeField] private Text scoreText;
+    [SerializeField] private GameObject victoryScreen;
+
     private float timer = 0f;
     private int currentSpawned = 0;
     private bool playerWasInRange = false;
+
+    private int score = 0;
+
 
     private void Awake()
     {
@@ -37,6 +45,11 @@ public class EnemySpawner : MonoBehaviour
             else
                 Debug.LogError("Player with tag 'Player' not found!");
         }
+
+        UpdateScoreUI();
+
+        if (victoryScreen != null)
+            victoryScreen.SetActive(false);
     }
 
     private void Update()
@@ -49,7 +62,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (playerInRange && !playerWasInRange)
         {
-            // ����� ������ ��� ����� � ���� � ������� �����
+            // Игрок только что вошёл в зону — спавним сразу
             SpawnEnemyAtRandomPoint();
             timer = 0f;
         }
@@ -82,7 +95,10 @@ public class EnemySpawner : MonoBehaviour
         if (enemy != null)
         {
             enemy.Initialize(playerTransform);
-            enemy.OnDead += () => OnEnemyKilled(spawnPoint.position); 
+            enemy.OnDead += () =>
+            {
+                OnEnemyKilled(spawnPoint.position);
+            };
         }
 
         currentSpawned++;
@@ -91,6 +107,7 @@ public class EnemySpawner : MonoBehaviour
     private void OnEnemyKilled(Vector3 spawnPosition)
     {
         enemiesKilled++;
+        AddScore(1);
 
         if (enemiesKilled >= killThreshold && bossPrefab != null)
         {
@@ -103,16 +120,50 @@ public class EnemySpawner : MonoBehaviour
                 if (playerObj != null)
                 {
                     boss.InitializePlayer(playerObj.transform);
+                    boss.OnBossDead += () => OnBossKilled();
                 }
                 else
                 {
-                    Debug.LogError("Player � ����� 'Player' �� ������!");
+                    Debug.LogError("Player с тегом 'Player' не найден!");
                 }
             }
 
         }
     }
 
+    private void OnBossKilled()
+    {
+        AddScore(2); // ← очки за босса
+    }
+
+    private void AddScore(int points)
+    {
+        score += points;
+        UpdateScoreUI();
+
+        if (score >= 5)
+        {
+            ShowVictoryScreen();
+            // Можно дополнительно остановить игру, отключить спавн и управление игроком
+            enabled = false;
+        }
+    }
+
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = $"Scores: {score}";
+        }
+    }
+
+    private void ShowVictoryScreen()
+    {
+        if (victoryScreen != null)
+            victoryScreen.SetActive(true);
+
+        Debug.Log("Победа! Игрок набрал 10 очков.");
+    }
 
 
     private void OnDrawGizmosSelected()

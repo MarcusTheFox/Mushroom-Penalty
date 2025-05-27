@@ -6,6 +6,7 @@ using UnityEngine;
 public enum StateType
 {
     Idle,
+    Flee,
     Aggro,
     Attack,
     StrongAttack

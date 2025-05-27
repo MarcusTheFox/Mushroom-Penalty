@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using UnityEditor;
+
 
 public class Boss : Character
 {
@@ -26,6 +29,8 @@ public class Boss : Character
     private bool hasAggroTriggered = false;
     private bool canMove = true;
     public bool CanMove => canMove;
+
+    public event Action OnBossDead;
 
     protected override void Awake()
     {
@@ -223,6 +228,7 @@ public class Boss : Character
     protected override void Die()
     {
         animationController?.PlayBossDieAnimation();
+        OnBossDead?.Invoke();
     }
 
     public void DeadEvent()
