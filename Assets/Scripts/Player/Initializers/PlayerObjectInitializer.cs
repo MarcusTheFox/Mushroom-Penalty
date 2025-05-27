@@ -1,5 +1,6 @@
 using Core.UnityHooks;
 using Player.CoreLogic;
+using Player.Data;
 using Player.Input;
 using Player.UI;
 using UnityEngine;
@@ -8,8 +9,6 @@ namespace Player.Initializers
 {
     public class PlayerObjectInitializer : ObjectInitializer
     {
-        [SerializeField] private GameObject fireballPrefab;
-        [SerializeField] private LayerMask targetLayer;
         [SerializeField] private Transform fireballSpawnPoint;
         [SerializeField] private PlayerInputController PIC;
         [SerializeField] private PlayerDataSO playerData;

@@ -37,7 +37,7 @@ namespace Enemies.CoreLogic
         protected override void ConfigureStateMachine()
         {
             idleState = new IdleState();
-            chaseState = new ChaseState(movementSetup.EnemyMovementTowards, animationController);
+            chaseState = new ChaseState(movementSetup.EnemyMovementTowards, animationController, Target);
             meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController);
             deadState = new DeadState(animationController);
             
@@ -62,11 +62,6 @@ namespace Enemies.CoreLogic
             stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
-        }
-
-        private float DistanceToTarget()
-        {
-            return Vector3.Distance(Target.position, EnemyTransform.position);
         }
 
         protected override void OnDestroy()

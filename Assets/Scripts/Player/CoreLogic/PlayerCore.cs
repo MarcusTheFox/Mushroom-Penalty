@@ -1,5 +1,6 @@
 using Core.UnityHooks;
 using Player.CoreLogic.Components;
+using Player.Data;
 using Player.Input;
 using Player.UI;
 using UnityEngine;

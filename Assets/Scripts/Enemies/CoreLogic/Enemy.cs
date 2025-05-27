@@ -93,5 +93,10 @@ namespace Enemies.CoreLogic
             
             UI.Cleanup();
         }
+
+        protected float DistanceToTarget()
+        {
+            return Vector3.Distance(Target.position, EnemyTransform.position);
+        }
     }
 }

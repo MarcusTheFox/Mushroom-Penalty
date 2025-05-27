@@ -2,6 +2,7 @@
 using Core.Movement;
 using Core.UnityHooks;
 using Player.CoreLogic.Handlers;
+using Player.Data;
 using Player.Input;
 using UnityEngine;
 

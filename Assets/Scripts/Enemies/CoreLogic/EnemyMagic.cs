@@ -1,5 +1,4 @@
 ﻿using Core.UnityHooks;
-using Enemies.Components;
 using Enemies.UI;
 using UnityEngine;
 

@@ -10,19 +10,21 @@ namespace Enemies.States
     {
         private readonly IMovement movement;
         private readonly EnemyAnimationController animationController;
-        
+        private readonly Transform target;
+
         private bool chasing;
 
-        public ChaseState(IMovement movement, EnemyAnimationController animationController)
+        public ChaseState(IMovement movement, EnemyAnimationController animationController, Transform target)
         {
             this.movement = movement;
             this.animationController = animationController;
+            this.target = target;
         }
         
         public override void OnUpdate(Enemy context, float deltaTime)
         {
             base.OnUpdate(context, deltaTime);
-            Vector3 move = movement.Move(context.Target.position);
+            Vector3 move = movement.Move(target.position);
             move.y = 0;
             bool newChasing = move.magnitude > 0.1f;
             if (newChasing == chasing) return;
