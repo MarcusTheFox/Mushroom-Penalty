@@ -14,25 +14,23 @@ namespace Combat.Implementations
         public event Action OnApply;
         public event Action OnStop;
     
-        private ICooldown cooldown;
-        private readonly LayerMask targetLayer;
+        private readonly ICooldown cooldown;
         private readonly GameObject fireballPrefab;
         private readonly Transform fireballSpawnPoint;
-        private readonly Transform playerTransform;
+        private readonly Transform ownerTransform;
 
         private bool cooldownFinished;
         private bool attackEnded;
         private bool isReady;
     
-        public MagicAttack(float damage, ICooldown cooldown, LayerMask targetLayer, GameObject fireballPrefab,
-            Transform fireballSpawnPoint, Transform playerTransform)
+        public MagicAttack(float damage, ICooldown cooldown, GameObject fireballPrefab,
+            Transform fireballSpawnPoint, Transform ownerTransform)
         {
             Damage = damage;
             this.cooldown = cooldown;
-            this.targetLayer = targetLayer;
             this.fireballPrefab = fireballPrefab;
             this.fireballSpawnPoint = fireballSpawnPoint;
-            this.playerTransform = playerTransform;
+            this.ownerTransform = ownerTransform;
 
             isReady = true;
         
@@ -71,7 +69,7 @@ namespace Combat.Implementations
 
             if (fireballComponent != null)
             {
-                fireballComponent.AddSettings(playerTransform.gameObject, fireballSpawnPoint.forward, 10f);
+                fireballComponent.AddSettings(ownerTransform.gameObject, fireballSpawnPoint.forward, 10f, Damage);
             }
         
             OnApply?.Invoke();

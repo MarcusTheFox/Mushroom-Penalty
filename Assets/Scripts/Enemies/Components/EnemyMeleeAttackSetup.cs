@@ -16,7 +16,6 @@ namespace Enemies.Components
         private readonly LayerMask targetLayer;
         private readonly float attackRadius;
         private readonly float attackAngle;
-        private readonly Animator animator;
 
         public IAttack MeleeAttack { get; private set; }
         private MeleeAttackAnimationEventHandler attackAnimationEventHandler;

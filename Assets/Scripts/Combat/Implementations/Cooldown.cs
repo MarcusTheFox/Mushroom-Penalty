@@ -35,7 +35,7 @@ namespace Combat.Implementations
             get
             {
                 if (IsInvalidated) return 0f;
-                if (!IsActive) return 1f;
+                if (!IsActive || Duration == 0f) return 1f;
             
                 return Mathf.Clamp01((Time.time - startTime) / Duration);
             }
@@ -50,7 +50,7 @@ namespace Combat.Implementations
 
         public Cooldown(float duration)
         {
-            Duration = duration > 0 ? duration : 0;
+            Duration = Mathf.Max(0, duration);
             IsActive = false;
             startTime = -1f;
         }

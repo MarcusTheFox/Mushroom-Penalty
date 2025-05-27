@@ -8,13 +8,13 @@ namespace Enemies.Data
         [Header("Movement")]
         public float speed = 5f;
         [Header("Attack")]
-        public float meleeDamage = 10f;
-        public float meleeRange = 7f;
+        public float meleeDamage = 20f;
+        public float meleeRange = 10f;
         public float meleeAngle = 90f;
         [Header("State radius")] 
-        public float idleChaseRadius = 10f;
-        public float chaseIdleRadius = 15f;
-        public float chaseAttackRadius = 2f;
-        public float attackChaseRadius = 7f;
+        public float idleChaseRadius = 25f;
+        public float chaseIdleRadius = 35f;
+        public float chaseAttackRadius = 7f;
+        public float attackChaseRadius = 10f;
     }
 }

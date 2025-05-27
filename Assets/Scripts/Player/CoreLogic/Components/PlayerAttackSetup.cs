@@ -43,7 +43,7 @@ namespace Player.CoreLogic.Components
             MagicCooldown = new Cooldown(data.magicCooldown);
             MeleeAttack = new MeleeAttack(data.meleeDamage, playerTransform, data.targetLayer, data.meleeRange,
                 data.meleeAngle);
-            MagicAttack = new MagicAttack(data.magicDamage, MagicCooldown, data.targetLayer, data.magicProjectilePrefab,
+            MagicAttack = new MagicAttack(data.magicDamage, MagicCooldown, data.magicProjectilePrefab,
                 fireballSpawnPoint, playerTransform);
             
             attackInputHandler = new PlayerAttackInputHandler(MeleeAttack, MagicAttack);

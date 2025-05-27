@@ -14,20 +14,15 @@ namespace Combat.Projectiles.Initializers
         {
             base.Initialize();
 
-            fireball = new Fireball()
-            {
-                UEL = UEL,
-                transform = transform,
-                Rigidbody = GetComponent<Rigidbody>(),
-            };
+            fireball = new Fireball(UEL, transform, GetComponent<Rigidbody>());
             
             fireball.Initialize();
             Destroy(gameObject, Lifetime);
         }
 
-        public void AddSettings(GameObject owner, Vector3 direction, float speed)
+        public void AddSettings(GameObject owner, Vector3 direction, float speed, float damage)
         {
-            fireball.AddSettings(owner, direction, speed);
+            fireball.AddSettings(owner, direction, speed, damage);
         }
     }
 }

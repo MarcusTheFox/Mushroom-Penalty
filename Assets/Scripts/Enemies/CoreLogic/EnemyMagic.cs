@@ -44,15 +44,12 @@ namespace Enemies.CoreLogic
             
             coreSetup = new EnemyCoreComponentsSetup(IOE, data.health);
             coreSetup.Initialize();
-
-            // attackSetup = new EnemyMagicAttackSetup(AEL, animator, fireballSpawnPoint, data);
-            // attackSetup.Initialize();
             
             movementTowards = new EnemyMovementTowards(EnemyTransform, data.speedTowards);
             movementAway = new EnemyMovementAway(EnemyTransform, data.speedAway);
             
+            magicAttackSetup = new EnemyMagicAttackSetup(UEL, AEL, EnemyTransform, fireballSpawnPoint, data);
             
-            magicAttackSetup = new EnemyMagicAttackSetup(AEL, animator, Target, fireballSpawnPoint);
             UI.Initialize(coreSetup.Health);
         }
 
