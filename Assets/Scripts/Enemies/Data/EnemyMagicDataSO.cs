@@ -13,9 +13,17 @@ namespace Enemies.Data
         public float magicCooldown = 1f;
         public GameObject magicProjectilePrefab;
         [Header("State radius")] 
-        public float idleChaseRadius = 25f;
-        public float chaseIdleRadius = 35f;
-        public float chaseAttackRadius = 7f;
-        public float attackChaseRadius = 10f;
+        [Min(0)]
+        public float idleChaseRadius;
+        [Min(0)]
+        public float chaseIdleRadius;
+        [Min(0)]
+        public float chaseAttackRadius;
+        [Min(0)]
+        public float attackChaseRadius;
+        [Min(0)]
+        public float attackFleeRadius;
+        [Min(0)]
+        public float fleeAttackRadius;
     }
 }

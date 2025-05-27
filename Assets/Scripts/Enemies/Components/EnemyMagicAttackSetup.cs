@@ -9,13 +9,14 @@ namespace Enemies.Components
 {
     public class EnemyMagicAttackSetup : ICleanupable
     {
+        public MagicAttack MagicAttack { get; private set; }
+        
         private readonly UnityEventListener UEL;
         private readonly AnimationEventListener AEL;
         private readonly Transform enemyTransform;
         private readonly Transform fireballSpawnPoint;
         private readonly EnemyMagicDataSO data;
 
-        private MagicAttack magicAttack;
         private Cooldown cooldown;
         private MagicAttackAnimationEventHandler attackAnimationEventHandler;
 
@@ -35,10 +36,10 @@ namespace Enemies.Components
         public void Initialize()
         {
             cooldown = new Cooldown(data.magicCooldown);
-            magicAttack = new MagicAttack(data.magicDamage, cooldown, data.magicProjectilePrefab,
+            MagicAttack = new MagicAttack(data.magicDamage, cooldown, data.magicProjectilePrefab,
                 fireballSpawnPoint, enemyTransform);
 
-            attackAnimationEventHandler = new MagicAttackAnimationEventHandler(magicAttack);
+            attackAnimationEventHandler = new MagicAttackAnimationEventHandler(MagicAttack);
             
             UEL.OnUpdateEvent.AddListener(cooldown.Update);
             AddAttackAnimationEventHandler();

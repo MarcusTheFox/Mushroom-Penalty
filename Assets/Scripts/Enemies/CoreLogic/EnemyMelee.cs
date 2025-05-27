@@ -67,17 +67,10 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(meleeAttackState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && 
-                DistanceToTarget() < data.idleChaseRadius);
-            
-            stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && 
-                DistanceToTarget() > data.chaseIdleRadius);
-            
-            stateMachine.AddTransition<ChaseState, MeleeAttackState>(_ => Target && 
-                DistanceToTarget() < data.chaseAttackRadius);
-            
-            stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => Target && 
-                DistanceToTarget() > data.attackChaseRadius);
+            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && DistanceToTarget() > data.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, MeleeAttackState>(_ => Target && DistanceToTarget() < data.chaseAttackRadius);
+            stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => Target && DistanceToTarget() > data.attackChaseRadius);
             
             stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
             stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);

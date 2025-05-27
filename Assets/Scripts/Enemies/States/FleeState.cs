@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Enemies.States
 {
-    public class ChaseState : BaseState<Enemy>
+    public class FleeState : BaseState<Enemy>
     {
         private readonly IMovement movement;
         private readonly EnemyAnimationController animationController;
@@ -14,7 +14,7 @@ namespace Enemies.States
 
         private bool moving;
 
-        public ChaseState(IMovement movement, EnemyAnimationController animationController, Transform target)
+        public FleeState(IMovement movement, EnemyAnimationController animationController, Transform target)
         {
             this.movement = movement;
             this.animationController = animationController;

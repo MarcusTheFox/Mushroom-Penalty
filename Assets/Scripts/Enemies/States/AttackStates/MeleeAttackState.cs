@@ -18,7 +18,7 @@ namespace Enemies.States.AttackStates
             this.animationController = animationController;
 
             attackReady = true;
-            attack.OnReady += SetAttackIsReady;
+            this.attack.OnReady += SetAttackIsReady;
         }
 
         public void Cleanup()

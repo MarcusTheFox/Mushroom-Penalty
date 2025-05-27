@@ -4,6 +4,8 @@ using Core.UnityHooks;
 using Enemies.Components;
 using Enemies.Data;
 using Enemies.Handlers;
+using Enemies.States;
+using Enemies.States.AttackStates;
 using Enemies.UI;
 using UnityEngine;
 
@@ -20,6 +22,12 @@ namespace Enemies.CoreLogic
         private EnemyMovementTowards movementTowards;
         private EnemyMovementAway movementAway;
         private EnemyMagicDataSO data;
+        
+        private IdleState idleState;
+        private ChaseState chaseState;
+        private MagicAttackState magicAttackState;
+        private FleeState fleeState;
+        private DeadState deadState;
 
         public EnemyMagic(UnityEventListener UEL,
             AnimationEventListener AEL,
@@ -49,12 +57,36 @@ namespace Enemies.CoreLogic
             movementAway = new EnemyMovementAway(EnemyTransform, data.speedAway);
             
             magicAttackSetup = new EnemyMagicAttackSetup(UEL, AEL, EnemyTransform, fireballSpawnPoint, data);
+            magicAttackSetup.Initialize();
             
             UI.Initialize(coreSetup.Health);
         }
 
         protected override void ConfigureStateMachine()
         {
+            idleState = new IdleState();
+            chaseState = new ChaseState(movementTowards, animationController, Target);
+            magicAttackState = new MagicAttackState(magicAttackSetup.MagicAttack, animationController);
+            fleeState = new FleeState(movementAway, animationController, Target);
+            deadState = new DeadState(animationController);
+            
+            stateMachine.AddState(idleState);
+            stateMachine.AddState(chaseState);
+            stateMachine.AddState(magicAttackState);
+            stateMachine.AddState(fleeState);
+            stateMachine.AddState(deadState);
+            
+            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && DistanceToTarget() > data.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, MagicAttackState>(_ => Target && DistanceToTarget() < data.chaseAttackRadius);
+            stateMachine.AddTransition<MagicAttackState, ChaseState>(_ => Target && DistanceToTarget() > data.attackChaseRadius);
+            stateMachine.AddTransition<MagicAttackState, FleeState>(_ => Target && DistanceToTarget() < data.attackFleeRadius);
+            stateMachine.AddTransition<FleeState, MagicAttackState>(_ => Target && DistanceToTarget() > data.fleeAttackRadius);
+            
+            stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
+            
+            stateMachine.Initialize(idleState);
         }
 
         protected override void OnDestroy()
@@ -62,6 +94,7 @@ namespace Enemies.CoreLogic
             base.OnDestroy();
             
             coreSetup.Cleanup();
+            magicAttackSetup.Cleanup();
             
             UI.Cleanup();
         }

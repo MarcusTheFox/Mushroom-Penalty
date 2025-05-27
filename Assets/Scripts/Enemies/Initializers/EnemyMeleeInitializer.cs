@@ -17,7 +17,7 @@ namespace Enemies.Initializers
             enemyMelee.Initialize();
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Vector3 position = transform.position;
             Vector3 normal = Vector3.up;

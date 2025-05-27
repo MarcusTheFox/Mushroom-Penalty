@@ -1,7 +1,45 @@
-﻿namespace Enemies.States.AttackStates
+﻿using AI;
+using Combat.Interfaces;
+using Core.Interfaces;
+using Enemies.CoreLogic;
+using Enemies.Handlers;
+
+namespace Enemies.States.AttackStates
 {
-    public class MagicAttackState
+    public class MagicAttackState : BaseState<Enemy>, ICleanupable
     {
-        
+        private readonly IAttack attack;
+        private readonly EnemyAnimationController animationController;
+        private bool attackReady;
+
+        public MagicAttackState(IAttack attack, EnemyAnimationController animationController)
+        {
+            this.attack = attack;
+            this.animationController = animationController;
+
+            attackReady = true;
+            this.attack.OnReady += SetAttackIsReady;
+        }
+
+        public void Cleanup()
+        {
+            attack.OnReady -= SetAttackIsReady;
+        }
+
+        public override void OnUpdate(Enemy context, float deltaTime)
+        {
+            base.OnUpdate(context, deltaTime);
+            if (attackReady)
+            {
+                attackReady = false;
+                attack.Start();
+                animationController.OnMagicAttack(true);
+            }
+        }
+
+        private void SetAttackIsReady()
+        {
+            attackReady = true;
+        }
     }
 }
