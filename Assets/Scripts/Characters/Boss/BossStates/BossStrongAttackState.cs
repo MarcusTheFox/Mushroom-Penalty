@@ -15,13 +15,19 @@ public class BossStrongAttackState : IState
     {
         Debug.Log("Босс выполняет сильную атаку");
 
-        boss.PerformStrongAttack();
-
         boss.animationController.PlayBossStrongAttackAnimation();
-
     }
 
-    public void Update() { }
+    public void Update()
+    {
+        if (boss.IsPlayerDead())
+        {
+            boss.StopMoving();
+            boss.animationController?.DontPlayBossStrongAttackAnimation();
+            machine.ChangeState(StateType.Idle);
+            return;
+        }
+    }
 
     public void Exit()
     {

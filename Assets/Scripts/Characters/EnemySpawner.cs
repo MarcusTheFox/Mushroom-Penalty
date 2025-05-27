@@ -4,6 +4,12 @@ public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawner Settings")]
     [SerializeField] private GameObject enemyPrefab;
+
+    [SerializeField] private GameObject bossPrefab;
+
+    private int enemiesKilled = 0;
+    private const int killThreshold = 3;
+
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float spawnInterval = 3f;
     [SerializeField] private int maxSpawnCount = 10;
@@ -76,10 +82,38 @@ public class EnemySpawner : MonoBehaviour
         if (enemy != null)
         {
             enemy.Initialize(playerTransform);
+            enemy.OnDead += () => OnEnemyKilled(spawnPoint.position); 
         }
 
         currentSpawned++;
     }
+
+    private void OnEnemyKilled(Vector3 spawnPosition)
+    {
+        enemiesKilled++;
+
+        if (enemiesKilled >= killThreshold && bossPrefab != null)
+        {
+            GameObject bossObj = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
+
+            Boss boss = bossObj.GetComponent<Boss>();
+            if (boss != null)
+            {
+                GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+                if (playerObj != null)
+                {
+                    boss.InitializePlayer(playerObj.transform);
+                }
+                else
+                {
+                    Debug.LogError("Player с тегом 'Player' не найден!");
+                }
+            }
+
+        }
+    }
+
+
 
     private void OnDrawGizmosSelected()
     {

@@ -2,14 +2,27 @@ using UnityEngine;
 
 public class BossStrongAttack : BaseAttack
 {
-    [SerializeField] private Transform target;
+    private Transform target;
     [SerializeField] private DamageType damageType = DamageType.Fire;
-    [SerializeField] private ParticleSystem strongAttackVFX;
+
+    [Header("Strong Attack Visuals")]
+    [SerializeField] private ParticleSystem[] strongAttackVFXs; // массив из 4 ParticleSystem
+
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+    }
+
 
     public override void PerformAttack()
     {
         if (IsOnCooldown || target == null) return;
 
+        // Визуальный эффект
+        PlayOnlyOneVFX();
+
+
+        // Нанесение урона
         IDamageable damageable = target.GetComponent<IDamageable>();
         if (damageable != null)
         {
@@ -17,10 +30,33 @@ public class BossStrongAttack : BaseAttack
             Debug.Log($"BossStrongAttack: нанесён {damage} урон ({damageType}) цели: {target.name}");
         }
 
-        if (strongAttackVFX != null)
-        {
-            strongAttackVFX.Play();
-        }
 
     }
+
+    private void PlayOnlyOneVFX()
+    {
+        if (strongAttackVFXs == null || strongAttackVFXs.Length == 0)
+            return;
+
+        // Остановить все эффекты перед запуском нового
+        foreach (var vfx in strongAttackVFXs)
+        {
+            if (vfx != null)
+            {
+                vfx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                vfx.Clear();
+            }
+        }
+
+        // Выбрать случайный и проиграть
+        int index = Random.Range(0, strongAttackVFXs.Length);
+        var selectedVFX = strongAttackVFXs[index];
+
+        if (selectedVFX != null)
+        {
+            selectedVFX.Play();
+        }
+    }
+
+
 }

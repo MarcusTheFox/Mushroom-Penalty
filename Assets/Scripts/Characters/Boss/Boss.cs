@@ -78,6 +78,27 @@ public class Boss : Character
         StateMachine.CurrentState?.Update();
     }
 
+    public void InitializePlayer(Transform playerTransform)
+    {
+        player = playerTransform;
+
+        playerScript = player.GetComponent<PlayerCharacter>();
+        if (playerScript == null)
+        {
+            Debug.LogError("Компонент PlayerCharacter не найден у объекта игрока!");
+        }
+
+        bossAttack = GetComponent<BossAttack>();
+        bossStrongAttack = GetComponent<BossStrongAttack>();
+
+        if (bossAttack != null)
+            bossAttack.SetTarget(player);
+
+        if (bossStrongAttack != null)
+            bossStrongAttack.SetTarget(player);
+    }
+
+
     public override void TakeDamage(float damage, DamageType type)
     {
         base.TakeDamage(damage, type);
@@ -109,8 +130,6 @@ public class Boss : Character
     {
         if (IsPlayerDead()) return;
 
-        SetRandomElement();
-        ApplyElementColor();
         bossAttack?.PerformAttack();
         normalAttackCount++;
     }
@@ -119,8 +138,6 @@ public class Boss : Character
     {
         if (IsPlayerDead()) return;
 
-        SetRandomElement();
-        PlayElementParticles();
         bossStrongAttack?.PerformAttack();
     }
 
@@ -216,24 +233,9 @@ public class Boss : Character
     public void StopMoving() => canMove = false;
     public void StartMoving() => canMove = true;
 
-    private bool IsPlayerDead()
+    public bool IsPlayerDead()
     {
         return playerScript == null || playerScript.HealthSystem == null || playerScript.HealthSystem.IsDead;
     }
 
-    // Заготовки для твоих методов: SetRandomElement, ApplyElementColor, PlayElementParticles
-    private void SetRandomElement()
-    {
-        // Логика выбора случайного элемента
-    }
-
-    private void ApplyElementColor()
-    {
-        // Логика применения цвета к боссу (bossRenderer)
-    }
-
-    private void PlayElementParticles()
-    {
-        // Логика запуска эффекта частиц (elementalParticles)
-    }
 }

@@ -61,6 +61,11 @@ public class AnimationController : MonoBehaviour
         animator.SetTrigger(strongAttackParamName); 
     }
 
+    public void DontPlayBossStrongAttackAnimation()
+    {
+        animator.ResetTrigger(strongAttackParamName);
+    }
+
     public void PlayBossAggroAnimation(bool isAggro)
     {
         animator.SetBool(aggroParamName, isAggro); 
@@ -70,4 +75,5 @@ public class AnimationController : MonoBehaviour
     {
         animator.SetTrigger(dieParamName); 
     }
+
 }

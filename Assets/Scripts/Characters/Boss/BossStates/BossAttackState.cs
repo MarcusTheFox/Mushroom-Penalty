@@ -25,7 +25,16 @@ public class BossAttackState : IState
         }
     }
 
-    public void Update() { }
+    public void Update() 
+    {
+        if (boss.IsPlayerDead())
+        {
+            boss.StopMoving();
+            boss.animationController?.PlayBossAttackAnimation(false);
+            machine.ChangeState(StateType.Idle);
+            return;
+        }
+    }
 
     public void Exit()
     {

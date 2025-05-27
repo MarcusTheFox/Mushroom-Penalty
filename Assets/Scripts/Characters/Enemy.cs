@@ -31,6 +31,8 @@ public class Enemy : Character
     protected bool canAttack = true;
     protected bool canMove = true;
 
+    public event Action OnDead;
+
     public virtual void SetStateMachine()
     {
         stateMachine = new EnemyStateMachine(this);
@@ -42,35 +44,6 @@ public class Enemy : Character
         base.Awake();
         animationController = GetComponent<AnimationController>();
     }
-
-
-    //protected override void Awake()
-    //{
-    //    base.Awake();
-    //    GameObject playerObjectWithTag = GameObject.FindGameObjectWithTag("Player");
-    //    if (!playerObjectWithTag)
-    //    {
-    //        Debug.LogError("No player object with the tag 'Player'", this);
-    //        enabled = false;
-    //        return;
-    //    }
-
-    //    playerTransform = playerObjectWithTag.transform;
-    //    attack = GetComponent<IAttack>();
-    //    movement = GetComponent<IMovable>();
-    //    if (movement == null)
-    //    {
-    //        Debug.LogWarning("No IMovement found on Enemy!");
-    //    }
-    //    if (attack == null)
-    //    {
-    //        Debug.LogError("No IAttack found on Enemy!");
-    //        enabled = false;
-    //        return;
-    //    }
-
-    //    SetStateMachine();
-    //}
 
     public void Initialize(Transform player)
     {
@@ -171,6 +144,8 @@ public class Enemy : Character
     protected override void Die()
     {
         animationController?.PlayDeathAnimation();
+
+        OnDead?.Invoke();
     }
 
     public void DeadEvent()
