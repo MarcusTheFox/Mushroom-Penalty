@@ -1,4 +1,5 @@
 using Enemies.CoreLogic;
+using Enemies.Data;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,11 +7,14 @@ namespace Enemies.Initializers
 {
     public class EnemyMeleeInitializer : EnemyInitializer
     {
+        [SerializeField] private EnemyMeleeDataSO enemyData;
+        
         protected override void CreateEnemy()
         {
             EnemyMelee enemyMelee = new EnemyMelee(UEL, AEL, IOE, UI, transform, animator, player.transform);
             
-            enemyMelee.Initialize(enemyData);
+            enemyMelee.Configure(enemyData);
+            enemyMelee.Initialize();
         }
 
         private void OnDrawGizmos()

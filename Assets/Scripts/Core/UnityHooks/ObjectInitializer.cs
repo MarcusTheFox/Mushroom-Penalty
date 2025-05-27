@@ -2,14 +2,13 @@ using UnityEngine;
 
 namespace Core.UnityHooks
 {
-    [RequireComponent(typeof(UnityEventListener))]
     public class ObjectInitializer : MonoBehaviour
     {
         protected UnityEventListener UEL { get; private set; }
 
         private void Awake()
         {
-            UEL = GetComponent<UnityEventListener>();
+            UEL = GetComponent<UnityEventListener>() ?? gameObject.AddComponent<UnityEventListener>();
         
             Initialize();
         }

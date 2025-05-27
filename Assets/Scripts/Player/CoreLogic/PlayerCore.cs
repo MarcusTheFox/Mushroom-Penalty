@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using Core.UnityHooks;
 using Player.CoreLogic.Components;
 using Player.Data;
@@ -8,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace Player.CoreLogic
 {
-    public class PlayerCore
+    public class PlayerCore : IConfigurable<PlayerDataSO>
     {
         private readonly PlayerInputController PIC;
         private readonly AnimationEventListener AEL;
@@ -18,12 +19,12 @@ namespace Player.CoreLogic
         private readonly Transform playerTransform;
         private readonly Animator Animator;
         private readonly Transform fireballSpawnPoint;
-        private readonly PlayerDataSO playerData;
 
         private PlayerCoreComponentsSetup coreSetup;
         private PlayerMovementSetup movementSetup;
         private PlayerAttackSetup attackSetup;
         private PlayerAnimationSetup animationSetup;
+        private PlayerDataSO playerData;
 
         public PlayerCore(PlayerInputController PIC,
             AnimationEventListener AEL,
@@ -32,8 +33,7 @@ namespace Player.CoreLogic
             PlayerUI UI,
             Transform playerTransform,
             Animator animator,
-            Transform fireballSpawnPoint,
-            PlayerDataSO playerData)
+            Transform fireballSpawnPoint)
         {
             this.PIC = PIC;
             this.AEL = AEL;
@@ -43,7 +43,11 @@ namespace Player.CoreLogic
             this.playerTransform = playerTransform;
             Animator = animator;
             this.fireballSpawnPoint = fireballSpawnPoint;
-            this.playerData = playerData;
+        }
+
+        public void Configure(PlayerDataSO data)
+        {
+            playerData = data;
         }
 
         public void Initialize()

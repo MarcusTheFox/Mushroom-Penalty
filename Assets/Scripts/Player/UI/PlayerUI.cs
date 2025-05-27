@@ -22,17 +22,24 @@ namespace Player.UI
             health = healthComponent;
             cooldown = magicCooldown;
 
-            health.OnChange += UpdateHealth;
+            health.OnChange += OnChangeHealthHandler;
             cooldown.OnUpdate += UpdateMana;
+            
+            UpdateHealth();
         }
 
         public void Cleanup()
         {
-            health.OnChange -= UpdateHealth;
+            health.OnChange -= OnChangeHealthHandler;
             cooldown.OnUpdate -= UpdateMana;
         }
     
-        private void UpdateHealth(float value)
+        private void OnChangeHealthHandler(float value)
+        {
+            UpdateHealth();
+        }
+
+        private void UpdateHealth()
         {
             healthText.text = $"HP: {health.Health:0} | {health.MaxHealth:0}";
             healthSlider.DOValue(Mathf.Clamp01(health.Health / health.MaxHealth), healthBarChangeSpeed);

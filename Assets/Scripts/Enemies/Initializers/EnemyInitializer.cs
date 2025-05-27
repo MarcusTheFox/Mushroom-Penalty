@@ -1,5 +1,4 @@
 ﻿using Core.UnityHooks;
-using Enemies.Data;
 using Enemies.UI;
 using UnityEngine;
 
@@ -7,7 +6,6 @@ namespace Enemies.Initializers
 {
     public abstract class EnemyInitializer : ObjectInitializer
     {
-        [SerializeField] protected EnemyDataSO enemyData;
         protected EnemyUI UI { get; private set; }
         protected AnimationEventListener AEL { get; private set; }
         protected InteractableObjectEvents IOE { get; private set; }

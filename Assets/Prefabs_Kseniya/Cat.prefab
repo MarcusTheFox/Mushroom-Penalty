@@ -652,6 +652,8 @@ GameObject:
   - component: {fileID: 1011405758034250713}
   - component: {fileID: 2676620168470504303}
   - component: {fileID: 2160408941756047953}
+  - component: {fileID: 833859075146436094}
+  - component: {fileID: 9165638019033005752}
   m_Layer: 6
   m_Name: Cat
   m_TagString: Player
@@ -749,6 +751,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &833859075146436094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5348114338648166477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08c8203696bb524094742c4c2a52b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireballSpawnPoint: {fileID: 3647528950347995870}
+  PIC: {fileID: 0}
+  playerData: {fileID: 11400000, guid: f9eed940574b4b548a9eabd8b59d37cd, type: 2}
+--- !u!114 &9165638019033005752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5348114338648166477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8239e2e777a8ae428c0a965511c5d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthText: {fileID: 0}
+  healthSlider: {fileID: 0}
+  manaSlider: {fileID: 0}
 --- !u!1 &5437264920670589085
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace Player.Initializers
 {
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(PlayerUI))]
     public class PlayerObjectInitializer : ObjectInitializer
     {
         [SerializeField] private Transform fireballSpawnPoint;
@@ -20,8 +22,8 @@ namespace Player.Initializers
         protected override void Initialize()
         {
             base.Initialize();
-            AEL = GetComponent<AnimationEventListener>();
-            IOE = GetComponent<InteractableObjectEvents>();
+            AEL = GetComponent<AnimationEventListener>() ?? gameObject.AddComponent<AnimationEventListener>();
+            IOE = GetComponent<InteractableObjectEvents>() ?? gameObject.AddComponent<InteractableObjectEvents>();
             animator = GetComponent<Animator>();
             UI = GetComponent<PlayerUI>();
 
@@ -38,9 +40,9 @@ namespace Player.Initializers
                 UI,
                 transform,
                 animator,
-                fireballSpawnPoint,
-                playerData);
-
+                fireballSpawnPoint);
+            
+            player.Configure(playerData);
             player.Initialize();
         }
     }

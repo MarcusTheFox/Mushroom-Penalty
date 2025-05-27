@@ -1,8 +1,5 @@
 ﻿using AI.StateMachine;
 using Core.UnityHooks;
-using Enemies.Components;
-using Enemies.Data;
-using Enemies.Handlers;
 using Enemies.UI;
 using UnityEngine;
 
@@ -17,12 +14,6 @@ namespace Enemies.CoreLogic
         protected EnemyUI UI { get; }
         protected Transform EnemyTransform { get; }
         protected Animator animator { get; }
-        
-        protected EnemyDataSO enemyData;
-        
-        protected EnemyCoreComponentsSetup coreSetup;
-        protected EnemyMovementSetup movementSetup;
-        protected EnemyAnimationController animationController;
         
         protected IStateMachine<Enemy> stateMachine;
 
@@ -43,10 +34,8 @@ namespace Enemies.CoreLogic
             Target = target;
         }
 
-        public void Initialize(EnemyDataSO data)
+        public void Initialize()
         {
-            enemyData = data;
-            
             InitializeComponents();
             InitializeStateMachine();
             ConfigureEvents();
@@ -54,15 +43,6 @@ namespace Enemies.CoreLogic
 
         protected virtual void InitializeComponents()
         {
-            animationController = new EnemyAnimationController(animator);
-            
-            coreSetup = new EnemyCoreComponentsSetup(IOE, enemyData.health);
-            coreSetup.Initialize();
-
-            movementSetup = new EnemyMovementSetup(EnemyTransform, enemyData.chaseSpeed, enemyData.fleeSpeed);
-            movementSetup.Initialize();
-            
-            UI.Initialize(coreSetup.Health);
         }
 
         private void InitializeStateMachine()
@@ -71,7 +51,7 @@ namespace Enemies.CoreLogic
             ConfigureStateMachine();
         }
 
-        protected void ConfigureEvents()
+        private void ConfigureEvents()
         {
             UEL.OnUpdateEvent.AddListener(UpdateStateMachine);
             UEL.OnDestroyEvent.AddListener(OnDestroy);
@@ -88,10 +68,6 @@ namespace Enemies.CoreLogic
         {
             UEL.OnDestroyEvent.RemoveListener(OnDestroy);
             UEL.OnUpdateEvent.RemoveListener(UpdateStateMachine);
-            
-            coreSetup.Cleanup();
-            
-            UI.Cleanup();
         }
 
         protected float DistanceToTarget()

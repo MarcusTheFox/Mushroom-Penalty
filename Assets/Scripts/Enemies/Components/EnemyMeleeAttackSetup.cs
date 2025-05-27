@@ -2,6 +2,7 @@
 using Combat.Interfaces;
 using Core.Interfaces;
 using Core.UnityHooks;
+using Enemies.Data;
 using Enemies.Handlers;
 using UnityEngine;
 
@@ -20,19 +21,14 @@ namespace Enemies.Components
         public IAttack MeleeAttack { get; private set; }
         private MeleeAttackAnimationEventHandler attackAnimationEventHandler;
 
-        public EnemyMeleeAttackSetup(AnimationEventListener AEL,
-            float damage,
-            Transform target,
-            LayerMask targetLayer,
-            float attackRadius,
-            float attackAngle)
+        public EnemyMeleeAttackSetup(AnimationEventListener AEL, Transform target, EnemyMeleeDataSO data)
         {
             this.AEL = AEL;
-            this.damage = damage;
             this.target = target;
-            this.targetLayer = targetLayer;
-            this.attackRadius = attackRadius;
-            this.attackAngle = attackAngle;
+            damage = data.meleeDamage;
+            targetLayer = data.targetLayer;
+            attackRadius = data.meleeRange;
+            attackAngle = data.meleeAngle;
         }
 
         public void Initialize()

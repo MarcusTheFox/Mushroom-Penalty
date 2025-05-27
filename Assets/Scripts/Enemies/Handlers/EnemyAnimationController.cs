@@ -21,6 +21,11 @@ namespace Enemies.Handlers
             if (value) animator.SetTrigger("MeleeAttack");
         }
 
+        public void OnMagicAttack(bool value)
+        {
+            if (value) animator.SetTrigger("MagicAttack");
+        }
+
         public void OnDie()
         {
             animator.SetTrigger("Death");

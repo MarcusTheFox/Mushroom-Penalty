@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Movement;
+using Enemies.Data;
 using UnityEngine;
 
 namespace Enemies.Components
@@ -12,11 +13,9 @@ namespace Enemies.Components
         public IMovement EnemyMovementTowards { get; private set; }
         public IMovement EnemyMovementAway { get; private set; }
 
-        public EnemyMovementSetup(Transform enemyTransform, float speedTowards, float speedAway)
+        public EnemyMovementSetup(Transform enemyTransform, EnemyDataSO data)
         {
             this.enemyTransform = enemyTransform;
-            this.speedTowards = speedTowards;
-            this.speedAway = speedAway;
         }
 
         public void Initialize()
