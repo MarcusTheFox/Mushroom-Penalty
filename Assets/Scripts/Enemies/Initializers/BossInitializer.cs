@@ -1,19 +1,25 @@
+using Enemies.CoreLogic;
+using Enemies.Data;
 using UnityEngine;
 
 namespace Enemies.Initializers
 {
-    public class BossInitializer : MonoBehaviour
+    public class BossInitializer : EnemyInitializer
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
+        [SerializeField] private EnemyMeleeDataSO enemyData;
         
-        }
-
-        // Update is called once per frame
-        void Update()
+        protected override void CreateEnemy()
         {
-        
+            Boss boss = new Boss(UEL,
+                AEL,
+                IOE,
+                UI,
+                transform,
+                animator,
+                player.transform);
+            
+            boss.Configure(enemyData);
+            boss.Initialize();
         }
     }
 }

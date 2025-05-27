@@ -16497,6 +16497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf66f1bd5d36d145ba28e56969118ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: e4297d3088e4e7941872565cb776deb1, type: 2}
 --- !u!114 &808307258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25895,13 +25896,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom magic 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 1867289771894426589, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_LocalPosition.x
@@ -33967,6 +33972,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: mushroom melee 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7451289512308241783, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7792244376377864141, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.885668
@@ -34013,11 +34022,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_LocalPosition.x

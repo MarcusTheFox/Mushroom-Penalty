@@ -74,5 +74,16 @@ namespace Enemies.CoreLogic
         {
             return Vector3.Distance(Target.position, EnemyTransform.position);
         }
+
+        public void LookAt(Vector3 targetPoint)
+        {
+            Vector3 lookTarget = new Vector3(targetPoint.x, EnemyTransform.position.y, targetPoint.z);
+            EnemyTransform.LookAt(lookTarget);
+        }
+        
+        public void LookToTarget()
+        {
+            LookAt(Target.position);
+        }
     }
 }

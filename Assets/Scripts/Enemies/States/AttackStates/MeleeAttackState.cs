@@ -3,6 +3,7 @@ using Combat.Interfaces;
 using Core.Interfaces;
 using Enemies.CoreLogic;
 using Enemies.Handlers;
+using UnityEngine;
 
 namespace Enemies.States.AttackStates
 {
@@ -29,6 +30,7 @@ namespace Enemies.States.AttackStates
         public override void OnUpdate(Enemy context, float deltaTime)
         {
             base.OnUpdate(context, deltaTime);
+            context.LookToTarget();
             if (attackReady)
             {
                 attackReady = false;
