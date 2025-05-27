@@ -1,7 +1,7 @@
 ﻿using System;
 using Combat.Interfaces;
 
-namespace Enemies.Handlers
+namespace Combat.Handlers
 {
     public class MagicAttackAnimationEventHandler
     {

@@ -1,9 +1,9 @@
-﻿using Combat.Implementations;
+﻿using Combat.Handlers;
+using Combat.Implementations;
 using Combat.Interfaces;
 using Core.Interfaces;
 using Core.UnityHooks;
 using Enemies.Data;
-using Enemies.Handlers;
 using UnityEngine;
 
 namespace Enemies.Components

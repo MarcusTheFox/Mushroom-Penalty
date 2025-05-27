@@ -1,4 +1,5 @@
-﻿using Combat.Implementations;
+﻿using Combat.Handlers;
+using Combat.Implementations;
 using Combat.Interfaces;
 using Core.Interfaces;
 using Core.UnityHooks;
@@ -25,7 +26,8 @@ namespace Player.CoreLogic.Components
         private readonly PlayerDataSO data;
 
         private PlayerAttackInputHandler attackInputHandler;
-        private PlayerAttackAnimationEventHandler attackAnimationEventHandler;
+        private MeleeAttackAnimationEventHandler meleeAttackAnimationEventHandler;
+        private MagicAttackAnimationEventHandler magicAttackAnimationEventHandler;
 
         public PlayerAttackSetup(PlayerInputController PIC, AnimationEventListener AEL, UnityEventListener UEL,
             Transform playerTransform, Transform fireballSpawnPoint, PlayerDataSO data)
@@ -47,7 +49,9 @@ namespace Player.CoreLogic.Components
                 fireballSpawnPoint, playerTransform);
             
             attackInputHandler = new PlayerAttackInputHandler(MeleeAttack, MagicAttack);
-            attackAnimationEventHandler = new PlayerAttackAnimationEventHandler(MeleeAttack, MagicAttack);
+
+            meleeAttackAnimationEventHandler = new MeleeAttackAnimationEventHandler(MeleeAttack);
+            magicAttackAnimationEventHandler = new MagicAttackAnimationEventHandler(MagicAttack);
 
             UEL.OnUpdateEvent.AddListener(MagicCooldown.Update);
             
@@ -80,20 +84,20 @@ namespace Player.CoreLogic.Components
 
         private void AddAttackAnimationEventHandler()
         {
-            AEL.OnApplyMeleeAttack += attackAnimationEventHandler.ApplyMeleeAttack;
-            AEL.OnApplyMagicAttack += attackAnimationEventHandler.ApplyMagicAttack;
-            AEL.OnStopMeleeAttack += attackAnimationEventHandler.StopMeleeAttack;
-            AEL.OnStopMagicAttack += attackAnimationEventHandler.StopMagicAttack;
+            AEL.OnApplyMeleeAttack += meleeAttackAnimationEventHandler.ApplyMeleeAttack;
+            AEL.OnApplyMagicAttack += magicAttackAnimationEventHandler.ApplyMagicAttack;
+            AEL.OnStopMeleeAttack += meleeAttackAnimationEventHandler.StopMeleeAttack;
+            AEL.OnStopMagicAttack += magicAttackAnimationEventHandler.StopMagicAttack;
             AEL.OnStopMeleeAttack += EnableMovementInput;
             AEL.OnStopMagicAttack += EnableMovementInput;
         }
 
         private void RemoveAttackAnimationEventHandler()
         {
-            AEL.OnApplyMeleeAttack -= attackAnimationEventHandler.ApplyMeleeAttack;
-            AEL.OnApplyMagicAttack -= attackAnimationEventHandler.ApplyMagicAttack;
-            AEL.OnStopMeleeAttack -= attackAnimationEventHandler.StopMeleeAttack;
-            AEL.OnStopMagicAttack -= attackAnimationEventHandler.StopMagicAttack;
+            AEL.OnApplyMeleeAttack -= meleeAttackAnimationEventHandler.ApplyMeleeAttack;
+            AEL.OnApplyMagicAttack -= magicAttackAnimationEventHandler.ApplyMagicAttack;
+            AEL.OnStopMeleeAttack -= meleeAttackAnimationEventHandler.StopMeleeAttack;
+            AEL.OnStopMagicAttack -= magicAttackAnimationEventHandler.StopMagicAttack;
             AEL.OnStopMeleeAttack -= EnableMovementInput;
             AEL.OnStopMagicAttack -= EnableMovementInput;
         }
