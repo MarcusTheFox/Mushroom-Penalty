@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Enemies.States
 {
-    public class FleeState : BaseState<Enemy>
+    public class FleeState : BaseState
     {
         private readonly IMovement movement;
         private readonly EnemyAnimationController animationController;

@@ -4,7 +4,7 @@ using Enemies.Handlers;
 
 namespace Enemies.States
 {
-    public class DeadState : BaseState<Enemy>
+    public class DeadState : BaseState
     {
         private readonly EnemyAnimationController animationController;
 

@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace AI
 {
-    public abstract class BaseState<T> : IState<T> where T : Enemy
+    public abstract class BaseState : IState<Enemy>
     {
-        public virtual void OnEnter(T context)
+        public virtual void OnEnter(Enemy context)
         {
             Debug.Log($"[{GetType()}] OnEnter");
         }
 
-        public virtual void OnUpdate(T context, float deltaTime)
+        public virtual void OnUpdate(Enemy context, float deltaTime)
         {
         }
 
-        public virtual void OnExit(T context)
+        public virtual void OnExit(Enemy context)
         {
             Debug.Log($"[{GetType()}] OnExit");
         }

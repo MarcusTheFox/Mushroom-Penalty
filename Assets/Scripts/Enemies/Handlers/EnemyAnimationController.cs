@@ -30,5 +30,20 @@ namespace Enemies.Handlers
         {
             animator.SetTrigger("Death");
         }
+
+        public void OnStrongMeleeAttack(bool value)
+        {
+            if (value) animator.SetTrigger("StrongMeleeAttack");
+        }
+
+        public void OnBlock(bool value)
+        {
+            animator.SetBool("Block", value);
+        }
+
+        public void OnExplode(bool value)
+        {
+            if (value) animator.SetTrigger("Explode");
+        }
     }
 }

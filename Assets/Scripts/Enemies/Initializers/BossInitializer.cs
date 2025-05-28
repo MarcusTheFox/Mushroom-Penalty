@@ -6,7 +6,7 @@ namespace Enemies.Initializers
 {
     public class BossInitializer : EnemyInitializer
     {
-        [SerializeField] private EnemyMeleeDataSO enemyData;
+        [SerializeField] private BossDataSO enemyData;
         
         protected override void CreateEnemy()
         {

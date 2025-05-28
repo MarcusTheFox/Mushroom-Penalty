@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Enemies.States
 {
-    public class ChaseState : BaseState<Enemy>
+    public class ChaseState : BaseState
     {
         private readonly IMovement movement;
         private readonly EnemyAnimationController animationController;

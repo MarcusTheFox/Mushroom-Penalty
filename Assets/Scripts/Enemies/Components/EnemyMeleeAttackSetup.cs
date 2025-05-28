@@ -3,7 +3,7 @@ using Combat.Implementations;
 using Combat.Interfaces;
 using Core.Interfaces;
 using Core.UnityHooks;
-using Enemies.Data;
+using Enemies.Components.Data;
 using UnityEngine;
 
 namespace Enemies.Components
@@ -12,7 +12,7 @@ namespace Enemies.Components
     {
         private readonly AnimationEventListener AEL;
         private readonly float damage;
-        private readonly Transform target;
+        private readonly Transform fromTransform;
         private readonly LayerMask targetLayer;
         private readonly float attackRadius;
         private readonly float attackAngle;
@@ -20,23 +20,20 @@ namespace Enemies.Components
         public IAttack MeleeAttack { get; private set; }
         private MeleeAttackAnimationEventHandler attackAnimationEventHandler;
 
-        public EnemyMeleeAttackSetup(AnimationEventListener AEL, Transform target, EnemyMeleeDataSO data)
+        public EnemyMeleeAttackSetup(MeleeSetupData data)
         {
-            this.AEL = AEL;
-            this.target = target;
-            damage = data.meleeDamage;
-            targetLayer = data.targetLayer;
-            attackRadius = data.meleeRange;
-            attackAngle = data.meleeAngle;
+            AEL = data.AEL;
+            fromTransform = data.EnemyTransform;
+            damage = data.Damage;
+            targetLayer = data.TargetLayer;
+            attackRadius = data.AttackRange;
+            attackAngle = data.AttackAngle;
         }
 
         public void Initialize()
         {
-            MeleeAttack = new MeleeAttack(damage, target, targetLayer, attackRadius, attackAngle);
-
+            MeleeAttack = new MeleeAttack(damage, fromTransform, targetLayer, attackRadius, attackAngle);
             attackAnimationEventHandler = new MeleeAttackAnimationEventHandler(MeleeAttack);
-            
-            AddAttackAnimationEventHandler();
         }
 
         public void Cleanup()
@@ -44,13 +41,13 @@ namespace Enemies.Components
             RemoveAttackAnimationEventHandler();
         }
 
-        private void AddAttackAnimationEventHandler()
+        public void AddAttackAnimationEventHandler()
         {
             AEL.OnApplyMeleeAttack += attackAnimationEventHandler.ApplyMeleeAttack;
             AEL.OnStopMeleeAttack += attackAnimationEventHandler.StopMeleeAttack;
         }
 
-        private void RemoveAttackAnimationEventHandler()
+        public void RemoveAttackAnimationEventHandler()
         {
             AEL.OnApplyMeleeAttack -= attackAnimationEventHandler.ApplyMeleeAttack;
             AEL.OnStopMeleeAttack -= attackAnimationEventHandler.StopMeleeAttack;

@@ -2,6 +2,7 @@
 using Core.Movement;
 using Core.UnityHooks;
 using Enemies.Components;
+using Enemies.Components.Data;
 using Enemies.Data;
 using Enemies.Handlers;
 using Enemies.States;
@@ -47,7 +48,16 @@ namespace Enemies.CoreLogic
             coreSetup = new EnemyCoreComponentsSetup(IOE, data.health);
             coreSetup.Initialize();
 
-            attackSetup = new EnemyMeleeAttackSetup(AEL, EnemyTransform, data);
+            MeleeSetupData attackData = new()
+            {
+                AEL = AEL,
+                EnemyTransform = Target,
+                Damage = data.meleeDamage,
+                TargetLayer = data.targetLayer,
+                AttackRange = data.meleeRange,
+                AttackAngle = data.meleeAngle,
+            };
+            attackSetup = new EnemyMeleeAttackSetup(attackData);
             attackSetup.Initialize();
             
             movementTowards = new EnemyMovementTowards(EnemyTransform, data.speed);

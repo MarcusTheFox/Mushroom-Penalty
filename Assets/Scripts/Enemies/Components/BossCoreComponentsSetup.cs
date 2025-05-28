@@ -1,6 +1,5 @@
 ﻿using Combat.Implementations;
 using Combat.Interfaces;
-using Core.Components;
 using Core.UnityHooks;
 
 namespace Enemies.Components
@@ -8,7 +7,6 @@ namespace Enemies.Components
     public class BossCoreComponentsSetup
     {
         private readonly InteractableObjectEvents IOE;
-        private Counter hitCounter;
         public IHealth Health { get; private set; }
         public IDamageable Damageable { get; private set; }
 
@@ -21,7 +19,6 @@ namespace Enemies.Components
         public void Initialize()
         {
             Damageable = new DamageableComponent(Health);
-            hitCounter = new Counter();
             EnableTakeDamage();
         }
 

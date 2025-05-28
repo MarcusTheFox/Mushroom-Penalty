@@ -2,6 +2,7 @@
 using Core.Movement;
 using Core.UnityHooks;
 using Enemies.Components;
+using Enemies.Components.Data;
 using Enemies.Data;
 using Enemies.Handlers;
 using Enemies.States;
@@ -55,8 +56,19 @@ namespace Enemies.CoreLogic
             
             movementTowards = new EnemyMovementTowards(EnemyTransform, data.speedTowards);
             movementAway = new EnemyMovementAway(EnemyTransform, data.speedAway);
-            
-            magicAttackSetup = new EnemyMagicAttackSetup(UEL, AEL, EnemyTransform, fireballSpawnPoint, data);
+
+            MagicSetupData magicSetupData = new ()
+            {
+                UEL = UEL,
+                AEL = AEL,
+                EnemyTransform = EnemyTransform,
+                FireballSpawnPoint = fireballSpawnPoint,
+                Cooldown = data.magicCooldown,
+                Damage = data.magicDamage,
+                ProjectilePrefab = data.magicProjectilePrefab,
+                TargetLayer = data.targetLayer
+            };
+            magicAttackSetup = new EnemyMagicAttackSetup(magicSetupData);
             magicAttackSetup.Initialize();
             
             UI.Initialize(coreSetup.Health);
