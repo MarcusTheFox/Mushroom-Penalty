@@ -24,7 +24,7 @@ namespace Enemies.Data
         public float blockHealDuration;
         public float healPerSecond;
         [Range(0.01f, 0.99f)]
-        public float healthThresholdForBlock = 0.33f;
+        public float healthThresholdForHealing = 0.33f;
         [Header("Explosion")]
         public float explosionDamage;
         public float explosionRadius;

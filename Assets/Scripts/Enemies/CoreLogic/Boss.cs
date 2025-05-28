@@ -16,7 +16,6 @@ namespace Enemies.CoreLogic
     public class Boss : Enemy, IConfigurable<BossDataSO>
     {
         private BossDataSO data;
-        private HealthComponent healthComponent;
         private DamageableComponent damageableComponent;
         private BossCoreComponentsSetup coreSetup;
         private EnemyAnimationController animationController;
@@ -26,6 +25,7 @@ namespace Enemies.CoreLogic
         private EnemyMeleeAttackSetup strongAttackSetup;
         
         private int attackCounter;
+        private bool isHealed;
 
         public Boss(UnityEventListener UEL,
             AnimationEventListener AEL,
@@ -90,12 +90,14 @@ namespace Enemies.CoreLogic
             var chaseState = new ChaseState(movementTowards, animationController, Target);
             var meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController);
             var strongMeleeAttackState = new StrongMeleeAttackState(strongAttackSetup.MeleeAttack, animationController);
+            var healingState = new HealingState(coreSetup.Health, animationController, data.blockHealDuration, data.healPerSecond);
             var deadState = new DeadState(animationController);
 
             stateMachine.AddState(idleState);
             stateMachine.AddState(chaseState);
             stateMachine.AddState(meleeAttackState);
             stateMachine.AddState(strongMeleeAttackState);
+            stateMachine.AddState(healingState);
             stateMachine.AddState(deadState);
             
             stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
@@ -127,6 +129,15 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<StrongMeleeAttackState, ChaseState>(
                 _ => strongMeleeAttackState.IsAttackSequenceComplete,
                 _ => strongAttackSetup.RemoveAttackAnimationEventHandler());
+            
+            stateMachine.AddAnyTransition<HealingState>(
+                _ => !isHealed &&
+                     coreSetup.Health.Health / coreSetup.Health.MaxHealth < data.healthThresholdForHealing &&
+                     stateMachine.CurrentState != deadState,
+                _ => isHealed = true);
+            
+            stateMachine.AddTransition<HealingState, ChaseState>(
+                _ => healingState.IsHealingComplete);
             
             stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
             stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
