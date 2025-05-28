@@ -100,10 +100,10 @@ namespace Enemies.CoreLogic
         {
             var idleState = new IdleState();
             var chaseState = new ChaseState(movementTowards, animationController, Target);
-            var meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController);
-            var strongMeleeAttackState = new StrongMeleeAttackState(strongAttackSetup.MeleeAttack, animationController);
+            var meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController, EnemyTransform, Target);
+            var strongMeleeAttackState = new StrongMeleeAttackState(strongAttackSetup.MeleeAttack, animationController, EnemyTransform, Target);
             var healingState = new HealingState(coreSetup.Health, animationController, data.blockHealDuration, data.healPerSecond);
-            var explosionState = new ExplosionState(explosionAttackSetup.MeleeAttack, animationController);
+            var explosionState = new ExplosionState(explosionAttackSetup.MeleeAttack, animationController, EnemyTransform, Target);
             var deadState = new DeadState(animationController);
 
             stateMachine.AddState(idleState);
@@ -114,42 +114,42 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(explosionState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
-            stateMachine.AddTransition<ChaseState, IdleState>(_ => !Target);
+            stateMachine.AddTransition<IdleState, ChaseState>(() => Target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(() => !Target);
             stateMachine.AddTransition<ChaseState, MeleeAttackState>(
-                _ => Target &&
+                () => Target &&
                      DistanceToTarget() < data.chaseAttackRadius &&
                      attackCounter < data.attacksNumberForStrongAttack,
-                _ =>
+                () =>
                 {
                     attackSetup.AddAttackAnimationEventHandler();
                     attackCounter++;
                 });
             
             stateMachine.AddTransition<MeleeAttackState, ChaseState>(
-                _ => meleeAttackState.IsAttackSequenceComplete,
-                _ => attackSetup.RemoveAttackAnimationEventHandler());
+                () => meleeAttackState.IsAttackSequenceComplete,
+                () => attackSetup.RemoveAttackAnimationEventHandler());
             
             stateMachine.AddTransition<ChaseState, StrongMeleeAttackState>(
-                _ => Target &&
+                () => Target &&
                      DistanceToTarget() < data.chaseAttackRadius &&
                      attackCounter >= data.attacksNumberForStrongAttack,
-                _ =>
+                () =>
                 {
                     strongAttackSetup.AddAttackAnimationEventHandler();
                     attackCounter = 0;
                 });
             
             stateMachine.AddTransition<StrongMeleeAttackState, ChaseState>(
-                _ => strongMeleeAttackState.IsAttackSequenceComplete,
-                _ => strongAttackSetup.RemoveAttackAnimationEventHandler());
+                () => strongMeleeAttackState.IsAttackSequenceComplete,
+                () => strongAttackSetup.RemoveAttackAnimationEventHandler());
             
             stateMachine.AddAnyTransition<HealingState>(
-                _ => !isHealed &&
+                () => !isHealed &&
                      coreSetup.Health.Health / coreSetup.Health.MaxHealth < data.healthThresholdForHealing &&
                      stateMachine.CurrentState != deadState && 
                      stateMachine.CurrentState != explosionState,
-                _ =>
+                () =>
                 {
                     isHealed = true;
                     attackSetup.RemoveAttackAnimationEventHandler();
@@ -158,15 +158,15 @@ namespace Enemies.CoreLogic
                 });
             
             stateMachine.AddTransition<HealingState, ExplosionState>(
-                _ => healingState.IsHealingComplete,
-                _ => explosionAttackSetup.AddAttackAnimationEventHandler());
+                () => healingState.IsHealingComplete,
+                () => explosionAttackSetup.AddAttackAnimationEventHandler());
             
             stateMachine.AddTransition<ExplosionState, ChaseState>(
-                _ => explosionState.IsAttackSequenceComplete,
-                _ => explosionAttackSetup.RemoveAttackAnimationEventHandler());
+                () => explosionState.IsAttackSequenceComplete,
+                () => explosionAttackSetup.RemoveAttackAnimationEventHandler());
             
-            stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
-            stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
         }

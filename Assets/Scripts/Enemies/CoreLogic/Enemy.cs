@@ -15,7 +15,7 @@ namespace Enemies.CoreLogic
         protected Transform EnemyTransform { get; }
         protected Animator animator { get; }
         
-        protected IStateMachine<Enemy> stateMachine;
+        protected IStateMachine stateMachine;
 
         protected Enemy(UnityEventListener UEL,
             AnimationEventListener AEL,
@@ -47,7 +47,7 @@ namespace Enemies.CoreLogic
 
         private void InitializeStateMachine()
         {
-            stateMachine = new StateMachine<Enemy>(this);
+            stateMachine = new StateMachine();
             ConfigureStateMachine();
         }
 
@@ -73,17 +73,6 @@ namespace Enemies.CoreLogic
         protected float DistanceToTarget()
         {
             return Vector3.Distance(Target.position, EnemyTransform.position);
-        }
-
-        public void LookAt(Vector3 targetPoint)
-        {
-            Vector3 lookTarget = new Vector3(targetPoint.x, EnemyTransform.position.y, targetPoint.z);
-            EnemyTransform.LookAt(lookTarget);
-        }
-        
-        public void LookToTarget()
-        {
-            LookAt(Target.position);
         }
     }
 }

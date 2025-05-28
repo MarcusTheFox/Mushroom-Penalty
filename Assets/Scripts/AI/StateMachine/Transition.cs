@@ -2,17 +2,17 @@
 
 namespace AI.StateMachine
 {
-    public class Transition<TContext> : ITransition<TContext>
+    public class Transition : ITransition
     {
         public Type FromStateType { get; }
         public Type ToStateType { get; }
-        public Func<TContext, bool> Condition { get; }
-        public Action<TContext> OnTransitionAction { get; }
+        public Func<bool> Condition { get; }
+        public Action OnTransitionAction { get; }
 
         public Transition(Type fromState,
             Type toState,
-            Func<TContext, bool> condition,
-            Action<TContext> onTransitionAction = null)
+            Func<bool> condition,
+            Action onTransitionAction = null)
         {
             FromStateType = fromState;
             ToStateType = toState;
@@ -21,8 +21,8 @@ namespace AI.StateMachine
         }
 
         public Transition(Type toState,
-            Func<TContext, bool> condition,
-            Action<TContext> onTransitionAction = null)
+            Func<bool> condition,
+            Action onTransitionAction = null)
         {
             FromStateType = null;
             ToStateType = toState;

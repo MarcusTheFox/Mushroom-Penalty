@@ -1,8 +1,8 @@
 ﻿using AI;
 using Combat.Interfaces;
 using Core.Interfaces;
-using Enemies.CoreLogic;
 using Enemies.Handlers;
+using UnityEngine;
 
 namespace Enemies.States.AttackStates
 {
@@ -10,12 +10,16 @@ namespace Enemies.States.AttackStates
     {
         protected readonly IAttack attack;
         protected readonly EnemyAnimationController animationController;
+        private readonly Transform enemyTransform;
+        private readonly Transform target;
         public bool IsAttackSequenceComplete { get; private set; }
 
-        public AttackState(IAttack attack, EnemyAnimationController animationController)
+        public AttackState(IAttack attack, EnemyAnimationController animationController, Transform enemyTransform, Transform target)
         {
             this.attack = attack;
             this.animationController = animationController;
+            this.enemyTransform = enemyTransform;
+            this.target = target;
 
             this.attack.OnReady += SetAttackIsReady;
         }
@@ -25,19 +29,19 @@ namespace Enemies.States.AttackStates
             attack.OnReady -= SetAttackIsReady;
         }
 
-        public override void OnEnter(Enemy context)
+        public override void OnEnter()
         {
-            base.OnEnter(context);
+            base.OnEnter();
             IsAttackSequenceComplete = false;
-            context.LookToTarget();
+            LookToTarget();
             attack.Start();
             StartAnimation();
         }
 
-        public override void OnUpdate(Enemy context, float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
-            base.OnUpdate(context, deltaTime);
-            context.LookToTarget();
+            base.OnUpdate(deltaTime);
+            LookToTarget();
         }
         
         protected abstract void StartAnimation();
@@ -45,6 +49,17 @@ namespace Enemies.States.AttackStates
         private void SetAttackIsReady()
         {
             IsAttackSequenceComplete = true;
+        }
+
+        public void LookAt(Vector3 targetPoint)
+        {
+            Vector3 lookTarget = new Vector3(targetPoint.x, enemyTransform.position.y, targetPoint.z);
+            enemyTransform.LookAt(lookTarget);
+        }
+        
+        public void LookToTarget()
+        {
+            LookAt(target.position);
         }
     }
 }

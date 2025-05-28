@@ -1,19 +1,18 @@
 ﻿using AI.StateMachine;
-using Enemies.CoreLogic;
 
 namespace AI
 {
-    public abstract class BaseState : IState<Enemy>
+    public abstract class BaseState : IState
     {
-        public virtual void OnEnter(Enemy context)
+        public virtual void OnEnter()
         {
         }
 
-        public virtual void OnUpdate(Enemy context, float deltaTime)
+        public virtual void OnUpdate(float deltaTime)
         {
         }
 
-        public virtual void OnExit(Enemy context)
+        public virtual void OnExit()
         {
         }
     }

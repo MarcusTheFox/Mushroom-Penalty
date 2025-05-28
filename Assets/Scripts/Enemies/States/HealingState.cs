@@ -1,6 +1,5 @@
 ﻿using AI;
 using Combat.Interfaces;
-using Enemies.CoreLogic;
 using Enemies.Handlers;
 
 namespace Enemies.States
@@ -23,17 +22,17 @@ namespace Enemies.States
             this.healPerSecond = healPerSecond;
         }
 
-        public override void OnEnter(Enemy context)
+        public override void OnEnter()
         {
-            base.OnEnter(context);
+            base.OnEnter();
             IsHealingComplete = false;
             timer = 0f;
             animationController.OnBlock(true);
         }
 
-        public override void OnUpdate(Enemy context, float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
-            base.OnUpdate(context, deltaTime);
+            base.OnUpdate(deltaTime);
             if (IsHealingComplete) return;
             
             timer += deltaTime;
@@ -41,9 +40,9 @@ namespace Enemies.States
             else IsHealingComplete = true;
         }
 
-        public override void OnExit(Enemy context)
+        public override void OnExit()
         {
-            base.OnExit(context);
+            base.OnExit();
             animationController.OnBlock(false);
         }
     }

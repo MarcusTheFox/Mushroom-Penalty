@@ -1,11 +1,12 @@
 ﻿using Combat.Interfaces;
 using Enemies.Handlers;
+using UnityEngine;
 
 namespace Enemies.States.AttackStates
 {
     public class ExplosionState : AttackState
     {
-        public ExplosionState(IAttack attack, EnemyAnimationController animationController) : base(attack, animationController)
+        public ExplosionState(IAttack attack, EnemyAnimationController animationController, Transform enemyTransform, Transform target) : base(attack, animationController, enemyTransform, target)
         {
         }
 

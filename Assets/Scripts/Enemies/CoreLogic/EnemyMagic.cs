@@ -78,7 +78,7 @@ namespace Enemies.CoreLogic
         {
             idleState = new IdleState();
             chaseState = new ChaseState(movementTowards, animationController, Target);
-            magicAttackState = new MagicAttackState(magicAttackSetup.MagicAttack, animationController);
+            magicAttackState = new MagicAttackState(magicAttackSetup.MagicAttack, animationController, EnemyTransform, Target);
             fleeState = new FleeState(movementAway, animationController, Target);
             deadState = new DeadState(animationController);
             
@@ -88,15 +88,15 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(fleeState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
-            stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && DistanceToTarget() > data.chaseIdleRadius);
-            stateMachine.AddTransition<ChaseState, MagicAttackState>(_ => Target && DistanceToTarget() < data.chaseAttackRadius);
-            stateMachine.AddTransition<MagicAttackState, ChaseState>(_ => magicAttackState.IsAttackSequenceComplete);
-            stateMachine.AddTransition<MagicAttackState, FleeState>(_ => Target && DistanceToTarget() < data.attackFleeRadius);
-            stateMachine.AddTransition<FleeState, MagicAttackState>(_ => Target && DistanceToTarget() > data.fleeAttackRadius);
+            stateMachine.AddTransition<IdleState, ChaseState>(() => Target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(() => Target && DistanceToTarget() > data.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, MagicAttackState>(() => Target && DistanceToTarget() < data.chaseAttackRadius);
+            stateMachine.AddTransition<MagicAttackState, ChaseState>(() => magicAttackState.IsAttackSequenceComplete);
+            stateMachine.AddTransition<MagicAttackState, FleeState>(() => Target && DistanceToTarget() < data.attackFleeRadius);
+            stateMachine.AddTransition<FleeState, MagicAttackState>(() => Target && DistanceToTarget() > data.fleeAttackRadius);
             
-            stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
-            stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
         }

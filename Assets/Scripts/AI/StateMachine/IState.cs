@@ -1,9 +1,9 @@
 ﻿namespace AI.StateMachine
 {
-    public interface IState<TContext>
+    public interface IState
     {
-        void OnEnter(TContext context);
-        void OnUpdate(TContext context, float deltaTime);
-        void OnExit(TContext context);
+        void OnEnter();
+        void OnUpdate(float deltaTime);
+        void OnExit();
     }
 }

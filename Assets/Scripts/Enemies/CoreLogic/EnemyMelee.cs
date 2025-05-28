@@ -70,7 +70,7 @@ namespace Enemies.CoreLogic
         {
             idleState = new IdleState();
             chaseState = new ChaseState(movementTowards, animationController, Target);
-            meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController);
+            meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController, EnemyTransform, Target);
             deadState = new DeadState(animationController);
             
             stateMachine.AddState(idleState);
@@ -78,13 +78,13 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(meleeAttackState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
-            stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && DistanceToTarget() > data.chaseIdleRadius);
-            stateMachine.AddTransition<ChaseState, MeleeAttackState>(_ => Target && DistanceToTarget() < data.chaseAttackRadius);
-            stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => meleeAttackState.IsAttackSequenceComplete);
+            stateMachine.AddTransition<IdleState, ChaseState>(() => Target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(() => Target && DistanceToTarget() > data.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, MeleeAttackState>(() => Target && DistanceToTarget() < data.chaseAttackRadius);
+            stateMachine.AddTransition<MeleeAttackState, ChaseState>(() => meleeAttackState.IsAttackSequenceComplete);
             
-            stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
-            stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
         }

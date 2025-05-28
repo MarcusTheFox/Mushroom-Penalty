@@ -3,79 +3,73 @@ using System.Collections.Generic;
 
 namespace AI.StateMachine
 {
-    public class StateMachine<TContext> : IStateMachine<TContext>
+    public class StateMachine : IStateMachine
     {
-        public IState<TContext> CurrentState { get; private set; }
-        public TContext Context { get; }
+        public IState CurrentState { get; private set; }
 
-        private readonly Dictionary<Type, IState<TContext>> states = new();
-        private readonly Dictionary<Type, List<ITransition<TContext>>> transitions = new();
-        private readonly List<ITransition<TContext>> anyTransitions = new();
-
-        public StateMachine(TContext context)
-        {
-            Context = context;
-        }
+        private readonly Dictionary<Type, IState> states = new();
+        private readonly Dictionary<Type, List<ITransition>> transitions = new();
+        private readonly List<ITransition> anyTransitions = new();
         
-        public void Initialize(IState<TContext> initialState)
+        public void Initialize(IState initialState)
         {
             Type stateType = initialState.GetType();
             
             CurrentState = states[stateType];
-            CurrentState.OnEnter(Context);
+            CurrentState.OnEnter();
         }
 
-        public void AddState(IState<TContext> state)
+        public void AddState(IState state)
         {
             Type stateType = state.GetType();
             if (states.ContainsKey(stateType)) return;
             
             states[stateType] = state;
-            transitions[stateType] = new List<ITransition<TContext>>();
+            transitions[stateType] = new List<ITransition>();
         }
 
-        public void AddTransition(ITransition<TContext> transition)
+        public void AddTransition(ITransition transition)
         {
             Type fromStateType = transition.FromStateType;
-            if (transitions.TryGetValue(fromStateType, out List<ITransition<TContext>> stateTransitions))
+            if (transitions.TryGetValue(fromStateType, out List<ITransition> stateTransitions))
             {
                 stateTransitions.Add(transition);
             }
         }
 
-        public void AddTransition<TFromState, TToState>(Func<TContext, bool> condition,
-            Action<TContext> onTransitionAction = null)
-            where TFromState : IState<TContext>
-            where TToState : IState<TContext>
+        public void AddTransition<TFromState, TToState>(Func<bool> condition,
+            Action onTransitionAction = null)
+            where TFromState : IState
+            where TToState : IState
         {
             Type fromStateType = typeof(TFromState);
             Type toStateType = typeof(TToState);
-            AddTransition(new Transition<TContext>(fromStateType, toStateType, condition, onTransitionAction));
+            AddTransition(new Transition(fromStateType, toStateType, condition, onTransitionAction));
         }
 
-        public void AddAnyTransition(ITransition<TContext> transition)
+        public void AddAnyTransition(ITransition transition)
         {
             anyTransitions.Add(transition);
         }
 
-        public void AddAnyTransition<TToState>(Func<TContext, bool> condition,
-            Action<TContext> onTransitionAction = null)
-            where TToState : IState<TContext>
+        public void AddAnyTransition<TToState>(Func<bool> condition,
+            Action onTransitionAction = null)
+            where TToState : IState
         {
             Type toStateType = typeof(TToState);
-            AddAnyTransition(new Transition<TContext>(null, toStateType, condition, onTransitionAction));
+            AddAnyTransition(new Transition(null, toStateType, condition, onTransitionAction));
         }
 
         public void Update(float deltaTime)
         {
             if (CurrentState == null) return;
 
-            ITransition<TContext> triggeredTransition = CheckTransition(anyTransitions);
+            ITransition triggeredTransition = CheckTransition(anyTransitions);
             
             if (triggeredTransition == null)
             {
                 if (transitions.TryGetValue(CurrentState.GetType(), 
-                        out List<ITransition<TContext>> currentStateTransitions))
+                        out List<ITransition> currentStateTransitions))
                 {
                     triggeredTransition = CheckTransition(currentStateTransitions);
                 }
@@ -87,32 +81,32 @@ namespace AI.StateMachine
             }
             else
             {
-                CurrentState.OnUpdate(Context, deltaTime);
+                CurrentState.OnUpdate(deltaTime);
             }
         }
 
-        private ITransition<TContext> CheckTransition(List<ITransition<TContext>> transitions)
+        private ITransition CheckTransition(List<ITransition> transitions)
         {
             if (transitions == null) return null;
 
-            foreach (ITransition<TContext> transition in transitions)
+            foreach (ITransition transition in transitions)
             {
                 if (transition.FromStateType == null && transition.ToStateType == CurrentState.GetType()) continue;
                 
-                if (transition.Condition(Context)) return transition;
+                if (transition.Condition()) return transition;
             }
             
             return null;
         }
 
-        private void PerformTransition(ITransition<TContext> transition)
+        private void PerformTransition(ITransition transition)
         {
-            if (!states.TryGetValue(transition.ToStateType, out IState<TContext> nextState)) return;
+            if (!states.TryGetValue(transition.ToStateType, out IState nextState)) return;
             
-            CurrentState.OnExit(Context);
-            transition.OnTransitionAction?.Invoke(Context);
+            CurrentState.OnExit();
+            transition.OnTransitionAction?.Invoke();
             CurrentState = nextState;
-            CurrentState.OnEnter(Context);
+            CurrentState.OnEnter();
         }
     }
 }

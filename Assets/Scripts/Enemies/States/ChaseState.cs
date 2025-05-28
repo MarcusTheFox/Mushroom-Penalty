@@ -1,6 +1,5 @@
 ﻿using AI;
 using Core.Interfaces;
-using Enemies.CoreLogic;
 using Enemies.Handlers;
 using UnityEngine;
 
@@ -21,9 +20,9 @@ namespace Enemies.States
             this.target = target;
         }
         
-        public override void OnUpdate(Enemy context, float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
-            base.OnUpdate(context, deltaTime);
+            base.OnUpdate(deltaTime);
             Vector3 move = movement.Move(target.position);
             move.y = 0;
             bool newMoving = move.magnitude > 0.1f;
@@ -32,9 +31,9 @@ namespace Enemies.States
             animationController.OnMove(new Vector2(move.x, move.z));
         }
 
-        public override void OnExit(Enemy context)
+        public override void OnExit()
         {
-            base.OnExit(context);
+            base.OnExit();
             animationController.OnMove(Vector2.zero);
         }
     }

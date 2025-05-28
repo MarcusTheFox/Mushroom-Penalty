@@ -1,5 +1,4 @@
 ﻿using AI;
-using Enemies.CoreLogic;
 using Enemies.Handlers;
 
 namespace Enemies.States
@@ -13,9 +12,9 @@ namespace Enemies.States
             this.animationController = animationController;
         }
         
-        public override void OnEnter(Enemy context)
+        public override void OnEnter()
         {
-            base.OnEnter(context);
+            base.OnEnter();
             animationController.OnDie();
         }
     }

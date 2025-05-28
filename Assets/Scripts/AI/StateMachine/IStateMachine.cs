@@ -2,23 +2,22 @@
 
 namespace AI.StateMachine
 {
-    public interface IStateMachine<TContext>
+    public interface IStateMachine
     {
-        IState<TContext> CurrentState { get; }
-        TContext Context { get; }
+        IState CurrentState { get; }
 
-        void Initialize(IState<TContext> initialState);
-        void AddState(IState<TContext> state);
-        void AddTransition(ITransition<TContext> transition);
-        void AddTransition<TFromState, TToState>(Func<TContext, bool> condition,
-            Action<TContext> onTransitionAction = null) 
-            where TFromState : IState<TContext>
-            where TToState : IState<TContext>;
+        void Initialize(IState initialState);
+        void AddState(IState state);
+        void AddTransition(ITransition transition);
+        void AddTransition<TFromState, TToState>(Func<bool> condition,
+            Action onTransitionAction = null) 
+            where TFromState : IState
+            where TToState : IState;
         
-        void AddAnyTransition(ITransition<TContext> transition);
-        void AddAnyTransition<TToState>(Func<TContext, bool> condition,
-            Action<TContext> onTransitionAction = null)
-            where TToState : IState<TContext>;
+        void AddAnyTransition(ITransition transition);
+        void AddAnyTransition<TToState>(Func<bool> condition,
+            Action onTransitionAction = null)
+            where TToState : IState;
         
         void Update(float deltaTime);
     }

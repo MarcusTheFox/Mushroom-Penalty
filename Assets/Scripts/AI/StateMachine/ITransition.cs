@@ -2,11 +2,11 @@
 
 namespace AI.StateMachine
 {
-    public interface ITransition<TContext>
+    public interface ITransition
     {
         Type FromStateType { get; }
         Type ToStateType { get; }
-        Func<TContext, bool> Condition { get; }
-        Action<TContext> OnTransitionAction { get; }
+        Func<bool> Condition { get; }
+        Action OnTransitionAction { get; }
     }
 }

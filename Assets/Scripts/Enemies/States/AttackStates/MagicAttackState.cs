@@ -1,11 +1,12 @@
 ﻿using Combat.Interfaces;
 using Enemies.Handlers;
+using UnityEngine;
 
 namespace Enemies.States.AttackStates
 {
     public class MagicAttackState : AttackState
     {
-        public MagicAttackState(IAttack attack, EnemyAnimationController animationController) : base(attack, animationController)
+        public MagicAttackState(IAttack attack, EnemyAnimationController animationController, Transform enemyTransform, Transform target) : base(attack, animationController, enemyTransform, target)
         {
         }
 
