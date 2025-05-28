@@ -91,7 +91,7 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
             stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && DistanceToTarget() > data.chaseIdleRadius);
             stateMachine.AddTransition<ChaseState, MagicAttackState>(_ => Target && DistanceToTarget() < data.chaseAttackRadius);
-            stateMachine.AddTransition<MagicAttackState, ChaseState>(_ => Target && DistanceToTarget() > data.attackChaseRadius);
+            stateMachine.AddTransition<MagicAttackState, ChaseState>(_ => magicAttackState.IsAttackSequenceComplete);
             stateMachine.AddTransition<MagicAttackState, FleeState>(_ => Target && DistanceToTarget() < data.attackFleeRadius);
             stateMachine.AddTransition<FleeState, MagicAttackState>(_ => Target && DistanceToTarget() > data.fleeAttackRadius);
             

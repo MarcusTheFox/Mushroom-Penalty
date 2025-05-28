@@ -1,6 +1,5 @@
 ﻿using Combat.Interfaces;
 using Enemies.Handlers;
-using UnityEngine;
 
 namespace Enemies.States.AttackStates
 {
@@ -12,7 +11,6 @@ namespace Enemies.States.AttackStates
 
         protected override void StartAnimation()
         {
-            Debug.Log("Strong animation");
             animationController.OnStrongMeleeAttack(true);
         }
     }

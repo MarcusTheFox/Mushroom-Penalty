@@ -1,6 +1,5 @@
 ﻿using AI.StateMachine;
 using Enemies.CoreLogic;
-using UnityEngine;
 
 namespace AI
 {
@@ -8,7 +7,6 @@ namespace AI
     {
         public virtual void OnEnter(Enemy context)
         {
-            Debug.Log($"[{GetType()}] OnEnter");
         }
 
         public virtual void OnUpdate(Enemy context, float deltaTime)
@@ -17,7 +15,6 @@ namespace AI
 
         public virtual void OnExit(Enemy context)
         {
-            Debug.Log($"[{GetType()}] OnExit");
         }
     }
 }

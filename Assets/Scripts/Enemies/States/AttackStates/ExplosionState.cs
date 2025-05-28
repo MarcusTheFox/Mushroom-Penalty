@@ -1,5 +1,4 @@
-﻿using AI;
-using Combat.Interfaces;
+﻿using Combat.Interfaces;
 using Enemies.Handlers;
 
 namespace Enemies.States.AttackStates

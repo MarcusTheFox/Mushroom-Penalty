@@ -51,7 +51,7 @@ namespace Enemies.CoreLogic
             MeleeSetupData attackData = new()
             {
                 AEL = AEL,
-                EnemyTransform = Target,
+                EnemyTransform = EnemyTransform,
                 Damage = data.meleeDamage,
                 TargetLayer = data.targetLayer,
                 AttackRange = data.meleeRange,
@@ -59,6 +59,7 @@ namespace Enemies.CoreLogic
             };
             attackSetup = new EnemyMeleeAttackSetup(attackData);
             attackSetup.Initialize();
+            attackSetup.AddAttackAnimationEventHandler();
             
             movementTowards = new EnemyMovementTowards(EnemyTransform, data.speed);
             
@@ -80,7 +81,7 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<IdleState, ChaseState>(_ => Target && DistanceToTarget() < data.idleChaseRadius);
             stateMachine.AddTransition<ChaseState, IdleState>(_ => Target && DistanceToTarget() > data.chaseIdleRadius);
             stateMachine.AddTransition<ChaseState, MeleeAttackState>(_ => Target && DistanceToTarget() < data.chaseAttackRadius);
-            stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => Target && DistanceToTarget() > data.attackChaseRadius);
+            stateMachine.AddTransition<MeleeAttackState, ChaseState>(_ => meleeAttackState.IsAttackSequenceComplete);
             
             stateMachine.AddAnyTransition<IdleState>(_ => !Target && coreSetup.Health.Health > 0f);
             stateMachine.AddAnyTransition<DeadState>(_ => coreSetup.Health.Health <= 0f);
@@ -93,6 +94,7 @@ namespace Enemies.CoreLogic
             base.OnDestroy();
             
             coreSetup.Cleanup();
+            attackSetup.Cleanup();
             meleeAttackState.Cleanup();
             
             UI.Cleanup();

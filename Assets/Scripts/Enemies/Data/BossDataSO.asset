@@ -17,7 +17,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   speed: 5
-  meleeDamage: 5
+  meleeDamage: 20
   meleeRange: 10
   meleeAngle: 90
   idleChaseRadius: 25
@@ -29,6 +29,6 @@ MonoBehaviour:
   attacksNumberForStrongAttack: 3
   blockHealDuration: 5
   healPerSecond: 10
-  healthThresholdForHealing: 0.681
+  healthThresholdForHealing: 0.33
   explosionDamage: 50
   explosionRadius: 50

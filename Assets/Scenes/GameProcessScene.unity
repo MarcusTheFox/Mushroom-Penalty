@@ -25902,19 +25902,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1867289771894426589, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6394519695909842223, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6417149976434709640, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
       propertyPath: m_MaxValue
@@ -33978,7 +33978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7451289512308241783, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7792244376377864141, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34026,15 +34026,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9091885830550790237, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9196196310907017722, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
       propertyPath: m_MaxValue
