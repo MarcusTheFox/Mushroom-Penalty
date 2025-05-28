@@ -3,7 +3,7 @@
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawner Settings")]
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject[] enemyPrefabs; // ← теперь массив
     [SerializeField] private GameObject bossPrefab;
 
     [SerializeField] private Transform[] spawnPoints;
@@ -66,13 +66,16 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemyAtRandomPoint()
     {
-        if (currentSpawned >= maxSpawnCount || enemyPrefab == null || spawnPoints.Length == 0)
+        if (currentSpawned >= maxSpawnCount || enemyPrefabs.Length == 0 || spawnPoints.Length == 0)
             return;
 
-        int index = Random.Range(0, spawnPoints.Length);
-        Transform spawnPoint = spawnPoints[index];
+        int enemyIndex = Random.Range(0, enemyPrefabs.Length); // случайный враг
+        GameObject selectedEnemyPrefab = enemyPrefabs[enemyIndex];
 
-        GameObject enemyObj = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        int pointIndex = Random.Range(0, spawnPoints.Length);
+        Transform spawnPoint = spawnPoints[pointIndex];
+
+        GameObject enemyObj = Instantiate(selectedEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
         Enemy enemy = enemyObj.GetComponent<Enemy>();
 
         if (enemy != null)
