@@ -26,8 +26,9 @@ MonoBehaviour:
   strongMeleeDamage: 10
   strongMeleeRange: 10
   strongMeleeAngle: 90
+  attacksNumberForStrongAttack: 3
   blockHealDuration: 5
   healPerSecond: 10
-  healthThresholdForBlock: 0.33
+  healthThresholdForHealing: 0.681
   explosionDamage: 50
   explosionRadius: 50

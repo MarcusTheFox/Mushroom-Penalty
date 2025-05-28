@@ -10,7 +10,6 @@ namespace Enemies.States.AttackStates
     {
         protected readonly IAttack attack;
         protected readonly EnemyAnimationController animationController;
-        protected bool attackReady;
         public bool IsAttackSequenceComplete { get; private set; }
 
         public AttackState(IAttack attack, EnemyAnimationController animationController)
@@ -18,7 +17,6 @@ namespace Enemies.States.AttackStates
             this.attack = attack;
             this.animationController = animationController;
 
-            attackReady = true;
             this.attack.OnReady += SetAttackIsReady;
         }
 
@@ -32,12 +30,8 @@ namespace Enemies.States.AttackStates
             base.OnEnter(context);
             IsAttackSequenceComplete = false;
             context.LookToTarget();
-            if (attackReady)
-            {
-                attackReady = false;
-                attack.Start();
-                StartAnimation();
-            }
+            attack.Start();
+            StartAnimation();
         }
 
         public override void OnUpdate(Enemy context, float deltaTime)
@@ -50,7 +44,6 @@ namespace Enemies.States.AttackStates
 
         private void SetAttackIsReady()
         {
-            attackReady = true;
             IsAttackSequenceComplete = true;
         }
     }
