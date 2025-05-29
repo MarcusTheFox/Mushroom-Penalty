@@ -12,16 +12,8 @@ namespace Enemies.Initializers
         
         protected override void CreateEnemy()
         {
-            EnemyMagic enemyMagic = new EnemyMagic(UEL,
-                AEL,
-                IOE,
-                UI,
-                transform,
-                animator,
-                player.transform,
-                fireballSpawnPoint);
+            EnemyMagic enemyMagic = new EnemyMagic(Context, fireballSpawnPoint, enemyData);
             
-            enemyMagic.Configure(enemyData);
             enemyMagic.Initialize();
         }
 

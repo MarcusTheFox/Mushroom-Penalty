@@ -1,4 +1,5 @@
 ﻿using Core.UnityHooks;
+using Enemies.CoreLogic.Context;
 using Enemies.UI;
 using UnityEngine;
 
@@ -6,11 +7,12 @@ namespace Enemies.Initializers
 {
     public abstract class EnemyInitializer : ObjectInitializer
     {
-        protected EnemyUI UI { get; private set; }
-        protected AnimationEventListener AEL { get; private set; }
-        protected InteractableObjectEvents IOE { get; private set; }
-        protected Animator animator { get; private set; }
-        protected GameObject player { get; private set; }
+        protected EnemyContext Context { get; private set; }
+        private EnemyUI UI;
+        private AnimationEventListener AEL;
+        private InteractableObjectEvents IOE;
+        private Animator animator;
+        private GameObject player;
         
         protected override void Initialize()
         {
@@ -23,6 +25,16 @@ namespace Enemies.Initializers
             AEL.OnDead += DestroyEnemy;
             
             player = GameObject.FindGameObjectWithTag("Player");
+
+            Context = new EnemyContext(
+                UEL,
+                AEL,
+                IOE,
+                UI,
+                transform,
+                animator,
+                player.transform
+                );
         
             CreateEnemy();
         }

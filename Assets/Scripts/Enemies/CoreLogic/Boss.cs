@@ -1,21 +1,23 @@
 ﻿using Combat.Implementations;
-using Core.Interfaces;
 using Core.Movement;
-using Core.UnityHooks;
 using Enemies.Components;
 using Enemies.Components.Data;
+using Enemies.CoreLogic.Context;
 using Enemies.Data;
 using Enemies.Handlers;
 using Enemies.States;
 using Enemies.States.AttackStates;
-using Enemies.UI;
 using UnityEngine;
 
 namespace Enemies.CoreLogic
 {
-    public class Boss : Enemy, IConfigurable<BossDataSO>
+    public class Boss : Enemy
     {
-        private BossDataSO data;
+        private readonly EnemyContext context;
+        private readonly BossDataSO data;
+        private readonly Transform enemyTransform;
+        private readonly Transform target;
+        
         private DamageableComponent damageableComponent;
         private BossCoreComponentsSetup coreSetup;
         private EnemyAnimationController animationController;
@@ -27,38 +29,25 @@ namespace Enemies.CoreLogic
         private int attackCounter;
         private bool isHealed;
 
-        public Boss(UnityEventListener UEL,
-            AnimationEventListener AEL,
-            InteractableObjectEvents IOE,
-            EnemyUI UI,
-            Transform enemyTransform,
-            Animator animator,
-            Transform target) : base(UEL,
-            AEL,
-            IOE,
-            UI,
-            enemyTransform,
-            animator,
-            target)
+        public Boss(EnemyContext context, BossDataSO data) : base(context)
         {
-        }
-
-        public void Configure(BossDataSO data)
-        {
+            this.context = context;
             this.data = data;
+            enemyTransform = context.EnemyTransform;
+            target = context.Target;
         }
-
+        
         protected override void InitializeComponents()
         {
-            animationController = new EnemyAnimationController(animator);
+            animationController = new EnemyAnimationController(context.Animator);
 
-            coreSetup = new BossCoreComponentsSetup(IOE, data.health);
+            coreSetup = new BossCoreComponentsSetup(context.IOE, data.health);
             coreSetup.Initialize();
 
             MeleeSetupData attackSetupData = new ()
             {
-                AEL = AEL,
-                EnemyTransform = EnemyTransform,
+                AEL = context.AEL,
+                EnemyTransform = context.EnemyTransform,
                 Damage = data.meleeDamage,
                 TargetLayer = data.targetLayer,
                 AttackRange = data.meleeRange,
@@ -69,8 +58,8 @@ namespace Enemies.CoreLogic
 
             MeleeSetupData strongAttackSetupData = new ()
             {
-                AEL = AEL,
-                EnemyTransform = EnemyTransform,
+                AEL = context.AEL,
+                EnemyTransform = context.EnemyTransform,
                 Damage = data.strongMeleeDamage,
                 TargetLayer = data.targetLayer,
                 AttackRange = data.strongMeleeRange,
@@ -81,8 +70,8 @@ namespace Enemies.CoreLogic
 
             MeleeSetupData explosionAttackSetupData = new ()
             {
-                AEL = AEL,
-                EnemyTransform = EnemyTransform,
+                AEL = context.AEL,
+                EnemyTransform = context.EnemyTransform,
                 Damage = data.explosionDamage,
                 TargetLayer = data.targetLayer,
                 AttackRange = data.explosionRadius,
@@ -91,19 +80,19 @@ namespace Enemies.CoreLogic
             explosionAttackSetup = new EnemyMeleeAttackSetup(explosionAttackSetupData);
             explosionAttackSetup.Initialize();
             
-            movementTowards = new EnemyMovementTowards(EnemyTransform, data.speed);
+            movementTowards = new EnemyMovementTowards(context.EnemyTransform, data.speed);
             
-            UI.Initialize(coreSetup.Health);
+            context.UI.Initialize(coreSetup.Health);
         }
 
         protected override void ConfigureStateMachine()
         {
             var idleState = new IdleState();
-            var chaseState = new ChaseState(movementTowards, animationController, Target);
-            var meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController, EnemyTransform, Target);
-            var strongMeleeAttackState = new StrongMeleeAttackState(strongAttackSetup.MeleeAttack, animationController, EnemyTransform, Target);
+            var chaseState = new ChaseState(movementTowards, animationController, target);
+            var meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController, enemyTransform, target);
+            var strongMeleeAttackState = new StrongMeleeAttackState(strongAttackSetup.MeleeAttack, animationController, enemyTransform, target);
             var healingState = new HealingState(coreSetup.Health, animationController, data.blockHealDuration, data.healPerSecond);
-            var explosionState = new ExplosionState(explosionAttackSetup.MeleeAttack, animationController, EnemyTransform, Target);
+            var explosionState = new ExplosionState(explosionAttackSetup.MeleeAttack, animationController, enemyTransform, target);
             var deadState = new DeadState(animationController);
 
             stateMachine.AddState(idleState);
@@ -114,10 +103,10 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(explosionState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(() => Target && DistanceToTarget() < data.idleChaseRadius);
-            stateMachine.AddTransition<ChaseState, IdleState>(() => !Target);
+            stateMachine.AddTransition<IdleState, ChaseState>(() => target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(() => !target);
             stateMachine.AddTransition<ChaseState, MeleeAttackState>(
-                () => Target &&
+                () => target &&
                      DistanceToTarget() < data.chaseAttackRadius &&
                      attackCounter < data.attacksNumberForStrongAttack,
                 () =>
@@ -131,7 +120,7 @@ namespace Enemies.CoreLogic
                 () => attackSetup.RemoveAttackAnimationEventHandler());
             
             stateMachine.AddTransition<ChaseState, StrongMeleeAttackState>(
-                () => Target &&
+                () => target &&
                      DistanceToTarget() < data.chaseAttackRadius &&
                      attackCounter >= data.attacksNumberForStrongAttack,
                 () =>
@@ -165,7 +154,7 @@ namespace Enemies.CoreLogic
                 () => explosionState.IsAttackSequenceComplete,
                 () => explosionAttackSetup.RemoveAttackAnimationEventHandler());
             
-            stateMachine.AddAnyTransition<IdleState>(() => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !target && coreSetup.Health.Health > 0f);
             stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
@@ -178,7 +167,7 @@ namespace Enemies.CoreLogic
             coreSetup.Cleanup();
             attackSetup.Cleanup();
             
-            UI.Cleanup();
+            context.UI.Cleanup();
         }
     }
 }

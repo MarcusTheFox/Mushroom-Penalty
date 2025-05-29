@@ -1,57 +1,51 @@
-﻿using Core.Interfaces;
-using Core.Movement;
-using Core.UnityHooks;
+﻿using Core.Movement;
 using Enemies.Components;
 using Enemies.Components.Data;
+using Enemies.CoreLogic.Context;
 using Enemies.Data;
 using Enemies.Handlers;
 using Enemies.States;
 using Enemies.States.AttackStates;
-using Enemies.UI;
 using UnityEngine;
 
 namespace Enemies.CoreLogic
 {
-    public class EnemyMelee : Enemy, IConfigurable<EnemyMeleeDataSO>
+    public class EnemyMelee : Enemy
     {
-        protected EnemyCoreComponentsSetup coreSetup;
-        protected EnemyAnimationController animationController;
+        private readonly EnemyContext context;
+        private readonly EnemyMeleeDataSO data;
+        private readonly Transform enemyTransform;
+        private readonly Transform target;
+        
+        private EnemyCoreComponentsSetup coreSetup;
+        private EnemyAnimationController animationController;
         private EnemyMeleeAttackSetup attackSetup;
+        private EnemyMovementTowards movementTowards;
 
         private IdleState idleState;
         private ChaseState chaseState;
         private MeleeAttackState meleeAttackState;
         private DeadState deadState;
-        private IConfigurable<EnemyMeleeDataSO> configurableImplementation;
-        private EnemyMeleeDataSO data;
-        private EnemyMovementTowards movementTowards;
 
-        public EnemyMelee(UnityEventListener UEL,
-            AnimationEventListener AEL,
-            InteractableObjectEvents IOE,
-            EnemyUI UI,
-            Transform enemyTransform,
-            Animator animator,
-            Transform target) : base(UEL, AEL, IOE, UI, enemyTransform, animator, target)
+        public EnemyMelee(EnemyContext context, EnemyMeleeDataSO data) : base(context)
         {
-        }
-
-        public void Configure(EnemyMeleeDataSO data)
-        {
+            this.context = context;
             this.data = data;
+            enemyTransform = context.EnemyTransform;
+            target = context.Target;
         }
 
         protected override void InitializeComponents()
         {
-            animationController = new EnemyAnimationController(animator);
+            animationController = new EnemyAnimationController(context.Animator);
             
-            coreSetup = new EnemyCoreComponentsSetup(IOE, data.health);
+            coreSetup = new EnemyCoreComponentsSetup(context.IOE, data.health);
             coreSetup.Initialize();
 
             MeleeSetupData attackData = new()
             {
-                AEL = AEL,
-                EnemyTransform = EnemyTransform,
+                AEL = context.AEL,
+                EnemyTransform = context.EnemyTransform,
                 Damage = data.meleeDamage,
                 TargetLayer = data.targetLayer,
                 AttackRange = data.meleeRange,
@@ -61,16 +55,16 @@ namespace Enemies.CoreLogic
             attackSetup.Initialize();
             attackSetup.AddAttackAnimationEventHandler();
             
-            movementTowards = new EnemyMovementTowards(EnemyTransform, data.speed);
+            movementTowards = new EnemyMovementTowards(enemyTransform, data.speed);
             
-            UI.Initialize(coreSetup.Health);
+            context.UI.Initialize(coreSetup.Health);
         }
 
         protected override void ConfigureStateMachine()
         {
             idleState = new IdleState();
-            chaseState = new ChaseState(movementTowards, animationController, Target);
-            meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController, EnemyTransform, Target);
+            chaseState = new ChaseState(movementTowards, animationController, target);
+            meleeAttackState = new MeleeAttackState(attackSetup.MeleeAttack, animationController, enemyTransform, target);
             deadState = new DeadState(animationController);
             
             stateMachine.AddState(idleState);
@@ -78,12 +72,12 @@ namespace Enemies.CoreLogic
             stateMachine.AddState(meleeAttackState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(() => Target && DistanceToTarget() < data.idleChaseRadius);
-            stateMachine.AddTransition<ChaseState, IdleState>(() => Target && DistanceToTarget() > data.chaseIdleRadius);
-            stateMachine.AddTransition<ChaseState, MeleeAttackState>(() => Target && DistanceToTarget() < data.chaseAttackRadius);
+            stateMachine.AddTransition<IdleState, ChaseState>(() => target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(() => target && DistanceToTarget() > data.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, MeleeAttackState>(() => target && DistanceToTarget() < data.chaseAttackRadius);
             stateMachine.AddTransition<MeleeAttackState, ChaseState>(() => meleeAttackState.IsAttackSequenceComplete);
             
-            stateMachine.AddAnyTransition<IdleState>(() => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !target && coreSetup.Health.Health > 0f);
             stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
@@ -97,7 +91,7 @@ namespace Enemies.CoreLogic
             attackSetup.Cleanup();
             meleeAttackState.Cleanup();
             
-            UI.Cleanup();
+            context.UI.Cleanup();
         }
     }
 }

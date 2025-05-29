@@ -1,37 +1,23 @@
 ﻿using AI.StateMachine;
 using Core.UnityHooks;
-using Enemies.UI;
+using Enemies.CoreLogic.Context;
 using UnityEngine;
 
 namespace Enemies.CoreLogic
 {
     public abstract class Enemy
     {
-        public Transform Target { get; private set; }
-        protected UnityEventListener UEL { get; }
-        protected AnimationEventListener AEL { get; }
-        protected InteractableObjectEvents IOE  { get; }
-        protected EnemyUI UI { get; }
-        protected Transform EnemyTransform { get; }
-        protected Animator animator { get; }
-        
+        private readonly Transform Target;
+        private readonly UnityEventListener UEL;
+        private readonly Transform EnemyTransform;
+
         protected IStateMachine stateMachine;
 
-        protected Enemy(UnityEventListener UEL,
-            AnimationEventListener AEL,
-            InteractableObjectEvents IOE,
-            EnemyUI UI,
-            Transform enemyTransform,
-            Animator animator,
-            Transform target)
+        protected Enemy(EnemyContext context)
         {
-            this.UEL = UEL;
-            this.AEL = AEL;
-            this.IOE = IOE;
-            this.UI = UI;
-            EnemyTransform = enemyTransform;
-            this.animator = animator;
-            Target = target;
+            UEL = context.UEL;
+            EnemyTransform = context.EnemyTransform;
+            Target = context.Target;
         }
 
         public void Initialize()

@@ -11,9 +11,7 @@ namespace Enemies.Initializers
         
         protected override void CreateEnemy()
         {
-            EnemyMelee enemyMelee = new EnemyMelee(UEL, AEL, IOE, UI, transform, animator, player.transform);
-            
-            enemyMelee.Configure(enemyData);
+            EnemyMelee enemyMelee = new EnemyMelee(Context, enemyData);
             enemyMelee.Initialize();
         }
 

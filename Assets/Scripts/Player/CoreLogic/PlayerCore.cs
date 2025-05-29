@@ -1,16 +1,18 @@
-using Core.Interfaces;
 using Core.UnityHooks;
 using Player.CoreLogic.Components;
+using Player.CoreLogic.Context;
 using Player.Data;
 using Player.Input;
 using Player.UI;
+using UI;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Player.CoreLogic
 {
-    public class PlayerCore : IConfigurable<PlayerDataSO>
+    public class PlayerCore
     {
+        private readonly GameOverUIManager gameOverUIManage;
         private readonly PlayerInputController PIC;
         private readonly AnimationEventListener AEL;
         private readonly UnityEventListener UEL;
@@ -26,28 +28,17 @@ namespace Player.CoreLogic
         private PlayerAnimationSetup animationSetup;
         private PlayerDataSO playerData;
 
-        public PlayerCore(PlayerInputController PIC,
-            AnimationEventListener AEL,
-            UnityEventListener UEL,
-            InteractableObjectEvents IOE,
-            PlayerUI UI,
-            Transform playerTransform,
-            Animator animator,
-            Transform fireballSpawnPoint)
+        public PlayerCore(PlayerContext context, GameOverUIManager gameOverUIManage)
         {
-            this.PIC = PIC;
-            this.AEL = AEL;
-            this.UEL = UEL;
-            this.IOE = IOE;
-            this.UI = UI;
-            this.playerTransform = playerTransform;
-            Animator = animator;
-            this.fireballSpawnPoint = fireballSpawnPoint;
-        }
-
-        public void Configure(PlayerDataSO data)
-        {
-            playerData = data;
+            this.gameOverUIManage = gameOverUIManage;
+            PIC = context.PIC;
+            AEL = context.AEL;
+            UEL = context.UEL;
+            IOE = context.IOE;
+            UI = context.UI;
+            playerTransform = context.PlayerTransform;
+            Animator = context.Animator;
+            fireballSpawnPoint = context.FireballSpawnPoint;
         }
 
         public void Initialize()

@@ -1,8 +1,10 @@
 using Core.UnityHooks;
 using Player.CoreLogic;
+using Player.CoreLogic.Context;
 using Player.Data;
 using Player.Input;
 using Player.UI;
+using UI;
 using UnityEngine;
 
 namespace Player.Initializers
@@ -18,6 +20,7 @@ namespace Player.Initializers
         private Animator animator;
         private InteractableObjectEvents IOE;
         private PlayerUI UI;
+        private GameOverUIManager gameOverUIManager;
 
         protected override void Initialize()
         {
@@ -26,23 +29,26 @@ namespace Player.Initializers
             IOE = GetComponent<InteractableObjectEvents>() ?? gameObject.AddComponent<InteractableObjectEvents>();
             animator = GetComponent<Animator>();
             UI = GetComponent<PlayerUI>();
+            gameOverUIManager = GetComponent<GameOverUIManager>(); 
 
             CreatePlayer();
         }
 
         private void CreatePlayer()
         {
-            var player = new PlayerCore(
-                PIC,
-                AEL,
+            var playerContext = new PlayerContext(
                 UEL,
+                AEL,
                 IOE,
+                PIC,
                 UI,
                 transform,
                 animator,
-                fireballSpawnPoint);
+                fireballSpawnPoint,
+                playerData
+                );
             
-            player.Configure(playerData);
+            var player = new PlayerCore(playerContext, gameOverUIManager);
             player.Initialize();
         }
     }

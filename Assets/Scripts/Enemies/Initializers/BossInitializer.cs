@@ -10,15 +10,7 @@ namespace Enemies.Initializers
         
         protected override void CreateEnemy()
         {
-            Boss boss = new Boss(UEL,
-                AEL,
-                IOE,
-                UI,
-                transform,
-                animator,
-                player.transform);
-            
-            boss.Configure(enemyData);
+            Boss boss = new Boss(Context, enemyData);
             boss.Initialize();
         }
     }

@@ -1,20 +1,22 @@
-﻿using Core.Interfaces;
-using Core.Movement;
-using Core.UnityHooks;
+﻿using Core.Movement;
 using Enemies.Components;
 using Enemies.Components.Data;
+using Enemies.CoreLogic.Context;
 using Enemies.Data;
 using Enemies.Handlers;
 using Enemies.States;
 using Enemies.States.AttackStates;
-using Enemies.UI;
 using UnityEngine;
 
 namespace Enemies.CoreLogic
 {
-    public class EnemyMagic : Enemy, IConfigurable<EnemyMagicDataSO>
+    public class EnemyMagic : Enemy
     {
+        private readonly EnemyContext context;
         private readonly Transform fireballSpawnPoint;
+        private readonly EnemyMagicDataSO data;
+        private readonly Transform enemyTransform;
+        private readonly Transform target;
         
         private EnemyMagicAttackSetup magicAttackSetup;
         private EnemyAnimationController animationController;
@@ -22,46 +24,31 @@ namespace Enemies.CoreLogic
         private EnemyMagicAttackSetup attackSetup;
         private EnemyMovementTowards movementTowards;
         private EnemyMovementAway movementAway;
-        private EnemyMagicDataSO data;
-        
-        private IdleState idleState;
-        private ChaseState chaseState;
-        private MagicAttackState magicAttackState;
-        private FleeState fleeState;
-        private DeadState deadState;
 
-        public EnemyMagic(UnityEventListener UEL,
-            AnimationEventListener AEL,
-            InteractableObjectEvents IOE,
-            EnemyUI UI,
-            Transform enemyTransform,
-            Animator animator,
-            Transform target,
-            Transform fireballSpawnPoint) : base(UEL, AEL, IOE, UI, enemyTransform, animator, target)
+        public EnemyMagic(EnemyContext context, Transform fireballSpawnPoint, EnemyMagicDataSO data) : base(context)
         {
+            this.context = context;
             this.fireballSpawnPoint = fireballSpawnPoint;
-        }
-
-        public void Configure(EnemyMagicDataSO data)
-        {
             this.data = data;
+            enemyTransform = context.EnemyTransform;
+            target = context.Target;
         }
 
         protected override void InitializeComponents()
         {
-            animationController = new EnemyAnimationController(animator);
+            animationController = new EnemyAnimationController(context.Animator);
             
-            coreSetup = new EnemyCoreComponentsSetup(IOE, data.health);
+            coreSetup = new EnemyCoreComponentsSetup(context.IOE, data.health);
             coreSetup.Initialize();
             
-            movementTowards = new EnemyMovementTowards(EnemyTransform, data.speedTowards);
-            movementAway = new EnemyMovementAway(EnemyTransform, data.speedAway);
+            movementTowards = new EnemyMovementTowards(context.EnemyTransform, data.speedTowards);
+            movementAway = new EnemyMovementAway(context.EnemyTransform, data.speedAway);
 
             MagicSetupData magicSetupData = new ()
             {
-                UEL = UEL,
-                AEL = AEL,
-                EnemyTransform = EnemyTransform,
+                UEL = context.UEL,
+                AEL = context.AEL,
+                EnemyTransform = context.EnemyTransform,
                 FireballSpawnPoint = fireballSpawnPoint,
                 Cooldown = data.magicCooldown,
                 Damage = data.magicDamage,
@@ -71,31 +58,31 @@ namespace Enemies.CoreLogic
             magicAttackSetup = new EnemyMagicAttackSetup(magicSetupData);
             magicAttackSetup.Initialize();
             
-            UI.Initialize(coreSetup.Health);
+            context.UI.Initialize(coreSetup.Health);
         }
 
         protected override void ConfigureStateMachine()
         {
-            idleState = new IdleState();
-            chaseState = new ChaseState(movementTowards, animationController, Target);
-            magicAttackState = new MagicAttackState(magicAttackSetup.MagicAttack, animationController, EnemyTransform, Target);
-            fleeState = new FleeState(movementAway, animationController, Target);
-            deadState = new DeadState(animationController);
-            
+            var idleState = new IdleState();
+            var chaseState = new ChaseState(movementTowards, animationController, target);
+            var magicAttackState = new MagicAttackState(magicAttackSetup.MagicAttack, animationController, enemyTransform, target);
+            var fleeState = new FleeState(movementAway, animationController, target);
+            var deadState = new DeadState(animationController);
+
             stateMachine.AddState(idleState);
             stateMachine.AddState(chaseState);
             stateMachine.AddState(magicAttackState);
             stateMachine.AddState(fleeState);
             stateMachine.AddState(deadState);
             
-            stateMachine.AddTransition<IdleState, ChaseState>(() => Target && DistanceToTarget() < data.idleChaseRadius);
-            stateMachine.AddTransition<ChaseState, IdleState>(() => Target && DistanceToTarget() > data.chaseIdleRadius);
-            stateMachine.AddTransition<ChaseState, MagicAttackState>(() => Target && DistanceToTarget() < data.chaseAttackRadius);
+            stateMachine.AddTransition<IdleState, ChaseState>(() => target && DistanceToTarget() < data.idleChaseRadius);
+            stateMachine.AddTransition<ChaseState, IdleState>(() => target && DistanceToTarget() > data.chaseIdleRadius);
+            stateMachine.AddTransition<ChaseState, MagicAttackState>(() => target && DistanceToTarget() < data.chaseAttackRadius);
             stateMachine.AddTransition<MagicAttackState, ChaseState>(() => magicAttackState.IsAttackSequenceComplete);
-            stateMachine.AddTransition<MagicAttackState, FleeState>(() => Target && DistanceToTarget() < data.attackFleeRadius);
-            stateMachine.AddTransition<FleeState, MagicAttackState>(() => Target && DistanceToTarget() > data.fleeAttackRadius);
+            stateMachine.AddTransition<MagicAttackState, FleeState>(() => target && DistanceToTarget() < data.attackFleeRadius);
+            stateMachine.AddTransition<FleeState, MagicAttackState>(() => target && DistanceToTarget() > data.fleeAttackRadius);
             
-            stateMachine.AddAnyTransition<IdleState>(() => !Target && coreSetup.Health.Health > 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !target && coreSetup.Health.Health > 0f);
             stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
@@ -108,7 +95,7 @@ namespace Enemies.CoreLogic
             coreSetup.Cleanup();
             magicAttackSetup.Cleanup();
             
-            UI.Cleanup();
+            context.UI.Cleanup();
         }
     }
 }
