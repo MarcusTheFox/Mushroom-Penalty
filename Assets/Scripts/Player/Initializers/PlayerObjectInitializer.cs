@@ -1,3 +1,4 @@
+using System;
 using Core.UnityHooks;
 using Player.CoreLogic;
 using Player.CoreLogic.Context;
@@ -16,11 +17,11 @@ namespace Player.Initializers
         [SerializeField] private Transform fireballSpawnPoint;
         [SerializeField] private PlayerInputController PIC;
         [SerializeField] private PlayerDataSO playerData;
+        [SerializeField] private GameOverUIManager gameOverUIManager;
         private AnimationEventListener AEL;
         private Animator animator;
         private InteractableObjectEvents IOE;
         private PlayerUI UI;
-        private GameOverUIManager gameOverUIManager;
 
         protected override void Initialize()
         {
@@ -29,7 +30,6 @@ namespace Player.Initializers
             IOE = GetComponent<InteractableObjectEvents>() ?? gameObject.AddComponent<InteractableObjectEvents>();
             animator = GetComponent<Animator>();
             UI = GetComponent<PlayerUI>();
-            gameOverUIManager = GetComponent<GameOverUIManager>(); 
 
             CreatePlayer();
         }

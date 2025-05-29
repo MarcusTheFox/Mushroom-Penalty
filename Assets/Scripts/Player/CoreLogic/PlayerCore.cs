@@ -19,14 +19,14 @@ namespace Player.CoreLogic
         private readonly PlayerUI UI;
         private readonly InteractableObjectEvents IOE;
         private readonly Transform playerTransform;
-        private readonly Animator Animator;
+        private readonly Animator animator;
         private readonly Transform fireballSpawnPoint;
+        private readonly PlayerDataSO playerData;
 
         private PlayerCoreComponentsSetup coreSetup;
         private PlayerMovementSetup movementSetup;
         private PlayerAttackSetup attackSetup;
         private PlayerAnimationSetup animationSetup;
-        private PlayerDataSO playerData;
 
         public PlayerCore(PlayerContext context, GameOverUIManager gameOverUIManage)
         {
@@ -37,8 +37,9 @@ namespace Player.CoreLogic
             IOE = context.IOE;
             UI = context.UI;
             playerTransform = context.PlayerTransform;
-            Animator = context.Animator;
+            animator = context.Animator;
             fireballSpawnPoint = context.FireballSpawnPoint;
+            playerData = context.Data;
         }
 
         public void Initialize()
@@ -52,7 +53,7 @@ namespace Player.CoreLogic
             attackSetup = new PlayerAttackSetup(PIC, AEL, UEL, playerTransform, fireballSpawnPoint, playerData);
             attackSetup.Initialize();
 
-            animationSetup = new PlayerAnimationSetup(Animator, PIC, coreSetup.Damageable);
+            animationSetup = new PlayerAnimationSetup(animator, PIC, coreSetup.Damageable);
             animationSetup.Initialize();
         
             UI.Initialize(coreSetup.Health, attackSetup.MagicCooldown);
@@ -75,6 +76,7 @@ namespace Player.CoreLogic
 
         private void DestroyPlayer()
         {
+            gameOverUIManage.ShowGameOverPanel();
             AEL.OnDead -= DestroyPlayer;
             Object.Destroy(playerTransform.gameObject);
         }

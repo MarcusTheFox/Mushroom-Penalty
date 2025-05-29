@@ -15,6 +15,7 @@ namespace Enemies.Initializers
             enemyMelee.Initialize();
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             Vector3 position = transform.position;
@@ -46,5 +47,6 @@ namespace Enemies.Initializers
             Handles.color = Color.blue * 0.8f;
             Handles.DrawWireDisc(position, normal, enemyData.attackChaseRadius);
         }
+#endif
     }
 }

@@ -17,6 +17,7 @@ namespace Enemies.Initializers
             enemyMagic.Initialize();
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             Vector3 position = transform.position;
@@ -61,5 +62,6 @@ namespace Enemies.Initializers
             Handles.color = Color.cyan * 0.8f;
             Handles.DrawWireDisc(position, normal, enemyData.fleeAttackRadius);
         }
+#endif
     }
 }
