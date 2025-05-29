@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Player.Input;
 using Core;
+using Core.Save;
 
 namespace UI
 {
@@ -28,6 +29,7 @@ namespace UI
                 playerInput.Menu += OnMenuToggle;
 
             SetupButtons();
+            UpdateLoadButtonState();
         }
 
         private void OnDestroy()
@@ -51,6 +53,12 @@ namespace UI
                 loadButton.onClick.AddListener(LoadGame);
         }
 
+        private void UpdateLoadButtonState()
+        {
+            if (loadButton != null)
+                loadButton.interactable = SaveGameInteractor.Instance.HasSave();
+        }
+
         private void OnMenuToggle()
         {
             if (isPaused)
@@ -70,6 +78,8 @@ namespace UI
             playerInput.SetMovementInputEnabled(false);
             playerInput.SetMeleeAttackInputEnabled(false);
             playerInput.SetMagicAttackInputEnabled(false);
+
+            UpdateLoadButtonState();
         }
 
         private void ContinueGame()
@@ -93,12 +103,14 @@ namespace UI
 
         private void SaveGame()
         {
-            Debug.Log("Сохранение игры");
+            SaveGameInteractor.Instance.SaveGame();
+            UpdateLoadButtonState();
         }
 
         private void LoadGame()
         {
-            Debug.Log("Загрузка игры");
+            ContinueGame();
+            SaveGameInteractor.Instance.LoadGame();
         }
 
         private void OnDisable()

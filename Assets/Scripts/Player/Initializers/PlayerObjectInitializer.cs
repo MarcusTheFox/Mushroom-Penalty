@@ -1,3 +1,4 @@
+using Combat.Interfaces;
 using Core.UnityHooks;
 using Player.CoreLogic;
 using Player.CoreLogic.Context;
@@ -21,6 +22,9 @@ namespace Player.Initializers
         private Animator animator;
         private InteractableObjectEvents IOE;
         private PlayerUI UI;
+        private PlayerCore playerCore;
+
+        public IHealth Health => playerCore?.CoreComponents.Health;
 
         protected override void Initialize()
         {
@@ -47,8 +51,8 @@ namespace Player.Initializers
                 playerData
                 );
             
-            var player = new PlayerCore(playerContext, gameOverUIManager);
-            player.Initialize();
+            playerCore = new PlayerCore(playerContext, gameOverUIManager);
+            playerCore.Initialize();
         }
     }
 }

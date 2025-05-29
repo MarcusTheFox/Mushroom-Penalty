@@ -28,6 +28,8 @@ namespace Player.CoreLogic
         private PlayerAttackSetup attackSetup;
         private PlayerAnimationSetup animationSetup;
 
+        public PlayerCoreComponentsSetup CoreComponents => coreSetup;
+
         public PlayerCore(PlayerContext context, GameOverUIController gameOverUIManage)
         {
             this.gameOverUIManage = gameOverUIManage;

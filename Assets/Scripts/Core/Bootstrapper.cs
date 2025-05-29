@@ -1,4 +1,5 @@
 using UnityEngine;
+using Core.Save;
 
 namespace Core
 {
@@ -16,6 +17,9 @@ namespace Core
             audioManager.Initialize();
 
             var sceneController = SceneController.Instance;
+
+            var saveManager = SaveGameInteractor.Instance;
+            saveManager.Initialize();
         }
 
         private void LoadMainMenu()
