@@ -1,24 +1,27 @@
-public class Singleton<T> where T : class, new()
+namespace Core
 {
-    private static T instance;
+    public class Singleton<T> where T : class, new()
+    {
+        private static T instance;
     
-    public static T Instance
-    {
-        get
+        public static T Instance
         {
-            if (instance == null)
+            get
             {
-                instance = new T();
+                if (instance == null)
+                {
+                    instance = new T();
+                }
+                return instance;
             }
-            return instance;
         }
-    }
 
-    protected Singleton() 
-    {
-        if (instance != null)
+        protected Singleton() 
         {
-            throw new System.Exception($"An instance of {typeof(T)} already exists.");
+            if (instance != null)
+            {
+                throw new System.Exception($"An instance of {typeof(T)} already exists.");
+            }
         }
     }
 } 

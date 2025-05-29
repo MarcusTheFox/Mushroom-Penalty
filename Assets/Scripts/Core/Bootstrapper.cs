@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class Bootstrapper : MonoBehaviour
+namespace Core
 {
-    private void Start()
+    public class Bootstrapper : MonoBehaviour
     {
-        InitializeManagers();
-        LoadMainMenu();
-    }
+        private void Start()
+        {
+            InitializeManagers();
+            LoadMainMenu();
+        }
 
-    private void InitializeManagers()
-    {
-        var audioManager = AudioManager.Instance;
-        audioManager.Initialize();
+        private void InitializeManagers()
+        {
+            var audioManager = AudioManager.Instance;
+            audioManager.Initialize();
 
-        var sceneController = SceneController.Instance;
-    }
+            var sceneController = SceneController.Instance;
+        }
 
-    private void LoadMainMenu()
-    {
-        SceneController.Instance.LoadMainMenu();
+        private void LoadMainMenu()
+        {
+            SceneController.Instance.LoadMainMenu();
+        }
     }
-} 
+}

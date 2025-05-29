@@ -1,28 +1,31 @@
 using UnityEngine.SceneManagement;
 
-public class SceneController : Singleton<SceneController>
+namespace Core
 {
-    public const string BOOTSTRAP_SCENE = "BootstrapScene";
-    public const string MENU_SCENE = "Menu";
-    public const string GAME_SCENE = "GameProcessScene";
-
-    public void LoadMainMenu()
+    public class SceneController : Singleton<SceneController>
     {
-        SceneManager.LoadScene(MENU_SCENE);
-    }
+        public const string BOOTSTRAP_SCENE = "BootstrapScene";
+        public const string MENU_SCENE = "Menu";
+        public const string GAME_SCENE = "GameProcessScene";
 
-    public void LoadGame()
-    {
-        SceneManager.LoadScene(GAME_SCENE);
-    }
+        public void LoadMainMenu()
+        {
+            SceneManager.LoadScene(MENU_SCENE);
+        }
 
-    public void LoadBootstrap()
-    {
-        SceneManager.LoadScene(BOOTSTRAP_SCENE);
-    }
+        public void LoadGame()
+        {
+            SceneManager.LoadScene(GAME_SCENE);
+        }
 
-    public void RestartCurrentScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        public void LoadBootstrap()
+        {
+            SceneManager.LoadScene(BOOTSTRAP_SCENE);
+        }
+
+        public void RestartCurrentScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
-} 
+}

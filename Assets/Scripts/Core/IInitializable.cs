@@ -1,4 +1,7 @@
-public interface IInitializable
+namespace Core
 {
-    void Initialize();
+    public interface IInitializable
+    {
+        void Initialize();
+    }
 } 
