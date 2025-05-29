@@ -2,6 +2,7 @@
 using Core.UnityHooks;
 using Enemies.CoreLogic.Context;
 using UnityEngine;
+using Enemies.Components;
 
 namespace Enemies.CoreLogic
 {
@@ -12,6 +13,7 @@ namespace Enemies.CoreLogic
         private readonly Transform EnemyTransform;
 
         protected IStateMachine stateMachine;
+        public EnemyCoreComponentsSetup CoreComponents { get; protected set; }
 
         protected Enemy(EnemyContext context)
         {

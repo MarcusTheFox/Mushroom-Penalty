@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14cf861cc29845345a656f397e8fde96, type: 3}
+  m_Name: SaveGameConfig
+  m_EditorClassIdentifier: 
+  enemyMeleePrefab: {fileID: 7451289512308241783, guid: 186e68ef5a63df74dae17dd2659e611b, type: 3}
+  enemyMagicPrefab: {fileID: 1867289771894426589, guid: 3e75c38d4578b4c4184bc2c94c8692ec, type: 3}
+  bossPrefab: {fileID: 3619826711637535148, guid: 95286c96b73c3594db1312c7d056267d, type: 3}

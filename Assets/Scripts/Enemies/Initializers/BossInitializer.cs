@@ -12,6 +12,7 @@ namespace Enemies.Initializers
         {
             Boss boss = new Boss(Context, enemyData);
             boss.Initialize();
+            Health = boss.CoreComponents.Health;
         }
     }
 }

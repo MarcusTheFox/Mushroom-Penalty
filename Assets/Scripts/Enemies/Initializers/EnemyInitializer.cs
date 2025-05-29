@@ -2,6 +2,7 @@
 using Enemies.CoreLogic.Context;
 using Enemies.UI;
 using UnityEngine;
+using Combat.Interfaces;
 
 namespace Enemies.Initializers
 {
@@ -13,6 +14,8 @@ namespace Enemies.Initializers
         private InteractableObjectEvents IOE;
         private Animator animator;
         private GameObject player;
+        
+        public IHealth Health { get; protected set; }
         
         protected override void Initialize()
         {

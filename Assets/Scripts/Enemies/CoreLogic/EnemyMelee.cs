@@ -17,7 +17,6 @@ namespace Enemies.CoreLogic
         private readonly Transform enemyTransform;
         private readonly Transform target;
         
-        private EnemyCoreComponentsSetup coreSetup;
         private EnemyAnimationController animationController;
         private EnemyMeleeAttackSetup attackSetup;
         private EnemyMovementTowards movementTowards;
@@ -39,8 +38,8 @@ namespace Enemies.CoreLogic
         {
             animationController = new EnemyAnimationController(context.Animator);
             
-            coreSetup = new EnemyCoreComponentsSetup(context.IOE, data.health);
-            coreSetup.Initialize();
+            CoreComponents = new EnemyCoreComponentsSetup(context.IOE, data.health);
+            CoreComponents.Initialize();
 
             MeleeSetupData attackData = new()
             {
@@ -57,7 +56,7 @@ namespace Enemies.CoreLogic
             
             movementTowards = new EnemyMovementTowards(enemyTransform, data.speed);
             
-            context.UI.Initialize(coreSetup.Health);
+            context.UI.Initialize(CoreComponents.Health);
         }
 
         protected override void ConfigureStateMachine()
@@ -77,8 +76,8 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<ChaseState, MeleeAttackState>(() => target && DistanceToTarget() < data.chaseAttackRadius);
             stateMachine.AddTransition<MeleeAttackState, ChaseState>(() => meleeAttackState.IsAttackSequenceComplete);
             
-            stateMachine.AddAnyTransition<IdleState>(() => !target && coreSetup.Health.Health > 0f);
-            stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !target && CoreComponents.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(() => CoreComponents.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
         }
@@ -87,7 +86,7 @@ namespace Enemies.CoreLogic
         {
             base.OnDestroy();
             
-            coreSetup.Cleanup();
+            CoreComponents.Cleanup();
             attackSetup.Cleanup();
             meleeAttackState.Cleanup();
             

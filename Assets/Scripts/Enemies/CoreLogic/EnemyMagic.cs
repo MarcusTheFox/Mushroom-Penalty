@@ -20,7 +20,6 @@ namespace Enemies.CoreLogic
         
         private EnemyMagicAttackSetup magicAttackSetup;
         private EnemyAnimationController animationController;
-        private EnemyCoreComponentsSetup coreSetup;
         private EnemyMagicAttackSetup attackSetup;
         private EnemyMovementTowards movementTowards;
         private EnemyMovementAway movementAway;
@@ -38,8 +37,8 @@ namespace Enemies.CoreLogic
         {
             animationController = new EnemyAnimationController(context.Animator);
             
-            coreSetup = new EnemyCoreComponentsSetup(context.IOE, data.health);
-            coreSetup.Initialize();
+            CoreComponents = new EnemyCoreComponentsSetup(context.IOE, data.health);
+            CoreComponents.Initialize();
             
             movementTowards = new EnemyMovementTowards(context.EnemyTransform, data.speedTowards);
             movementAway = new EnemyMovementAway(context.EnemyTransform, data.speedAway);
@@ -58,7 +57,7 @@ namespace Enemies.CoreLogic
             magicAttackSetup = new EnemyMagicAttackSetup(magicSetupData);
             magicAttackSetup.Initialize();
             
-            context.UI.Initialize(coreSetup.Health);
+            context.UI.Initialize(CoreComponents.Health);
         }
 
         protected override void ConfigureStateMachine()
@@ -82,8 +81,8 @@ namespace Enemies.CoreLogic
             stateMachine.AddTransition<MagicAttackState, FleeState>(() => target && DistanceToTarget() < data.attackFleeRadius);
             stateMachine.AddTransition<FleeState, MagicAttackState>(() => target && DistanceToTarget() > data.fleeAttackRadius);
             
-            stateMachine.AddAnyTransition<IdleState>(() => !target && coreSetup.Health.Health > 0f);
-            stateMachine.AddAnyTransition<DeadState>(() => coreSetup.Health.Health <= 0f);
+            stateMachine.AddAnyTransition<IdleState>(() => !target && CoreComponents.Health.Health > 0f);
+            stateMachine.AddAnyTransition<DeadState>(() => CoreComponents.Health.Health <= 0f);
             
             stateMachine.Initialize(idleState);
         }
@@ -92,7 +91,7 @@ namespace Enemies.CoreLogic
         {
             base.OnDestroy();
             
-            coreSetup.Cleanup();
+            CoreComponents.Cleanup();
             magicAttackSetup.Cleanup();
             
             context.UI.Cleanup();

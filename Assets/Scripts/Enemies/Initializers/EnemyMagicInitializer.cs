@@ -15,6 +15,7 @@ namespace Enemies.Initializers
             EnemyMagic enemyMagic = new EnemyMagic(Context, fireballSpawnPoint, enemyData);
             
             enemyMagic.Initialize();
+            Health = enemyMagic.CoreComponents.Health;
         }
 
 #if UNITY_EDITOR

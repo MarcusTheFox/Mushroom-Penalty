@@ -13,6 +13,7 @@ namespace Enemies.Initializers
         {
             EnemyMelee enemyMelee = new EnemyMelee(Context, enemyData);
             enemyMelee.Initialize();
+            Health = enemyMelee.CoreComponents.Health;
         }
 
 #if UNITY_EDITOR
