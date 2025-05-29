@@ -16,7 +16,7 @@ namespace Player.Initializers
         [SerializeField] private Transform fireballSpawnPoint;
         [SerializeField] private PlayerInputController PIC;
         [SerializeField] private PlayerDataSO playerData;
-        [SerializeField] private GameOverUIManager gameOverUIManager;
+        [SerializeField] private GameOverUIController gameOverUIManager;
         private AnimationEventListener AEL;
         private Animator animator;
         private InteractableObjectEvents IOE;

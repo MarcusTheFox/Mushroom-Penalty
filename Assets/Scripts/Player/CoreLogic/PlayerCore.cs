@@ -12,7 +12,7 @@ namespace Player.CoreLogic
 {
     public class PlayerCore
     {
-        private readonly GameOverUIManager gameOverUIManage;
+        private readonly GameOverUIController gameOverUIManage;
         private readonly PlayerInputController PIC;
         private readonly AnimationEventListener AEL;
         private readonly UnityEventListener UEL;
@@ -28,7 +28,7 @@ namespace Player.CoreLogic
         private PlayerAttackSetup attackSetup;
         private PlayerAnimationSetup animationSetup;
 
-        public PlayerCore(PlayerContext context, GameOverUIManager gameOverUIManage)
+        public PlayerCore(PlayerContext context, GameOverUIController gameOverUIManage)
         {
             this.gameOverUIManage = gameOverUIManage;
             PIC = context.PIC;

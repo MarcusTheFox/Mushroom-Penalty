@@ -5,110 +5,86 @@ using UnityEngine.InputSystem;
 namespace Player.Input
 {
     [RequireComponent(typeof(PlayerInput))]
-    public class PlayerInputController: MonoBehaviour
+    public class PlayerInputController : MonoBehaviour
     {
         public event Action<Vector2> Move;
         public event Action<bool> Run;
         public event Action<bool> MeleeAttack;
         public event Action<bool> MagicAttack;
-    
-        private bool canMove = true;
-        private bool canMeleeAttack = true;
-        private bool canMagicAttack = true;
-    
-        private Vector2 tmpMoveInput;
-        private bool tmpRunInput;
-        private bool tmpMeleeInput;
-        private bool tmpMagicInput;
-    
-        private Vector2 lastMoveInput;
-        private bool lastRunInput;
-        private bool lastMeleeInput;
-        private bool lastMagicInput;
-    
+        public event Action Menu;
+
+        private PlayerInput playerInput;
+        private InputAction moveAction;
+        private InputAction runAction;
+        private InputAction meleeAttackAction;
+        private InputAction magicAttackAction;
+        private InputAction menuAction;
+
+        private void Awake()
+        {
+            playerInput = GetComponent<PlayerInput>();
+            
+            moveAction = playerInput.actions["Move"];
+            runAction = playerInput.actions["Run"];
+            meleeAttackAction = playerInput.actions["MeleeAttack"];
+            magicAttackAction = playerInput.actions["MagicAttack"];
+            menuAction = playerInput.actions["Menu"];
+        }
+
         private void OnMove(InputValue value)
         {
-            tmpMoveInput = value.Get<Vector2>();
-            UpdateMovementState();
+            Move?.Invoke(value.Get<Vector2>());
         }
 
         private void OnRun(InputValue value)
         {
-            tmpRunInput = value.isPressed;
-            UpdateRunState();
+            Run?.Invoke(value.isPressed);
         }
 
         private void OnMeleeAttack(InputValue value)
         {
-            tmpMeleeInput = value.isPressed;
-            UpdateMeleeAttackState();
+            MeleeAttack?.Invoke(value.isPressed);
         }
 
         private void OnMagicAttack(InputValue value)
         {
-            tmpMagicInput = value.isPressed;
-            UpdateMagicAttackState();
+            MagicAttack?.Invoke(value.isPressed);
         }
 
-        private void UpdateMovementState()
+        private void OnMenu(InputValue value)
         {
-            Vector2 currentMoveInput = canMove ? tmpMoveInput : Vector2.zero;
-            if (currentMoveInput == lastMoveInput) return;
-            lastMoveInput = currentMoveInput;
-        
-            Move?.Invoke(currentMoveInput);
-        }
-
-        private void UpdateRunState()
-        {
-            bool currentRunInput = canMove && tmpRunInput;
-            if (currentRunInput == lastRunInput) return;
-            lastRunInput = currentRunInput;
-        
-            Run?.Invoke(currentRunInput);
-        }
-
-        private void UpdateMeleeAttackState()
-        {
-            bool currentMeleeInput = canMeleeAttack && tmpMeleeInput;
-            if (currentMeleeInput == lastMeleeInput) return;
-            lastMeleeInput = currentMeleeInput;
-        
-            MeleeAttack?.Invoke(currentMeleeInput);
-        }
-
-        private void UpdateMagicAttackState()
-        {
-            bool currentMagicInput = canMagicAttack && tmpMagicInput;
-            if (currentMagicInput == lastMagicInput) return;
-            lastMagicInput = currentMagicInput;
-        
-            MagicAttack?.Invoke(currentMagicInput);
+            if (value.isPressed)
+                Menu?.Invoke();
         }
 
         public void SetMovementInputEnabled(bool value)
         {
-            if (canMove == value) return;
-        
-            canMove = value;
-            UpdateMovementState();
-            UpdateRunState();
+            if (value)
+            {
+                moveAction.Enable();
+                runAction.Enable();
+            }
+            else
+            {
+                moveAction.Disable();
+                runAction.Disable();
+            }
         }
 
         public void SetMeleeAttackInputEnabled(bool value)
         {
-            if (canMeleeAttack == value) return;
-        
-            canMeleeAttack = value;
-            UpdateMeleeAttackState();
+            if (value) meleeAttackAction.Enable();
+            else meleeAttackAction.Disable();
         }
 
         public void SetMagicAttackInputEnabled(bool value)
         {
-            if (canMagicAttack == value) return;
-        
-            canMagicAttack = value;
-            UpdateMagicAttackState();
+            if (value) magicAttackAction.Enable();
+            else magicAttackAction.Disable();
         }
+
+        public bool IsMovementEnabled() => moveAction.enabled;
+        public bool IsMeleeAttackEnabled() => meleeAttackAction.enabled;
+        public bool IsMagicAttackEnabled() => magicAttackAction.enabled;
     }
 }

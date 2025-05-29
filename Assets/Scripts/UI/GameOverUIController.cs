@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class GameOverUIManager : MonoBehaviour
+    public class GameOverUIController : MonoBehaviour
     {
         [SerializeField] private GameObject gameOverUI;
         [SerializeField] private Button restartButton;
