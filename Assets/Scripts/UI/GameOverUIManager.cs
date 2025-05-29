@@ -28,7 +28,7 @@ namespace UI
 
         private void HandleRestartClicked()
         {
-            SceneLoader.RestartCurrentScene();
+            SceneController.Instance.RestartCurrentScene();
         }
     }
 }
