@@ -798,6 +798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56832802b2eea7479d4a53ca917bd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EscMenu: {fileID: 0}
+  playerCharacter: {fileID: 0}
 --- !u!114 &1069304744045625250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,6 +813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  animationController: {fileID: 0}
 --- !u!114 &4015512114030416980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,7 +842,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   cooldown: 2
-  fireballPrefab: {fileID: 4207149361294240665, guid: 5fcde6412bab80c489b8e0da1a7d5563, type: 3}
+  fireballPrefabs: []
+  fireballDamages: []
   firePoint: {fileID: 3647528950347995870}
   fireballSpeed: 10
 --- !u!114 &6476739599471182341
@@ -862,6 +866,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   visualizeAttack: 1
+  mobRenderer: {fileID: 0}
+  glowColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  glowDuration: 0.5
 --- !u!114 &5497852214506703743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,6 +889,11 @@ MonoBehaviour:
   magicAttackParamName: MagicAttack
   damageParamName: Damage
   deathParamName: NoHP
+  attackParamName: Attack
+  strongAttackParamName: StrongAttack
+  dieParamName: Die
+  aggroParamName: Aggro
+  fleeParamName: Flee
 --- !u!1 &5437264920670589085
 GameObject:
   m_ObjectHideFlags: 0
